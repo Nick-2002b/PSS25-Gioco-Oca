@@ -18,8 +18,8 @@ Il gioco si svolge a turni su un percorso predefinito composto da un numero fini
   - _Casella Speciale:_ applica istantaneamente un effetto bonus (es. avanzare ulteriormente) o malus (es. retrocedere) al giocatore che vi capita sopra.
   - _Casella Prigione:_ situata a metà esatta del percorso, blocca il giocatore per un intero turno prima di potersi muovere nuovamente.
 - **Condizione di Vittoria:** Il sistema deve decretare la fine della partita e proclamare il vincitore non appena un giocatore raggiunge come posizione finale l'ultima casella del percorso.
-- **Salvataggio e Caricamento:** Il sistema deve permettere l'interruzione della partita, salvando lo stato corrente per consentirne la ripresa esatta in sessioni successive.
-- **Sistema Audio:** Il gioco deve riprodurre effetti sonori specifici (es. per il lancio del dado e l'attivazione di caselle speciali) e una traccia musicale di sottofondo il cui volume sia configurabile nelle impostazioni.
+- **Salvataggio e Caricamento (opzionale):** Il sistema deve permettere l'interruzione della partita, salvando lo stato corrente per consentirne la ripresa esatta in sessioni successive.
+- **Sistema Audio (opzionale):** Il gioco deve riprodurre effetti sonori specifici (es. per il lancio del dado e l'attivazione di caselle speciali) e una traccia musicale di sottofondo il cui volume sia configurabile nelle impostazioni.
 
 ### Requisiti non funzionali
 
