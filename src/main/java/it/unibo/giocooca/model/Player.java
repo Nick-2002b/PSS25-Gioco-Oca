@@ -1,10 +1,14 @@
 package it.unibo.giocooca.model;
 
 public interface Player {
-    void setPosition();
+    void setPosition(int position);
+
     int getPosition();
+
     boolean isInPrison();
-    void setInPrison();
+
+    void setInPrison(boolean imprisoned);
+    
     String getNickName();
 
 }
