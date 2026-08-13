@@ -32,11 +32,10 @@ public class PlayerMock implements Player{
     public String getNickName(){
         return this.nickname;
     }
-    /*@Override
+    @Override
     public Piece getPiece(){
         return this.piece;
     }
-    */
     @Override
     public int getPosition(){
         return this.position;
