@@ -7,7 +7,7 @@ public class PlayerMock implements Player{
     private final String nickname;
     private final Piece piece;
     private int position;
-    private boolean inPrision;
+    private boolean inPrison;
 
     /**
      * Costruttore player
@@ -18,7 +18,7 @@ public class PlayerMock implements Player{
         this.nickname = nickname;
         this.piece = piece;
         this.position = 0;
-        this.inPrision = false;
+        this.inPrison = false;
     }
 
     /**
@@ -43,7 +43,7 @@ public class PlayerMock implements Player{
     }
     @Override
     public boolean isInPrison(){
-        return this.inPrision;
+        return this.inPrison;
     }
     @Override
     public void setPosition(int position){
@@ -51,7 +51,7 @@ public class PlayerMock implements Player{
     }
     @Override
     public void setInPrison(boolean imprisioned){
-        this.inPrision = imprisioned;
+        this.inPrison = imprisioned;
     }
 }
 

@@ -43,7 +43,7 @@ public class MatchImpl implements Match{
 
     @Override
     public void moveCurrentPlayer(int steps){
-        if(this.gameOver==true){
+        if(this.gameOver){
             return;
         }
         Player current = getCurrentPlayer();
