@@ -11,4 +11,6 @@ public interface Player {
     
     String getNickName();
 
+    Piece getPiece();
+
 }
