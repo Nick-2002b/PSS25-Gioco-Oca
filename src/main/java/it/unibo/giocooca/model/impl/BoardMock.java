@@ -1,6 +1,8 @@
 package it.unibo.giocooca.model.impl;
 import it.unibo.giocooca.model.Board;
 import it.unibo.giocooca.model.Cell;
+import it.unibo.giocooca.model.CellType;
+import it.unibo.giocooca.model.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,9 +26,15 @@ public class BoardMock implements Board {
                 public int getPosition(){
                     return position;
                 }
+
                 @Override
-                public String getType(){
-                    return "NORMAL";
+                public void applyEffect(Player player) {
+
+                }
+
+                @Override
+                public CellType getType(){
+                    return CellType.NORMAL;
                 }
             });
         }
