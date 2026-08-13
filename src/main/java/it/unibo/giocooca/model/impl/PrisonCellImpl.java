@@ -4,6 +4,9 @@ import it.unibo.giocooca.model.Cell;
 import it.unibo.giocooca.model.CellType;
 import it.unibo.giocooca.model.Player;
 
+/**
+ * Casella prigione: quando un giocatore ci atterra, viene messo in prigione.
+ */
 public class PrisonCellImpl implements Cell {
     private final int position;
 

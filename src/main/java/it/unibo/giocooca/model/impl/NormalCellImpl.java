@@ -4,6 +4,9 @@ import it.unibo.giocooca.model.Cell;
 import it.unibo.giocooca.model.CellType;
 import it.unibo.giocooca.model.Player;
 
+/**
+ * Casella normale: non applica alcun effetto al giocatore che ci atterra.
+ */
 public class NormalCellImpl implements Cell {
     private final int position;
 
