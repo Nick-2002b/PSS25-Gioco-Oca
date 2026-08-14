@@ -42,7 +42,7 @@ public class MenuViewImpl implements MenuView{
         menuBox.getChildren().addAll(titleLabel, btnStart, btnQuit);
 
         StackPane background = new StackPane();
-        background.setStyle("-fx-background-colo:#ecf0f1;");
+        background.setStyle("-fx-background-color:#ecf0f1;");
         background.getChildren().add(menuBox);
 
         Scene scene = new Scene(background, 800, 600);

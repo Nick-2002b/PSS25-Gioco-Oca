@@ -1,0 +1,109 @@
+package it.unibo.giocooca;
+
+import it.unibo.giocooca.model.GameConfig;
+import it.unibo.giocooca.model.Board;
+import it.unibo.giocooca.model.Cell;
+import it.unibo.giocooca.model.CellType;
+import it.unibo.giocooca.model.Player;
+import it.unibo.giocooca.model.Dice;
+import it.unibo.giocooca.model.Match;
+import it.unibo.giocooca.model.impl.BoardImpl;
+import it.unibo.giocooca.model.impl.DiceImpl;
+import it.unibo.giocooca.model.impl.MatchImpl;
+import it.unibo.giocooca.model.impl.PlayerImpl;
+import it.unibo.giocooca.model.impl.PieceImpl;
+
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import java.util.List;
+
+import org.junit.jupiter.api.BeforeEach;
+
+public class MatchImplTest {
+    
+    private static final int BOARD_SIZE = 63;
+    private static final int SPECIAL_CELLS_COUNT = 6;
+    private static final long SEED = 42L;
+
+    private Player player1;
+    private Player player2;
+    private GameConfig config;
+    private Board board;
+    private Dice dice;
+    private Player player;
+    private Match match;
+    
+    @BeforeEach
+    void setUP(){
+        this.player1 = new PlayerImpl("Pippo", new PieceImpl("Mucca", "rosso"));           
+        this.player2 = new PlayerImpl("Pluto", new PieceImpl("Cane", "verde"));
+
+        this.config = new GameConfig(BOARD_SIZE, SPECIAL_CELLS_COUNT, SEED);
+        this.board = new BoardImpl(this.config);
+        this.dice = new DiceImpl();
+        this.match = new MatchImpl(List.of(this.player1, this.player2), this.board, this.dice);
+
+    }
+    @Test
+    void testMatchInit(){
+        assertAll("Test situazione inizio partita",
+            () -> assertEquals(player1, match.getCurrentPlayer()),
+            () -> assertEquals("Pippo", match.getCurrentPlayer().getNickName()),
+            () -> assertFalse(match.isGameOver()),
+            () -> assertNull(match.getWinner()),
+            () -> assertEquals(2, match.getPlayers().size()),
+            () -> assertEquals(0, player1.getPosition()),
+            () -> assertEquals(0, player2.getPosition())
+        );
+    }
+    @Test
+    void testTurn(){
+        assertEquals(player1, match.getCurrentPlayer());
+        this.match.nextTurn();
+        assertEquals(player2, match.getCurrentPlayer());
+        this.match.nextTurn();
+        assertEquals(player1, match.getCurrentPlayer());
+    }
+    @Test
+    void testApplySpecialCell(){
+        Cell specialCell = null;
+        for(Cell cell : this.board.getAllCells()){
+            if (cell.getType() == CellType.SPECIAL){
+                specialCell=cell;
+                break;
+            }
+        }
+        assertNotNull(specialCell,"Deve esserci almeno una casella speciale");
+        int specialPosition = specialCell.getPosition();
+        this.match.moveCurrentPlayer(specialPosition);
+        assertNotEquals(specialCell, this.match.getCurrentPlayer().getPosition());
+    }
+
+    @Test
+    void testBoardSize(){
+        assertEquals(BOARD_SIZE, this.board.getSize());
+    } 
+
+    @Test 
+    void testPrisonCell(){
+        Cell prison = this.board.getCell(GameConfig.PRISON_POSITION);
+        assertNotNull(prison);
+        assertEquals(GameConfig.PRISON_POSITION, prison.getPosition());
+        assertEquals(CellType.PRISON, prison.getType());
+    }
+
+    @Test
+    void testOutOfBoundsCells(){
+        assertThrows(IllegalArgumentException.class, () -> this.board.getCell(0));
+        assertThrows(IllegalArgumentException.class, () -> this.board.getCell(-1));
+        assertThrows(IllegalArgumentException.class, () -> this.board.getCell(BOARD_SIZE + 1));
+    }
+}

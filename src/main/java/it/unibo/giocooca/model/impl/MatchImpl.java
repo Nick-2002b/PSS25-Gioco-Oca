@@ -29,6 +29,12 @@ public class MatchImpl implements Match{
         if(players == null || players.isEmpty()){
             throw new IllegalArgumentException("Almeno un giocatore");
         }
+        if(board == null){
+            throw new IllegalArgumentException("Board non può essere null");
+        }
+        if(dice == null){
+            throw new IllegalArgumentException("Dice non può essere null");
+        }
         this.players = List.copyOf(players);
         this.dice = dice;
         this.board = board;

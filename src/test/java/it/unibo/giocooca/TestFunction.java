@@ -3,7 +3,7 @@ import it.unibo.giocooca.model.*;
 import it.unibo.giocooca.model.impl.*;
 import java.util.List;
 
-public class MatchTest {
+public class TestFunction {
     public static void main(String[] args){
         Player p1 = new PlayerMock("Pippo");
         Player p2 = new PlayerMock("Pluto");
