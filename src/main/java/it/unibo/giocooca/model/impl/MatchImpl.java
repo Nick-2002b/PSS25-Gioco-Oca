@@ -46,19 +46,23 @@ public class MatchImpl implements Match{
         if(this.gameOver){
             return;
         }
-        Player current = getCurrentPlayer();
-        int newPosition = current.getPosition() + steps;
+        Player currentPlayer = getCurrentPlayer();
+        int newPosition = currentPlayer.getPosition() + steps;
         int endPosition = this.board.getSize();
         if(newPosition >= endPosition){
             newPosition = endPosition;
             this.gameOver = true;
-            this.winner = current;
+            this.winner = currentPlayer;
         }
-        current.setPosition(newPosition);
+        currentPlayer.setPosition(newPosition);
+        applyCurrentCellEffect(currentPlayer);
     }
     @Override
-    public void applyCurrentCellEffect(){
-        //TO DO
+    public void applyCurrentCellEffect(Player player){
+        int playerPos = player.getPosition();
+        board.getCell(playerPos).applyEffect(player);
+
+        
     }
     @Override
     public void nextTurn(){

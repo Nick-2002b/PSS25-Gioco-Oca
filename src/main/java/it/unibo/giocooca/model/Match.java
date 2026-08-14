@@ -7,7 +7,7 @@ public interface Match {
 
     void moveCurrentPlayer(int steps);
 
-    void applyCurrentCellEffect();
+    void applyCurrentCellEffect(Player player);
 
     void nextTurn();
 
