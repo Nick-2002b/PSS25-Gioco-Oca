@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 public class SpecialCellImplTest {
 
     @Test
-    void typeShouldBePrison() {
+    void typeShouldBeSpecial() {
         final SpecialCellImpl cell = new SpecialCellImpl(10, 3, 63);
         Assertions.assertEquals(CellType.SPECIAL, cell.getType());
     }
