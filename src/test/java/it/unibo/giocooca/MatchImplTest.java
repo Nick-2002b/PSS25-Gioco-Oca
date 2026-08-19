@@ -28,7 +28,6 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 
 public class MatchImplTest {
-    
     private static final int BOARD_SIZE = 63;
     private static final int SPECIAL_CELLS_COUNT = 6;
     private static final long SEED = 42L;
@@ -38,7 +37,6 @@ public class MatchImplTest {
     private GameConfig config;
     private Board board;
     private Dice dice;
-    private Player player;
     private Match match;
     
     @BeforeEach
@@ -52,6 +50,7 @@ public class MatchImplTest {
         this.match = new MatchImpl(List.of(this.player1, this.player2), this.board, this.dice);
 
     }
+
     @Test
     void testMatchInit(){
         assertAll("Test situazione inizio partita",
@@ -73,18 +72,21 @@ public class MatchImplTest {
         assertEquals(player1, match.getCurrentPlayer());
     }
     @Test
-    void testApplySpecialCell(){
+    void testApplySpecialCell() {
         Cell specialCell = null;
-        for(Cell cell : this.board.getAllCells()){
-            if (cell.getType() == CellType.SPECIAL){
-                specialCell=cell;
+        for (Cell cell : this.board.getAllCells()) {
+            if (cell.getType() == CellType.SPECIAL) {
+                specialCell = cell;
                 break;
             }
         }
-        assertNotNull(specialCell,"Deve esserci almeno una casella speciale");
+        assertNotNull(specialCell, "Deve esserci almeno una casella speciale");
+
         int specialPosition = specialCell.getPosition();
+        int beforePosPlayer = this.match.getCurrentPlayer().getPosition();
         this.match.moveCurrentPlayer(specialPosition);
-        assertNotEquals(specialCell, this.match.getCurrentPlayer().getPosition());
+        int afterPosPlayer = this.match.getCurrentPlayer().getPosition();
+        assertNotEquals(beforePosPlayer, afterPosPlayer);
     }
 
     @Test
