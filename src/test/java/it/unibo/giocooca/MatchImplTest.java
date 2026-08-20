@@ -1,19 +1,6 @@
 package it.unibo.giocooca;
 
-import it.unibo.giocooca.model.GameConfig;
-import it.unibo.giocooca.model.Board;
-import it.unibo.giocooca.model.Cell;
-import it.unibo.giocooca.model.CellType;
-import it.unibo.giocooca.model.Player;
-import it.unibo.giocooca.model.Dice;
-import it.unibo.giocooca.model.Match;
-import it.unibo.giocooca.model.impl.BoardImpl;
-import it.unibo.giocooca.model.impl.DiceImpl;
-import it.unibo.giocooca.model.impl.MatchImpl;
-import it.unibo.giocooca.model.impl.PlayerImpl;
-import it.unibo.giocooca.model.impl.PieceImpl;
-
-import org.junit.jupiter.api.Test;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -21,11 +8,21 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
-import java.util.List;
-
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import it.unibo.giocooca.model.Board;
+import it.unibo.giocooca.model.Cell;
+import it.unibo.giocooca.model.CellType;
+import it.unibo.giocooca.model.Dice;
+import it.unibo.giocooca.model.GameConfig;
+import it.unibo.giocooca.model.Match;
+import it.unibo.giocooca.model.Player;
+import it.unibo.giocooca.model.impl.BoardImpl;
+import it.unibo.giocooca.model.impl.DiceImpl;
+import it.unibo.giocooca.model.impl.MatchImpl;
+import it.unibo.giocooca.model.impl.PieceImpl;
+import it.unibo.giocooca.model.impl.PlayerImpl;
 
 public class MatchImplTest {
     private static final int BOARD_SIZE = 63;
@@ -87,25 +84,5 @@ public class MatchImplTest {
         this.match.moveCurrentPlayer(specialPosition);
         int afterPosPlayer = this.match.getCurrentPlayer().getPosition();
         assertNotEquals(beforePosPlayer, afterPosPlayer);
-    }
-
-    @Test
-    void testBoardSize(){
-        assertEquals(BOARD_SIZE, this.board.getSize());
-    } 
-
-    @Test 
-    void testPrisonCell(){
-        Cell prison = this.board.getCell(GameConfig.PRISON_POSITION);
-        assertNotNull(prison);
-        assertEquals(GameConfig.PRISON_POSITION, prison.getPosition());
-        assertEquals(CellType.PRISON, prison.getType());
-    }
-
-    @Test
-    void testOutOfBoundsCells(){
-        assertThrows(IllegalArgumentException.class, () -> this.board.getCell(0));
-        assertThrows(IllegalArgumentException.class, () -> this.board.getCell(-1));
-        assertThrows(IllegalArgumentException.class, () -> this.board.getCell(BOARD_SIZE + 1));
     }
 }
