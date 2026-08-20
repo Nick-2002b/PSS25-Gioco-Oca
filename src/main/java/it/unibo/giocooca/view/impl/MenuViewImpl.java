@@ -27,29 +27,35 @@ public class MenuViewImpl implements MenuView{
 
     @Override
     public void show(){
-        Label titleLabel = new Label("Gioco dell'OCA");
+        final Label titleLabel = new Label("Gioco dell'OCA");
         titleLabel.setStyle("fx-font-size: 36px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;");
         
-        Button btnStart = new Button("Nuova partita");
+        final Button btnStart = new Button("Nuova partita");
         btnStart.setStyle("-fx-font-size: 18px; -fx-padding: 10px 30px;");
+        btnStart.setPrefWidth(200);
         btnStart.setOnAction(event -> this.controller.onStartNewGame());
-        Button btnQuit = new Button("Esci");
+        
+        final Button btnQuit = new Button("Esci");
         btnQuit.setStyle("-fx-font-size: 18px; -fx-padding: 10px 30px;");
+        btnQuit.setPrefWidth(200);
         btnQuit.setOnAction(event -> this.controller.onQuit());
 
-        VBox menuBox = new VBox(20);
+        final VBox menuBox = new VBox(20);
         menuBox.setAlignment(Pos.CENTER);
         menuBox.getChildren().addAll(titleLabel, btnStart, btnQuit);
 
-        StackPane background = new StackPane();
+        final StackPane background = new StackPane();
         background.setStyle("-fx-background-color:#ecf0f1;");
         background.getChildren().add(menuBox);
 
-        Scene scene = new Scene(background, 800, 600);
-        this.stage.setTitle("Gioco dell'OCA - Menù principale");
-        this.stage.setScene(scene);
-
-        this.stage.setMaximized(true);
+        this.stage.setTitle("Gioco dell'OCA - Menu\' principale");
+        if(this.stage.getScene() == null){
+            final Scene scene = new Scene(background, 800, 600);
+            this.stage.setScene(scene);
+            this.stage.setMaximized(true);
+        }else{
+            this.stage.getScene().setRoot(background);
+        }
         this.stage.show();
     
     }

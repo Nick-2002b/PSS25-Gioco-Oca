@@ -3,6 +3,7 @@
  */
 
 package it.unibo.giocooca;
+import it.unibo.giocooca.controller.MenuController;
 import it.unibo.giocooca.controller.impl.MenuControllerImpl;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -12,7 +13,7 @@ import javafx.stage.Stage;
 public class App extends Application{
     @Override
     public void start(Stage primaryStage){
-        MenuControllerImpl menuController = new MenuControllerImpl(primaryStage);
+        MenuController menuController = new MenuControllerImpl(primaryStage);
         menuController.start();
     }
     /**
