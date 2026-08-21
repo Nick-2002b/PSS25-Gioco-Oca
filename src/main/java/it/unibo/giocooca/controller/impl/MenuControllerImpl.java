@@ -1,5 +1,6 @@
 package it.unibo.giocooca.controller.impl;
 
+import it.unibo.giocooca.controller.SetupController;
 import it.unibo.giocooca.controller.MenuController;
 import it.unibo.giocooca.view.MenuView;
 import it.unibo.giocooca.view.impl.MenuViewImpl;
@@ -15,13 +16,15 @@ public class MenuControllerImpl implements MenuController{
         this.view = new MenuViewImpl(stage, this);           
         
     }
+    @Override
     public void start(){
         this.view.show();
     }
 
     @Override
     public void onStartNewGame(){
-        System.out.println("Partita iniziata");
+        SetupController setupController = new SetupControllerImpl(this.stage);
+        setupController.start();
     }
 
     @Override
