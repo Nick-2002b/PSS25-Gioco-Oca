@@ -5,6 +5,7 @@ import it.unibo.giocooca.controller.MenuController;
 import it.unibo.giocooca.model.Settings;
 import it.unibo.giocooca.model.impl.SettingsManager;
 import it.unibo.giocooca.view.SettingsView;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -33,9 +34,11 @@ public class SettingsViewImpl implements SettingsView {
     @Override
     public void show() {
         final Label title = new Label("Impostazioni");
+        title.setStyle("-fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;");
 
         // --- Audio Section ---
         final Label audioTitle = new Label("Audio");
+        audioTitle.setStyle("-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;");
 
         final Slider musicSlider = new Slider(0.0, 1.0, currentSettings.getMusicVolume());
         musicSlider.setPrefWidth(SLIDER_WIDTH);
@@ -60,6 +63,7 @@ public class SettingsViewImpl implements SettingsView {
 
         //--- Game Section ---
         final Label gameTitle = new Label("Partita");
+        gameTitle.setStyle("-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;");
 
         final Spinner<Integer> specialSpinner = new Spinner<>(MIN_SPECIAL, MAX_SPECIAL, currentSettings.getNumSpecialCells());
         specialSpinner.setEditable(true);
@@ -67,9 +71,11 @@ public class SettingsViewImpl implements SettingsView {
 
         // --- Buttons ---
         final Button saveBtn = new Button("Salva");
+        saveBtn.setStyle("-fx-font-size: 15px; -fx-padding: 10px 30px;");
         saveBtn.setOnAction(x -> onSave(musicSlider, sfxSlider, specialSpinner));
 
         final Button backBtn = new Button("Indietro");
+        backBtn.setStyle("-fx-font-size: 15px; -fx-padding: 10px 30px;");
         backBtn.setOnAction(x -> controller.start());
 
         final HBox buttons = new HBox(10, saveBtn, backBtn);
@@ -85,9 +91,13 @@ public class SettingsViewImpl implements SettingsView {
                 new Separator(),
                 buttons
         );
+        content.setPadding(new Insets(40));
+        content.setMaxWidth(600);
         content.setAlignment(Pos.CENTER);
 
         final StackPane root = new StackPane(content);
+        root.setStyle("-fx-background-color: #ecf0f1;");
+
         StackPane.setAlignment(content, Pos.CENTER);
 
         if (stage.getScene() == null) {
@@ -112,6 +122,7 @@ public class SettingsViewImpl implements SettingsView {
 
     private HBox buildRow(String labelText, Node... nodes) {
         final Label label = new Label(labelText);
+        label.setMinWidth(150);
 
         final HBox row = new HBox(10);
         row.setAlignment(Pos.CENTER_LEFT);
