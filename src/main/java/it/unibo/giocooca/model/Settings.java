@@ -17,25 +17,24 @@ public final class Settings {
         this.numSpecialCells = DEFAULT_SPECIAL_CELLS;
     }
 
-
     public double getMusicVolume() {
         return musicVolume;
-    }
-
-    public void setMusicVolume(double musicVolume) {
-        this.musicVolume = Math.clamp(musicVolume, 0.0, 1.0);
     }
 
     public double getSfxVolume() {
         return sfxVolume;
     }
 
+    public int getNumSpecialCells() {
+        return numSpecialCells;
+    }
+
     public void setSfxVolume(double sfxVolume) {
         this.sfxVolume = Math.clamp(sfxVolume, 0.0, 1.0);
     }
 
-    public int getNumSpecialCells() {
-        return numSpecialCells;
+    public void setMusicVolume(double musicVolume) {
+        this.musicVolume = Math.clamp(musicVolume, 0.0, 1.0);
     }
 
     public void setNumSpecialCells(int numSpecialCells) {
