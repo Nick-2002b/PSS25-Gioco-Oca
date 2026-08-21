@@ -4,6 +4,7 @@ import it.unibo.giocooca.controller.SetupController;
 import it.unibo.giocooca.controller.MenuController;
 import it.unibo.giocooca.view.MenuView;
 import it.unibo.giocooca.view.impl.MenuViewImpl;
+import it.unibo.giocooca.view.impl.SettingsViewImpl;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 
@@ -25,6 +26,11 @@ public class MenuControllerImpl implements MenuController{
     public void onStartNewGame(){
         SetupController setupController = new SetupControllerImpl(this.stage);
         setupController.start();
+    }
+
+    @Override
+    public void onOpenSettings() {
+        new SettingsViewImpl(stage, this).show();
     }
 
     @Override

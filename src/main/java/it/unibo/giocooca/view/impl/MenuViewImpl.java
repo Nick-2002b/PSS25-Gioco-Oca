@@ -34,6 +34,12 @@ public class MenuViewImpl implements MenuView{
         btnStart.setStyle("-fx-font-size: 18px; -fx-padding: 10px 30px;");
         btnStart.setPrefWidth(200);
         btnStart.setOnAction(event -> this.controller.onStartNewGame());
+
+        final Button btnSettings = new Button("Impostazioni");
+        btnSettings.setStyle("-fx-font-size: 18px; -fx-padding: 10px 30px;");
+        btnSettings.setPrefWidth(200);
+        btnSettings.setOnAction(event -> this.controller.onOpenSettings());
+
         
         final Button btnQuit = new Button("Esci");
         btnQuit.setStyle("-fx-font-size: 18px; -fx-padding: 10px 30px;");
@@ -42,7 +48,7 @@ public class MenuViewImpl implements MenuView{
 
         final VBox menuBox = new VBox(20);
         menuBox.setAlignment(Pos.CENTER);
-        menuBox.getChildren().addAll(titleLabel, btnStart, btnQuit);
+        menuBox.getChildren().addAll(titleLabel, btnStart, btnSettings, btnQuit);
 
         final StackPane background = new StackPane();
         background.setStyle("-fx-background-color:#ecf0f1;");

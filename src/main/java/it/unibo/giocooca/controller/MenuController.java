@@ -7,6 +7,8 @@ public interface MenuController {
      * Avvia una nuova partita
      */
     void onStartNewGame();
+
+    void onOpenSettings();
     
     /**
      * Uscita dalla partita
