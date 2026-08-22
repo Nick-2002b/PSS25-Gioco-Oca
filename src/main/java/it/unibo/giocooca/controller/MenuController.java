@@ -1,7 +1,13 @@
 package it.unibo.giocooca.controller;
 
+/**
+ * Contratto per il controller del menu principale.
+ */
 public interface MenuController {
 
+    /**
+     * Avvia e mostra il menu principale.
+     */
     void start();
 
     /**
@@ -9,6 +15,9 @@ public interface MenuController {
      */
     void onStartNewGame();
 
+    /**
+     * Apre la schermata delle impostazioni.
+     */
     void onOpenSettings();
 
     /**

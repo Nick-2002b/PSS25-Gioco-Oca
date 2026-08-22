@@ -16,7 +16,10 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class SettingsViewImpl implements SettingsView {
+/**
+ * Implementazione grafica JavaFX della schermata delle impostazioni.
+ */
+public final class SettingsViewImpl implements SettingsView {
     private static final int SLIDER_WIDTH = 250;
     private static final int MIN_SPECIAL = 1;
     private static final int MAX_SPECIAL = 20;
@@ -27,7 +30,13 @@ public class SettingsViewImpl implements SettingsView {
     private final Stage stage;
     private final SettingsControllerImpl controller;
 
-    public SettingsViewImpl(Stage stage, SettingsControllerImpl controller) {
+    /**
+     * Costruttore della grafica delle impostazioni.
+     *
+     * @param stage      la finestra principale contenitore
+     * @param controller gestione delle azioni dell'utente
+     */
+    public SettingsViewImpl(final Stage stage, final SettingsControllerImpl controller) {
         this.stage = stage;
         this.controller = controller;
     }

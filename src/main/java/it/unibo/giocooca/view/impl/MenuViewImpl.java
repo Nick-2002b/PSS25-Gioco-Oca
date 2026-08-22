@@ -11,7 +11,10 @@ import javafx.scene.layout.VBox;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
-public class MenuViewImpl implements MenuView {
+/**
+ * Implementazione grafica JavaFX del menu principale.
+ */
+public final class MenuViewImpl implements MenuView {
     private static final String BUTTON_STYLE = "-fx-font-size: 18px; -fx-padding: 10px 30px;";
     private static final int BUTTON_WIDTH = 200;
     private final Stage stage;

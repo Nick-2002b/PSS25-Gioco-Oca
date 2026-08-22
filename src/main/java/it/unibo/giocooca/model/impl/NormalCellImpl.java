@@ -7,10 +7,15 @@ import it.unibo.giocooca.model.Player;
 /**
  * Casella normale: non applica alcun effetto al giocatore che ci atterra.
  */
-public class NormalCellImpl implements Cell {
+public final class NormalCellImpl implements Cell {
     private final int position;
 
-    public NormalCellImpl(int position) {
+    /**
+     * Crea una casella normale.
+     *
+     * @param position la posizione della casella sul tabellone
+     */
+    public NormalCellImpl(final int position) {
         this.position = position;
     }
 

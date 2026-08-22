@@ -13,7 +13,7 @@ import javafx.stage.Stage;
  * Main application entry-point's class.
  */
 
-public class App extends Application {
+public final class App extends Application {
     /**
      * Main application entry-point.
      *
@@ -25,7 +25,7 @@ public class App extends Application {
 
     @Override
     public void start(final Stage primaryStage) {
-        MenuController menuController = new MenuControllerImpl(primaryStage);
+        final MenuController menuController = new MenuControllerImpl(primaryStage);
         menuController.start();
     }
 }

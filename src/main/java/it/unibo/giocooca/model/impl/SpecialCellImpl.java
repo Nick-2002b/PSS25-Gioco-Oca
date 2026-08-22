@@ -8,7 +8,7 @@ import it.unibo.giocooca.model.Player;
  * Casella speciale: applica un bonus (offset positivo) o malus (offset negativo)
  * al giocatore che ci atterra.
  */
-public class SpecialCellImpl implements Cell {
+public final class SpecialCellImpl implements Cell {
     private static final int MAX_OFFSET = 8;
 
     private final int position;

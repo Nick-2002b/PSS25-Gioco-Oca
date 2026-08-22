@@ -1,6 +1,3 @@
-/**
- * Modificare addPlayer dove al momento è usato un valore fisso embeddato
- */
 package it.unibo.giocooca.view.impl;
 
 import it.unibo.giocooca.model.Player;
@@ -22,7 +19,12 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SetupViewImpl implements SetupView {
+/**
+ * Implementazione grafica JavaFX della schermata di setup della partita.
+ *
+ * <p>TODO: modificare addPlayer dove al momento è usato un valore fisso embeddato.
+ */
+public final class SetupViewImpl implements SetupView {
     private static final int PLAYERS_WIDTH = 500;
     private static final int PLAYERS_HEIGHT = 150;
     private static final int BUTTON_WIDTH = 200;
@@ -30,6 +32,12 @@ public class SetupViewImpl implements SetupView {
     private final SetupController controller;
     private final List<Player> players = new ArrayList<>();
 
+    /**
+     * Costruttore della grafica di setup.
+     *
+     * @param stage      la finestra principale contenitore
+     * @param controller gestione delle azioni dell'utente
+     */
     public SetupViewImpl(final Stage stage, final SetupController controller) {
         this.stage = stage;
         this.controller = controller;
@@ -38,11 +46,10 @@ public class SetupViewImpl implements SetupView {
 
     @Override
     public void show() {
-        final boolean DEBUG = false;
+        final boolean debug = false;
         final String styleDebugBox = "-fx-border-color: red; -fx-border-width: 2px; -fx-border-style: solid;";
         final Label title = new Label("Setup Gioco");
         title.setStyle("fx-font-size: 36px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;");
-
 
         final Label lbNumPlayers = new Label("Numero di giocatori: ");
         final ComboBox<Integer> cmbNumPlayers = new ComboBox<>();
@@ -51,7 +58,7 @@ public class SetupViewImpl implements SetupView {
 
         final HBox numPlayersBox = new HBox(15, lbNumPlayers, cmbNumPlayers);
         numPlayersBox.setAlignment(Pos.CENTER);
-        if (DEBUG) {
+        if (debug) {
             numPlayersBox.setStyle(styleDebugBox);
         }
 
@@ -67,7 +74,7 @@ public class SetupViewImpl implements SetupView {
 
         final HBox playerSetupBox = new HBox(15, lbPlayerNames, txtPlayerName, lbPieceColor, cmbPieceColor, btnAddPlayer);
         playerSetupBox.setAlignment(Pos.CENTER);
-        if (DEBUG) {
+        if (debug) {
             playerSetupBox.setStyle(styleDebugBox);
         }
 
@@ -76,7 +83,7 @@ public class SetupViewImpl implements SetupView {
         boxPlayersList.setPrefWidth(PLAYERS_WIDTH);
         boxPlayersList.setPrefHeight(PLAYERS_HEIGHT);
         boxPlayersList.setAlignment(Pos.CENTER);
-        if (DEBUG) {
+        if (debug) {
             boxPlayersList.setStyle(styleDebugBox);
         }
         final Button btnBack = new Button("Indietro");
@@ -88,9 +95,7 @@ public class SetupViewImpl implements SetupView {
         btnStartGame.setDisable(true);
         btnStartGame.setPrefWidth(BUTTON_WIDTH);
         btnStartGame.setOnAction(event -> this.controller.onStartGame(players));
-        /**
-         * l'action del btnAddPlayer setta delle variabili che vengono create dopo questo elementoquindi ho spostato qui
-         */
+        // l'action del btnAddPlayer setta delle variabili che vengono create dopo questo elemento quindi ho spostato qui
         btnAddPlayer.setOnAction(event -> {
             final String playerName = txtPlayerName.getText().trim();
             final String pieceColor = cmbPieceColor.getValue();
@@ -115,13 +120,13 @@ public class SetupViewImpl implements SetupView {
         });
         final HBox buttonsBox = new HBox(15, btnBack, btnStartGame);
         buttonsBox.setAlignment(Pos.CENTER);
-        if (DEBUG) {
+        if (debug) {
             buttonsBox.setStyle(styleDebugBox);
         }
 
         final VBox allElements = new VBox(20, title, numPlayersBox, playerSetupBox, boxPlayersList, buttonsBox);
         allElements.setAlignment(Pos.CENTER);
-        if (DEBUG) {
+        if (debug) {
             allElements.setStyle(styleDebugBox);
         }
 

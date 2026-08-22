@@ -1,5 +1,9 @@
 package it.unibo.giocooca.view;
 
+/**
+ * Contratto per la vista del menu principale.
+ */
+@FunctionalInterface
 public interface MenuView {
 
     /**

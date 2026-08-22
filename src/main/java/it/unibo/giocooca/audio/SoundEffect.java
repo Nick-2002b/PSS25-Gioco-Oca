@@ -1,5 +1,8 @@
 package it.unibo.giocooca.audio;
 
+/**
+ * Effetti sonori disponibili nel gioco, con il percorso della relativa risorsa audio.
+ */
 public enum SoundEffect {
     DICE_ROLL("/audio/rolling-dice-1.wav"),
     PIECE_MOVE("/audio/piece-soundaction.wav"),
@@ -14,6 +17,11 @@ public enum SoundEffect {
         this.resourcePath = resourcePath;
     }
 
+    /**
+     * Restituisce il percorso della risorsa audio associata.
+     *
+     * @return il percorso della risorsa audio
+     */
     public String getResourcePath() {
         return resourcePath;
     }

@@ -8,13 +8,23 @@ import it.unibo.giocooca.model.impl.SettingsManager;
 import it.unibo.giocooca.view.impl.SettingsViewImpl;
 import javafx.stage.Stage;
 
-public class SettingsControllerImpl implements SettingsController {
+/**
+ * Implementazione del controller della schermata delle impostazioni.
+ */
+public final class SettingsControllerImpl implements SettingsController {
 
     private final Stage stage;
     private final Settings settings;
     private final SettingsManager settingsManager;
     private final MenuController menuController;
 
+    /**
+     * Crea il controller delle impostazioni.
+     *
+     * @param stage         la finestra principale dell'applicazione
+     * @param settings      le impostazioni correnti da modificare
+     * @param menuController il controller del menu principale a cui tornare
+     */
     public SettingsControllerImpl(
             final Stage stage,
             final Settings settings,

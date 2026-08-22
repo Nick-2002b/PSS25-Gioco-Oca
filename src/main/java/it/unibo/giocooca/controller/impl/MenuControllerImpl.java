@@ -11,12 +11,19 @@ import it.unibo.giocooca.view.impl.MenuViewImpl;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 
-public class MenuControllerImpl implements MenuController {
+/**
+ * Implementazione del controller del menu principale.
+ */
+public final class MenuControllerImpl implements MenuController {
     private final Stage stage;
     private final MenuView view;
     private final Settings settings;
 
-
+    /**
+     * Crea il controller del menu principale.
+     *
+     * @param stage la finestra principale dell'applicazione
+     */
     public MenuControllerImpl(final Stage stage) {
         this.stage = stage;
         this.settings = new SettingsManager().load();

@@ -1,5 +1,8 @@
 package it.unibo.giocooca;
 
+/**
+ * Punto di ingresso dell'applicazione, delega l'avvio alla classe App.
+ */
 public final class Launcher {
     /**
      * Come da linea guida il costruttore privato impedisce di istanziare la classe erroneamente.
