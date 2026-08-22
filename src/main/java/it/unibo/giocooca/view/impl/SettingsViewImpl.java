@@ -105,7 +105,7 @@ public class SettingsViewImpl implements SettingsView {
         stage.setTitle("Gioco dell'Oca - Impostazioni");
     }
 
-    private String toPrecent (double value) {
+    private String toPrecent(double value) {
         return (int) (value * 100) + "%";
     }
 

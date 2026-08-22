@@ -12,7 +12,7 @@ public class NormalCellImplTest {
     private NormalCellImpl cell;
 
     @BeforeEach
-    void setup(){
+    void setup() {
         cell = new NormalCellImpl(10);
     }
 

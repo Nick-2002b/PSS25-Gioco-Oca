@@ -19,27 +19,29 @@ import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class SetupViewImpl implements SetupView{
+public class SetupViewImpl implements SetupView {
     private final Stage stage;
     private final SetupController controller;
     private final List<Player> players = new ArrayList<>();
 
-    public SetupViewImpl(Stage stage, SetupController controller){
+    public SetupViewImpl(Stage stage, SetupController controller) {
         this.stage = stage;
         this.controller = controller;
 
     }
+
     @Override
-    public void show(){
+    public void show() {
         final boolean DEBUG = false;
-        final String styleDebugBox = "-fx-border-color: red; -fx-border-width: 2px; -fx-border-style: solid;";  
+        final String styleDebugBox = "-fx-border-color: red; -fx-border-width: 2px; -fx-border-style: solid;";
         final Label title = new Label("Setup Gioco");
         title.setStyle("fx-font-size: 36px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;");
-        
-          
+
+
         final Label lbNumPlayers = new Label("Numero di giocatori: ");
         final ComboBox<Integer> cmbNumPlayers = new ComboBox<>();
         cmbNumPlayers.getItems().addAll(2, 3, 4);
@@ -47,7 +49,7 @@ public class SetupViewImpl implements SetupView{
 
         final HBox numPlayersBox = new HBox(15, lbNumPlayers, cmbNumPlayers);
         numPlayersBox.setAlignment(Pos.CENTER);
-        if(DEBUG){
+        if (DEBUG) {
             numPlayersBox.setStyle(styleDebugBox);
         }
 
@@ -60,10 +62,10 @@ public class SetupViewImpl implements SetupView{
         cmbPieceColor.setValue("Rosso");
 
         final Button btnAddPlayer = new Button("Aggiungi giocatore");
-        
+
         final HBox playerSetupBox = new HBox(15, lbPlayerNames, txtPlayerName, lbPieceColor, cmbPieceColor, btnAddPlayer);
         playerSetupBox.setAlignment(Pos.CENTER);
-        if(DEBUG){
+        if (DEBUG) {
             playerSetupBox.setStyle(styleDebugBox);
         }
 
@@ -72,9 +74,9 @@ public class SetupViewImpl implements SetupView{
         boxPlayersList.setPrefWidth(500);
         boxPlayersList.setPrefHeight(150);
         boxPlayersList.setAlignment(Pos.CENTER);
-        if(DEBUG){      
-            boxPlayersList.setStyle(styleDebugBox);  
-        }           
+        if (DEBUG) {
+            boxPlayersList.setStyle(styleDebugBox);
+        }
         final Button btnBack = new Button("Indietro");
         btnBack.setStyle("-fx-font-size: 18px; -fx-padding: 10px 30px;");
         btnBack.setPrefWidth(200);
@@ -90,20 +92,20 @@ public class SetupViewImpl implements SetupView{
         btnAddPlayer.setOnAction(event -> {
             final String playerName = txtPlayerName.getText().trim();
             final String pieceColor = cmbPieceColor.getValue();
-            if(!playerName.isBlank() && pieceColor != null){
-                final String temporaryNameEmbedded = "Cane"; 
-                final Player player = new PlayerImpl(playerName, new PieceImpl(temporaryNameEmbedded,pieceColor));
+            if (!playerName.isBlank() && pieceColor != null) {
+                final String temporaryNameEmbedded = "Cane";
+                final Player player = new PlayerImpl(playerName, new PieceImpl(temporaryNameEmbedded, pieceColor));
                 players.add(player);
                 boxPlayersList.getChildren().add(new Label(players.size() + ". " + playerName + " (" + pieceColor + ")"));
                 txtPlayerName.clear();
                 cmbPieceColor.getItems().remove(pieceColor);
-                if(!cmbPieceColor.getItems().isEmpty()){
+                if (!cmbPieceColor.getItems().isEmpty()) {
                     cmbPieceColor.setValue(cmbPieceColor.getItems().get(0));
                 }
-                if(!players.isEmpty()){
+                if (!players.isEmpty()) {
                     cmbNumPlayers.setDisable(true);
                 }
-                if(players.size() == cmbNumPlayers.getValue()){
+                if (players.size() == cmbNumPlayers.getValue()) {
                     btnAddPlayer.setDisable(true);
                     btnStartGame.setDisable(false);
                 }
@@ -111,25 +113,25 @@ public class SetupViewImpl implements SetupView{
         });
         final HBox buttonsBox = new HBox(15, btnBack, btnStartGame);
         buttonsBox.setAlignment(Pos.CENTER);
-        if(DEBUG){
+        if (DEBUG) {
             buttonsBox.setStyle(styleDebugBox);
         }
 
         final VBox allElements = new VBox(20, title, numPlayersBox, playerSetupBox, boxPlayersList, buttonsBox);
         allElements.setAlignment(Pos.CENTER);
-        if(DEBUG){  
+        if (DEBUG) {
             allElements.setStyle(styleDebugBox);
         }
 
         final StackPane background = new StackPane(allElements);
         background.setStyle("-fx-background-color: #ecf0f1;");
-        
+
         this.stage.setTitle("Setup Gioco");
-        if(this.stage.getScene()== null){
+        if (this.stage.getScene() == null) {
             final Scene scene = new Scene(background, 800, 600);
             this.stage.setScene(scene);
             this.stage.setMaximized(true);
-        }else{
+        } else {
             this.stage.getScene().setRoot(background);
         }
         this.stage.show();

@@ -4,13 +4,13 @@ public final class Launcher {
     /**
      * Come da linea guida il costruttore privato impedisce di istanziare la classe erroneamente
      */
-    private Launcher(){
+    private Launcher() {
     }
+
     /**
-     * @param args
-     * Il metodo main avvia l'applicazione tramite la classe App
+     * @param args Il metodo main avvia l'applicazione tramite la classe App
      */
-    public static void main(String[] args){
+    public static void main(String[] args) {
         App.main(args);
     }
 }

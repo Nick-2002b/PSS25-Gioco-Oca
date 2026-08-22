@@ -10,13 +10,13 @@ package it.unibo.giocooca.model;
 public record GameConfig(int size, int numSpecialCells, long seed) {
     public static final int PRISON_POSITION = 32;
 
-    public GameConfig{
-        if (size <= 0){
+    public GameConfig {
+        if (size <= 0) {
             throw new IllegalArgumentException("The board size must be greater than 0.");
         }
     }
 
-    public static GameConfig defaultConfig(int numSpecialCells){
+    public static GameConfig defaultConfig(int numSpecialCells) {
         return new GameConfig(63, numSpecialCells, System.currentTimeMillis());
     }
 }

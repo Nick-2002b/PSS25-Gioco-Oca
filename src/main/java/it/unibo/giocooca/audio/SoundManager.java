@@ -11,7 +11,8 @@ public class SoundManager {
     private double musicVolume;
     private double sfxVolume;
 
-    private SoundManager() { }
+    private SoundManager() {
+    }
 
     public static SoundManager getInstance() {
         return INSTANCE;
@@ -21,7 +22,9 @@ public class SoundManager {
         stopMusic();
         try {
             final var url = getClass().getResource(resourcePath.getResourcePath());
-            if (url == null) { return; }
+            if (url == null) {
+                return;
+            }
             final MediaPlayer player = new MediaPlayer(new Media(url.toExternalForm()));
             player.setVolume(musicVolume);
             player.setCycleCount(MediaPlayer.INDEFINITE);
@@ -43,7 +46,9 @@ public class SoundManager {
     public void playSfx(SoundEffect effect) {
         try {
             final var url = getClass().getResource(effect.getResourcePath());
-            if (url == null) { return; }
+            if (url == null) {
+                return;
+            }
             final AudioClip sfx = new AudioClip(url.toExternalForm());
             sfx.setVolume(sfxVolume);
             sfx.play();
@@ -65,6 +70,6 @@ public class SoundManager {
 
     public boolean isMusicPlaying() {
         return musicPlayer != null
-            && musicPlayer.getStatus() == MediaPlayer.Status.PLAYING;
+                && musicPlayer.getStatus() == MediaPlayer.Status.PLAYING;
     }
 }

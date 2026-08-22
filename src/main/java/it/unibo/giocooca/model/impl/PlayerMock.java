@@ -3,7 +3,7 @@ package it.unibo.giocooca.model.impl;
 import it.unibo.giocooca.model.Player;
 import it.unibo.giocooca.model.Piece;
 
-public class PlayerMock implements Player{
+public class PlayerMock implements Player {
     private final String nickname;
     private final Piece piece;
     private int position;
@@ -11,10 +11,11 @@ public class PlayerMock implements Player{
 
     /**
      * Costruttore player
+     *
      * @param nickname nome del giocatore
-     * @param piece pedina del giocatore
+     * @param piece    pedina del giocatore
      */
-    public PlayerMock(String nickname, Piece piece){
+    public PlayerMock(String nickname, Piece piece) {
         this.nickname = nickname;
         this.piece = piece;
         this.position = 0;
@@ -23,33 +24,40 @@ public class PlayerMock implements Player{
 
     /**
      * Costruttore senza pedina
+     *
      * @param nickname nome del giocatore
      */
-    public PlayerMock(String nickname){
+    public PlayerMock(String nickname) {
         this(nickname, null);
     }
+
     @Override
-    public String getNickName(){
+    public String getNickName() {
         return this.nickname;
     }
+
     @Override
-    public Piece getPiece(){
+    public Piece getPiece() {
         return this.piece;
     }
+
     @Override
-    public int getPosition(){
+    public int getPosition() {
         return this.position;
     }
+
     @Override
-    public boolean isInPrison(){
-        return this.inPrison;
-    }
-    @Override
-    public void setPosition(int position){
+    public void setPosition(int position) {
         this.position = position;
     }
+
     @Override
-    public void setInPrison(boolean imprisioned){
+    public boolean isInPrison() {
+        return this.inPrison;
+    }
+
+    @Override
+    public void setInPrison(boolean imprisioned) {
         this.inPrison = imprisioned;
     }
 }

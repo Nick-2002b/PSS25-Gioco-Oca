@@ -73,7 +73,7 @@ public class BoardImpl implements Board {
     @Override
     public Cell getCell(int position) {
         if (position < 1 || position > this.cells.size()) {
-            throw new IllegalArgumentException( "Position out of bounds:" + position);
+            throw new IllegalArgumentException("Position out of bounds:" + position);
         }
         return this.cells.get(position - 1);
     }

@@ -11,25 +11,26 @@ import javafx.scene.layout.VBox;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
-public class MenuViewImpl implements MenuView{
+public class MenuViewImpl implements MenuView {
     private final Stage stage;
     private final MenuController controller;
 
     /**
      * Costruttore della grafica del menu
-     * @param stage la finiestra principale contenitore
+     *
+     * @param stage      la finiestra principale contenitore
      * @param controller gestione delle azioni dell'utente
      */
-    public MenuViewImpl(Stage stage, MenuController controller){
+    public MenuViewImpl(Stage stage, MenuController controller) {
         this.stage = stage;
         this.controller = controller;
     }
 
     @Override
-    public void show(){
+    public void show() {
         final Label titleLabel = new Label("Gioco dell'OCA");
         titleLabel.setStyle("fx-font-size: 36px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;");
-        
+
         final Button btnStart = new Button("Nuova partita");
         btnStart.setStyle("-fx-font-size: 18px; -fx-padding: 10px 30px;");
         btnStart.setPrefWidth(200);
@@ -40,7 +41,7 @@ public class MenuViewImpl implements MenuView{
         btnSettings.setPrefWidth(200);
         btnSettings.setOnAction(event -> this.controller.onOpenSettings());
 
-        
+
         final Button btnQuit = new Button("Esci");
         btnQuit.setStyle("-fx-font-size: 18px; -fx-padding: 10px 30px;");
         btnQuit.setPrefWidth(200);
@@ -55,14 +56,14 @@ public class MenuViewImpl implements MenuView{
         background.getChildren().add(menuBox);
 
         this.stage.setTitle("Gioco dell'OCA - Menu\' principale");
-        if(this.stage.getScene() == null){
+        if (this.stage.getScene() == null) {
             final Scene scene = new Scene(background, 800, 600);
             this.stage.setScene(scene);
             this.stage.setMaximized(true);
-        }else{
+        } else {
             this.stage.getScene().setRoot(background);
         }
         this.stage.show();
-    
+
     }
 }

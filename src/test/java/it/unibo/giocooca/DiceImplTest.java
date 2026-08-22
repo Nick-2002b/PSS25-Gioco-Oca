@@ -9,14 +9,14 @@ import java.util.Random;
 
 public class DiceImplTest {
     @RepeatedTest(20)
-    void rollShouldAlwaysBeInRange(){
+    void rollShouldAlwaysBeInRange() {
         final DiceImpl dice = new DiceImpl();
         final int result = dice.roll();
         Assertions.assertTrue(result >= 1 && result <= 6, "Dice roll result should be between 1 and 6, but was: " + result);
     }
 
     @Test
-    void rollWithFixedSeedShouldBeDeterministic(){
+    void rollWithFixedSeedShouldBeDeterministic() {
         final long seed = 42L;
         final DiceImpl dice1 = new DiceImpl(new Random(seed));
         final DiceImpl dice2 = new DiceImpl(new Random(seed));

@@ -1,8 +1,10 @@
 package it.unibo.giocooca.model.impl;
+
 import it.unibo.giocooca.model.Dice;
+
 import java.util.Random;
 
-public class DiceMock implements Dice{
+public class DiceMock implements Dice {
     private final Random random = new Random();
     private int result = 1;
 

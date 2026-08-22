@@ -26,8 +26,8 @@ public class SettingsManager {
         final Properties props = new Properties();
         try (InputStream in = new FileInputStream(file)) {
             props.load(in);
-            settings.setMusicVolume( Double.parseDouble(props.getProperty(KEY_MUSIC, "0.5")));
-            settings.setSfxVolume( Double.parseDouble(props.getProperty(KEY_SFX, "0.7")));
+            settings.setMusicVolume(Double.parseDouble(props.getProperty(KEY_MUSIC, "0.5")));
+            settings.setSfxVolume(Double.parseDouble(props.getProperty(KEY_SFX, "0.7")));
             settings.setNumSpecialCells((int) Double.parseDouble(props.getProperty(KEY_SPECIAL, "7")));
         } catch (IOException | NumberFormatException e) {
             // use default settings if the file is corrupted

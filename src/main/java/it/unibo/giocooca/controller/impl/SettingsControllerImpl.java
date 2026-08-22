@@ -25,6 +25,7 @@ public class SettingsControllerImpl implements SettingsController {
         this.settingsManager = new SettingsManager();
 
     }
+
     @Override
     public double getMusicVolume() {
         return settings.getMusicVolume();

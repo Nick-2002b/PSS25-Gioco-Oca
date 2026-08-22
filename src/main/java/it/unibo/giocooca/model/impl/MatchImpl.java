@@ -10,7 +10,7 @@ import it.unibo.giocooca.model.Board;
 
 import java.util.List;
 
-public class MatchImpl implements Match{
+public class MatchImpl implements Match {
 
     private final List<Player> players;
     private final Board board;
@@ -21,18 +21,19 @@ public class MatchImpl implements Match{
 
     /**
      * Costruttore
+     *
      * @param players lista dei giocatori
-     * @param board tabellone da gioco
-     * @param dice dado
+     * @param board   tabellone da gioco
+     * @param dice    dado
      */
-    public MatchImpl (List<Player> players, Board board, Dice dice){
-        if(players == null || players.isEmpty()){
+    public MatchImpl(List<Player> players, Board board, Dice dice) {
+        if (players == null || players.isEmpty()) {
             throw new IllegalArgumentException("Almeno un giocatore");
         }
-        if(board == null){
+        if (board == null) {
             throw new IllegalArgumentException("Board non può essere null");
         }
-        if(dice == null){
+        if (dice == null) {
             throw new IllegalArgumentException("Dice non può essere null");
         }
         this.players = List.copyOf(players);
@@ -42,20 +43,21 @@ public class MatchImpl implements Match{
         this.gameOver = false;
         this.winner = null;
     }
+
     @Override
-    public int rollDice(){
+    public int rollDice() {
         return this.dice.roll();
     }
 
     @Override
-    public void moveCurrentPlayer(int steps){
-        if(this.gameOver){
+    public void moveCurrentPlayer(int steps) {
+        if (this.gameOver) {
             return;
         }
         Player currentPlayer = getCurrentPlayer();
         int newPosition = currentPlayer.getPosition() + steps;
         int endPosition = this.board.getSize();
-        if(newPosition >= endPosition){
+        if (newPosition >= endPosition) {
             newPosition = endPosition;
             this.gameOver = true;
             this.winner = currentPlayer;
@@ -63,38 +65,45 @@ public class MatchImpl implements Match{
         currentPlayer.setPosition(newPosition);
         applyCurrentCellEffect(currentPlayer);
     }
+
     @Override
-    public void applyCurrentCellEffect(Player player){
+    public void applyCurrentCellEffect(Player player) {
         int playerPos = player.getPosition();
         board.getCell(playerPos).applyEffect(player);
 
-        
+
     }
+
     @Override
-    public void nextTurn(){
-        if(!this.gameOver){
+    public void nextTurn() {
+        if (!this.gameOver) {
             this.currentPlayerIndex = (this.currentPlayerIndex + 1) % this.players.size();
         }
     }
+
     @Override
-    public boolean isGameOver(){
+    public boolean isGameOver() {
         return gameOver;
     }
+
     @Override
-    public Player getCurrentPlayer(){
+    public Player getCurrentPlayer() {
         return this.players.get(this.currentPlayerIndex);
     }
+
     @Override
-    public Player getWinner(){
+    public Player getWinner() {
         return this.winner;
     }
+
     @Override
-    public List<Player> getPlayers(){
+    public List<Player> getPlayers() {
         return this.players;
 
     }
+
     @Override
-    public Board getBoard(){
+    public Board getBoard() {
         return this.board;
     }
 }

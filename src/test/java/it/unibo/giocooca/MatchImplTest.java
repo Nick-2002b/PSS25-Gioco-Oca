@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -35,10 +36,10 @@ public class MatchImplTest {
     private Board board;
     private Dice dice;
     private Match match;
-    
+
     @BeforeEach
-    void setUP(){
-        this.player1 = new PlayerImpl("Pippo", new PieceImpl("Mucca", "rosso"));           
+    void setUP() {
+        this.player1 = new PlayerImpl("Pippo", new PieceImpl("Mucca", "rosso"));
         this.player2 = new PlayerImpl("Pluto", new PieceImpl("Cane", "verde"));
 
         this.config = new GameConfig(BOARD_SIZE, SPECIAL_CELLS_COUNT, SEED);
@@ -49,25 +50,27 @@ public class MatchImplTest {
     }
 
     @Test
-    void testMatchInit(){
+    void testMatchInit() {
         assertAll("Test situazione inizio partita",
-            () -> assertEquals(player1, match.getCurrentPlayer()),
-            () -> assertEquals("Pippo", match.getCurrentPlayer().getNickName()),
-            () -> assertFalse(match.isGameOver()),
-            () -> assertNull(match.getWinner()),
-            () -> assertEquals(2, match.getPlayers().size()),
-            () -> assertEquals(0, player1.getPosition()),
-            () -> assertEquals(0, player2.getPosition())
+                () -> assertEquals(player1, match.getCurrentPlayer()),
+                () -> assertEquals("Pippo", match.getCurrentPlayer().getNickName()),
+                () -> assertFalse(match.isGameOver()),
+                () -> assertNull(match.getWinner()),
+                () -> assertEquals(2, match.getPlayers().size()),
+                () -> assertEquals(0, player1.getPosition()),
+                () -> assertEquals(0, player2.getPosition())
         );
     }
+
     @Test
-    void testTurn(){
+    void testTurn() {
         assertEquals(player1, match.getCurrentPlayer());
         this.match.nextTurn();
         assertEquals(player2, match.getCurrentPlayer());
         this.match.nextTurn();
         assertEquals(player1, match.getCurrentPlayer());
     }
+
     @Test
     void testApplySpecialCell() {
         Cell specialCell = null;

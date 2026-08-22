@@ -46,7 +46,7 @@ public class SpecialCellImpl implements Cell {
     public void applyEffect(Player player) {
         final int newPos = this.position + this.offset;
         //TODO portare il player a posizione 0 se becca un malus di posizione minore di 0 stando all'inizo del tabellone
-        if(newPos >= 1 && newPos < this.boardSize) {
+        if (newPos >= 1 && newPos < this.boardSize) {
             player.setPosition(newPos);
         }
     }

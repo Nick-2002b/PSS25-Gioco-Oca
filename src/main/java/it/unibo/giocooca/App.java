@@ -3,19 +3,17 @@
  */
 
 package it.unibo.giocooca;
+
 import it.unibo.giocooca.controller.MenuController;
 import it.unibo.giocooca.controller.impl.MenuControllerImpl;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
-/** Main application entry-point's class. */
+/**
+ * Main application entry-point's class.
+ */
 
-public class App extends Application{
-    @Override
-    public void start(Stage primaryStage){
-        MenuController menuController = new MenuControllerImpl(primaryStage);
-        menuController.start();
-    }
+public class App extends Application {
     /**
      * Main application entry-point.
      *
@@ -23,5 +21,11 @@ public class App extends Application{
      */
     public static void main(final String[] args) {
         launch(args);
+    }
+
+    @Override
+    public void start(Stage primaryStage) {
+        MenuController menuController = new MenuControllerImpl(primaryStage);
+        menuController.start();
     }
 }

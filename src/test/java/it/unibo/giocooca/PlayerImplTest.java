@@ -24,7 +24,7 @@ public class PlayerImplTest {
     @Test
     void setPositionShouldUpdatePosition() {
         player.setPosition(15);
-        Assertions.assertEquals(15,player.getPosition());
+        Assertions.assertEquals(15, player.getPosition());
     }
 
     @Test

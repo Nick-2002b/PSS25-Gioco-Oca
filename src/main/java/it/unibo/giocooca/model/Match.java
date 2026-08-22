@@ -14,7 +14,7 @@ public interface Match {
     boolean isGameOver();
 
     Player getCurrentPlayer();
-    
+
     Player getWinner();
 
     List<Player> getPlayers();
