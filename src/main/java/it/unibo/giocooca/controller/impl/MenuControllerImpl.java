@@ -26,7 +26,9 @@ public class MenuControllerImpl implements MenuController{
     }
     @Override
     public void start(){
-        SoundManager.getInstance().playMusic(SoundEffect.BACKGROUND_MUSIC);
+        if (!SoundManager.getInstance().isMusicPlaying()) {
+            SoundManager.getInstance().playMusic(SoundEffect.BACKGROUND_MUSIC);
+        }
         this.view.show();
     }
 

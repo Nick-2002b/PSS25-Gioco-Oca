@@ -62,4 +62,9 @@ public class SoundManager {
     public void setSfxVolume(double volume) {
         this.sfxVolume = Math.clamp(volume, 0.0, 1.0);
     }
+
+    public boolean isMusicPlaying() {
+        return musicPlayer != null
+            && musicPlayer.getStatus() == MediaPlayer.Status.PLAYING;
+    }
 }

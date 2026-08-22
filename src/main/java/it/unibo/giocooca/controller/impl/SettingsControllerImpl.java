@@ -43,7 +43,7 @@ public class SettingsControllerImpl implements SettingsController {
     @Override
     public void onMusicVolumeChanger(double volume) {
         settings.setMusicVolume(volume);
-        SoundManager.getInstance().setSfxVolume(volume);
+        SoundManager.getInstance().setMusicVolume(volume);
     }
 
     @Override
