@@ -19,14 +19,14 @@ public class MatchImpl implements Match {
     private boolean gameOver;
     private Player winner;
 
-    /**
-     * Costruttore
-     *
-     * @param players lista dei giocatori
-     * @param board   tabellone da gioco
-     * @param dice    dado
-     */
-    public MatchImpl(List<Player> players, Board board, Dice dice) {
+  /**
+   * Costruttore.
+   *
+   * @param players lista dei giocatori
+   * @param board   tabellone da gioco
+   * @param dice    dado
+   */
+  public MatchImpl(final List<Player> players, final Board board, final Dice dice) {
         if (players == null || players.isEmpty()) {
             throw new IllegalArgumentException("Almeno un giocatore");
         }
@@ -50,7 +50,7 @@ public class MatchImpl implements Match {
     }
 
     @Override
-    public void moveCurrentPlayer(int steps) {
+    public void moveCurrentPlayer(final int steps) {
         if (this.gameOver) {
             return;
         }
@@ -67,10 +67,9 @@ public class MatchImpl implements Match {
     }
 
     @Override
-    public void applyCurrentCellEffect(Player player) {
+    public void applyCurrentCellEffect(final Player player) {
         int playerPos = player.getPosition();
         board.getCell(playerPos).applyEffect(player);
-
 
     }
 

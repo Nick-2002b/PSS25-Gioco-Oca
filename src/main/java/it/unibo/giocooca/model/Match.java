@@ -2,6 +2,9 @@ package it.unibo.giocooca.model;
 
 import java.util.List;
 
+/**
+ * Contratto che rappresenta il match
+ */
 public interface Match {
     int rollDice();
 

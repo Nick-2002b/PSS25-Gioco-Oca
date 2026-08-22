@@ -2,9 +2,13 @@ package it.unibo.giocooca.model.impl;
 
 import it.unibo.giocooca.model.Settings;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Properties;
-import java.util.Set;
 
 public class SettingsManager {
 
@@ -48,7 +52,7 @@ public class SettingsManager {
 
         try (OutputStream out = new FileOutputStream(SETTINGS_FILE)) {
             props.store(out, "Goose Game - User settings");
-        } catch (IOException e) {
+        } catch (final IOException e) {
             e.printStackTrace();
         }
     }

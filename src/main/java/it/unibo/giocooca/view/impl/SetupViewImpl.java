@@ -3,7 +3,6 @@
  */
 package it.unibo.giocooca.view.impl;
 
-import it.unibo.giocooca.model.Piece;
 import it.unibo.giocooca.model.Player;
 import it.unibo.giocooca.model.impl.PieceImpl;
 import it.unibo.giocooca.model.impl.PlayerImpl;
@@ -24,11 +23,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SetupViewImpl implements SetupView {
+    private static final int PLAYERS_WIDTH = 500;
+    private static final int PLAYERS_HEIGHT = 150;
+    private static final int BUTTON_WIDTH = 200;
     private final Stage stage;
     private final SetupController controller;
     private final List<Player> players = new ArrayList<>();
 
-    public SetupViewImpl(Stage stage, SetupController controller) {
+    public SetupViewImpl(final Stage stage, final SetupController controller) {
         this.stage = stage;
         this.controller = controller;
 
@@ -71,20 +73,20 @@ public class SetupViewImpl implements SetupView {
 
         final Label lbPlayers = new Label("Giocatori attuali: ");
         final VBox boxPlayersList = new VBox(5, lbPlayers);
-        boxPlayersList.setPrefWidth(500);
-        boxPlayersList.setPrefHeight(150);
+        boxPlayersList.setPrefWidth(PLAYERS_WIDTH);
+        boxPlayersList.setPrefHeight(PLAYERS_HEIGHT);
         boxPlayersList.setAlignment(Pos.CENTER);
         if (DEBUG) {
             boxPlayersList.setStyle(styleDebugBox);
         }
         final Button btnBack = new Button("Indietro");
         btnBack.setStyle("-fx-font-size: 18px; -fx-padding: 10px 30px;");
-        btnBack.setPrefWidth(200);
+        btnBack.setPrefWidth(BUTTON_WIDTH);
         btnBack.setOnAction(event -> this.controller.onBackToMenu());
         final Button btnStartGame = new Button("Avvia Gioco");
         btnStartGame.setStyle("-fx-font-size: 18px; -fx-padding: 10px 30px;");
         btnStartGame.setDisable(true);
-        btnStartGame.setPrefWidth(200);
+        btnStartGame.setPrefWidth(BUTTON_WIDTH);
         btnStartGame.setOnAction(event -> this.controller.onStartGame(players));
         /**
          * l'action del btnAddPlayer setta delle variabili che vengono create dopo questo elementoquindi ho spostato qui

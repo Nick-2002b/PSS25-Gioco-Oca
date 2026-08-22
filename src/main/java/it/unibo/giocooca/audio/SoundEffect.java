@@ -8,10 +8,9 @@ public enum SoundEffect {
     WIN("/audio/win-audio.wav"),
     BACKGROUND_MUSIC("/audio/background-music.wav");
 
-
     private final String resourcePath;
 
-    SoundEffect(String resourcePath) {
+    SoundEffect(final String resourcePath) {
         this.resourcePath = resourcePath;
     }
 

@@ -16,9 +16,9 @@ public class SettingsControllerImpl implements SettingsController {
     private final MenuController menuController;
 
     public SettingsControllerImpl(
-            Stage stage,
-            Settings settings,
-            MenuController menuController) {
+            final Stage stage,
+            final Settings settings,
+            final MenuController menuController) {
         this.stage = stage;
         this.menuController = menuController;
         this.settings = settings;
@@ -42,19 +42,19 @@ public class SettingsControllerImpl implements SettingsController {
     }
 
     @Override
-    public void onMusicVolumeChanger(double volume) {
+    public void onMusicVolumeChanger(final double volume) {
         settings.setMusicVolume(volume);
         SoundManager.getInstance().setMusicVolume(volume);
     }
 
     @Override
-    public void onSfxVolumeChanged(double volume) {
+    public void onSfxVolumeChanged(final double volume) {
         settings.setSfxVolume(volume);
         SoundManager.getInstance().setSfxVolume(volume);
     }
 
     @Override
-    public void onNumSpecialCellsChanger(int num) {
+    public void onNumSpecialCellsChanger(final int num) {
         settings.setNumSpecialCells(num);
     }
 

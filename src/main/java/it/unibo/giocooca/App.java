@@ -24,7 +24,7 @@ public class App extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) {
+    public void start(final Stage primaryStage) {
         MenuController menuController = new MenuControllerImpl(primaryStage);
         menuController.start();
     }

@@ -9,6 +9,7 @@ package it.unibo.giocooca.model;
  */
 public record GameConfig(int size, int numSpecialCells, long seed) {
     public static final int PRISON_POSITION = 32;
+    private static final int DEFAULT_BOARD_SIZE = 63;
 
     public GameConfig {
         if (size <= 0) {
@@ -16,7 +17,8 @@ public record GameConfig(int size, int numSpecialCells, long seed) {
         }
     }
 
-    public static GameConfig defaultConfig(int numSpecialCells) {
-        return new GameConfig(63, numSpecialCells, System.currentTimeMillis());
+
+    public static GameConfig defaultConfig(final int numSpecialCells) {
+        return new GameConfig(DEFAULT_BOARD_SIZE, numSpecialCells, System.currentTimeMillis());
     }
 }

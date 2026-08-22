@@ -21,7 +21,7 @@ public class BoardImpl implements Board {
      *
      * @param config la configurazione (size, numSpecialCells, seed)
      */
-    public BoardImpl(GameConfig config) {
+    public BoardImpl(final GameConfig config) {
         final Random random = new Random(config.seed());
         final int size = config.size();
 
@@ -53,7 +53,7 @@ public class BoardImpl implements Board {
     /**
      * Genera un offset casuale in [-8,-1] o [+1,+8].
      */
-    private static int generateOffset(Random random) {
+    private static int generateOffset(final Random random) {
         final int offset = random.nextInt(8) + 1;
         return random.nextBoolean() ? offset : -offset;
     }
@@ -71,7 +71,7 @@ public class BoardImpl implements Board {
      * @throws IllegalArgumentException se la posizione è fuori range
      */
     @Override
-    public Cell getCell(int position) {
+    public Cell getCell(final int position) {
         if (position < 1 || position > this.cells.size()) {
             throw new IllegalArgumentException("Position out of bounds:" + position);
         }

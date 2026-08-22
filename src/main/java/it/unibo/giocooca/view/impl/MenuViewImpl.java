@@ -12,16 +12,18 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 public class MenuViewImpl implements MenuView {
+    private static final String BUTTON_STYLE = "-fx-font-size: 18px; -fx-padding: 10px 30px;";
+    private static final int BUTTON_WIDTH = 200;
     private final Stage stage;
     private final MenuController controller;
 
-    /**
-     * Costruttore della grafica del menu
-     *
-     * @param stage      la finiestra principale contenitore
-     * @param controller gestione delle azioni dell'utente
-     */
-    public MenuViewImpl(Stage stage, MenuController controller) {
+   /**
+    * Costruttore della grafica del menu.
+    *
+    * @param stage      la finiestra principale contenitore
+    * @param controller gestione delle azioni dell'utente
+    */
+   public MenuViewImpl(final Stage stage, final MenuController controller) {
         this.stage = stage;
         this.controller = controller;
     }
@@ -32,19 +34,18 @@ public class MenuViewImpl implements MenuView {
         titleLabel.setStyle("fx-font-size: 36px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;");
 
         final Button btnStart = new Button("Nuova partita");
-        btnStart.setStyle("-fx-font-size: 18px; -fx-padding: 10px 30px;");
-        btnStart.setPrefWidth(200);
+        btnStart.setStyle(BUTTON_STYLE);
+        btnStart.setPrefWidth(BUTTON_WIDTH);
         btnStart.setOnAction(event -> this.controller.onStartNewGame());
 
         final Button btnSettings = new Button("Impostazioni");
-        btnSettings.setStyle("-fx-font-size: 18px; -fx-padding: 10px 30px;");
-        btnSettings.setPrefWidth(200);
+        btnSettings.setStyle(BUTTON_STYLE);
+        btnSettings.setPrefWidth(BUTTON_WIDTH);
         btnSettings.setOnAction(event -> this.controller.onOpenSettings());
 
-
         final Button btnQuit = new Button("Esci");
-        btnQuit.setStyle("-fx-font-size: 18px; -fx-padding: 10px 30px;");
-        btnQuit.setPrefWidth(200);
+        btnQuit.setStyle(BUTTON_STYLE);
+        btnQuit.setPrefWidth(BUTTON_WIDTH);
         btnQuit.setOnAction(event -> this.controller.onQuit());
 
         final VBox menuBox = new VBox(20);

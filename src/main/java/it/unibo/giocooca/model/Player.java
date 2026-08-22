@@ -1,5 +1,8 @@
 package it.unibo.giocooca.model;
 
+/**
+ * Contratto che rappresenta il Giocatore
+ */
 public interface Player {
     int getPosition();
 

@@ -25,7 +25,7 @@ public class NormalCellImpl implements Cell {
     }
 
     @Override
-    public void applyEffect(Player player) {
+    public void applyEffect(final Player player) {
         // None effect
     }
 }

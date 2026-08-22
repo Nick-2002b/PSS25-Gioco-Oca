@@ -7,12 +7,21 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Random;
 
-public class DiceImplTest {
-    @RepeatedTest(20)
+/**
+ * Represents DiceImplTest.
+ */
+final class DiceImplTest {
+    private static final int ROLLS = 20;
+    private static final int MAX_ROLL = 6;
+
+    @RepeatedTest(ROLLS)
     void rollShouldAlwaysBeInRange() {
         final DiceImpl dice = new DiceImpl();
         final int result = dice.roll();
-        Assertions.assertTrue(result >= 1 && result <= 6, "Dice roll result should be between 1 and 6, but was: " + result);
+        Assertions.assertTrue(
+                result >= 1 && result <= MAX_ROLL,
+                "Dice roll result should be between 1 and 6, but was: " + result
+        );
     }
 
     @Test

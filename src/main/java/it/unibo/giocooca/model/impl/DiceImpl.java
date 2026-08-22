@@ -9,6 +9,7 @@ import java.util.Random;
  * Usa Random per generare valori in [1, 6].
  */
 public class DiceImpl implements Dice {
+    private static final int SIDES = 6;
 
     private final Random random;
 
@@ -22,12 +23,12 @@ public class DiceImpl implements Dice {
     /**
      * Costruttore per uso nei test: seed controllato.
      */
-    public DiceImpl(Random random) {
+    public DiceImpl(final Random random) {
         this.random = random;
     }
 
     @Override
     public int roll() {
-        return this.random.nextInt(6) + 1;
+        return this.random.nextInt(SIDES) + 1;
     }
 }

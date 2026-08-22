@@ -6,7 +6,11 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.Separator;
+import javafx.scene.control.Slider;
+import javafx.scene.control.Spinner;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -16,6 +20,10 @@ public class SettingsViewImpl implements SettingsView {
     private static final int SLIDER_WIDTH = 250;
     private static final int MIN_SPECIAL = 1;
     private static final int MAX_SPECIAL = 20;
+    private static final int CONTENT_PADDING = 40;
+    private static final int SCENE_HEIGHT = 600;
+    private static final int SCENE_WIDTH = 800;
+    private static final int LABEL_WIDTH = 150;
     private final Stage stage;
     private final SettingsControllerImpl controller;
 
@@ -59,7 +67,6 @@ public class SettingsViewImpl implements SettingsView {
         gameTitle.setStyle("-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;");
 
         final Spinner<Integer> specialSpinner = new Spinner<>(MIN_SPECIAL, MAX_SPECIAL, controller.getNumSpecialCells());
-//        specialSpinner.setEditable(true);
         specialSpinner.valueProperty().addListener((obs, oldVal, newVal) -> {
             controller.onNumSpecialCellsChanger(newVal);
         });
@@ -88,8 +95,8 @@ public class SettingsViewImpl implements SettingsView {
                 new Separator(),
                 buttons
         );
-        content.setPadding(new Insets(40));
-        content.setMaxWidth(600);
+        content.setPadding(new Insets(CONTENT_PADDING));
+        content.setMaxWidth(SCENE_HEIGHT);
         content.setAlignment(Pos.CENTER);
 
         final StackPane root = new StackPane(content);
@@ -98,20 +105,20 @@ public class SettingsViewImpl implements SettingsView {
         StackPane.setAlignment(content, Pos.CENTER);
 
         if (stage.getScene() == null) {
-            stage.setScene(new Scene(root, 800, 600));
+            stage.setScene(new Scene(root, SCENE_WIDTH, SCENE_HEIGHT));
         } else {
             stage.getScene().setRoot(root);
         }
         stage.setTitle("Gioco dell'Oca - Impostazioni");
     }
 
-    private String toPrecent(double value) {
+    private String toPrecent(final double value) {
         return (int) (value * 100) + "%";
     }
 
-    private HBox buildRow(String labelText, Node... nodes) {
+   private HBox buildRow(final String labelText, final Node... nodes) {
         final Label label = new Label(labelText);
-        label.setMinWidth(150);
+        label.setMinWidth(LABEL_WIDTH);
 
         final HBox row = new HBox(10);
         row.setAlignment(Pos.CENTER_LEFT);

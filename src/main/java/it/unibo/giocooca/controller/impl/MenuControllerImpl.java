@@ -17,7 +17,7 @@ public class MenuControllerImpl implements MenuController {
     private final Settings settings;
 
 
-    public MenuControllerImpl(Stage stage) {
+    public MenuControllerImpl(final Stage stage) {
         this.stage = stage;
         this.settings = new SettingsManager().load();
         SoundManager.getInstance().setMusicVolume(settings.getMusicVolume());
@@ -35,7 +35,7 @@ public class MenuControllerImpl implements MenuController {
 
     @Override
     public void onStartNewGame() {
-        SetupController setupController = new SetupControllerImpl(this.stage);
+        final SetupController setupController = new SetupControllerImpl(this.stage);
         setupController.start();
     }
 

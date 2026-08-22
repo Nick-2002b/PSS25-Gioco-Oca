@@ -9,7 +9,7 @@ public class PlayerImpl implements Player {
     private int position;
     private boolean inPrison;
 
-    public PlayerImpl(String nickname, Piece piece) {
+    public PlayerImpl(final String nickname, final Piece piece) {
         if (nickname == null || nickname.isBlank()) {
             throw new IllegalArgumentException("Nickname cannot be null or blank");
         }
@@ -23,13 +23,13 @@ public class PlayerImpl implements Player {
     }
 
     @Override
-    public void setPosition(int position) {
-        this.position = position;
+    public int getPosition() {
+        return this.position;
     }
 
     @Override
-    public int getPosition() {
-        return this.position;
+    public void setPosition(final int position) {
+        this.position = position;
     }
 
     @Override
@@ -38,7 +38,7 @@ public class PlayerImpl implements Player {
     }
 
     @Override
-    public void setInPrison(boolean imprisoned) {
+    public void setInPrison(final boolean imprisoned) {
         this.inPrison = imprisoned;
     }
 

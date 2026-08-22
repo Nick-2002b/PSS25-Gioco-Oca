@@ -18,7 +18,7 @@ public class SoundManager {
         return INSTANCE;
     }
 
-    public void playMusic(SoundEffect resourcePath) {
+    public void playMusic(final SoundEffect resourcePath) {
         stopMusic();
         try {
             final var url = getClass().getResource(resourcePath.getResourcePath());
@@ -43,7 +43,7 @@ public class SoundManager {
         }
     }
 
-    public void playSfx(SoundEffect effect) {
+    public void playSfx(final SoundEffect effect) {
         try {
             final var url = getClass().getResource(effect.getResourcePath());
             if (url == null) {
@@ -57,14 +57,14 @@ public class SoundManager {
         }
     }
 
-    public void setMusicVolume(double volume) {
+    public void setMusicVolume(final double volume) {
         this.musicVolume = Math.clamp(volume, 0.0, 1.0);
         if (musicPlayer != null) {
             musicPlayer.setVolume(this.musicVolume);
         }
     }
 
-    public void setSfxVolume(double volume) {
+    public void setSfxVolume(final double volume) {
         this.sfxVolume = Math.clamp(volume, 0.0, 1.0);
     }
 
