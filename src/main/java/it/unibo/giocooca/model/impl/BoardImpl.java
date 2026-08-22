@@ -13,7 +13,7 @@ import java.util.Random;
  * Implementazione del tabellone di gioco.
  * Genera le caselle in base alla configurazione fornita da GameConfig.
  */
-public class BoardImpl implements Board {
+public final class BoardImpl implements Board {
     private final List<Cell> cells;
 
     /**
@@ -52,6 +52,9 @@ public class BoardImpl implements Board {
 
     /**
      * Genera un offset casuale in [-8,-1] o [+1,+8].
+     *
+     * @param random il generatore di numeri casuali da usare
+     * @return un offset casuale, positivo o negativo
      */
     private static int generateOffset(final Random random) {
         final int offset = random.nextInt(8) + 1;

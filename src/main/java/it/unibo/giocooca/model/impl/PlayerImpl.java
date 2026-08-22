@@ -3,12 +3,21 @@ package it.unibo.giocooca.model.impl;
 import it.unibo.giocooca.model.Piece;
 import it.unibo.giocooca.model.Player;
 
-public class PlayerImpl implements Player {
+/**
+ * Implementazione di un giocatore reale del gioco.
+ */
+public final class PlayerImpl implements Player {
     private final String nickname;
     private final Piece piece;
     private int position;
     private boolean inPrison;
 
+    /**
+     * Crea un giocatore.
+     *
+     * @param nickname il nome del giocatore
+     * @param piece    la pedina del giocatore
+     */
     public PlayerImpl(final String nickname, final Piece piece) {
         if (nickname == null || nickname.isBlank()) {
             throw new IllegalArgumentException("Nickname cannot be null or blank");

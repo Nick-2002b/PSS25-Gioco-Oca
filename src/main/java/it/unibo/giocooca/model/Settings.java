@@ -1,7 +1,8 @@
 package it.unibo.giocooca.model;
 
-import java.util.Set;
-
+/**
+ * Impostazioni utente del gioco (audio e regole di partita).
+ */
 public final class Settings {
     private static final int MAX_SPECIAL_CELLS = 20;
     private static final double DEFAULT_MUSIC_VOLUME = 0.5;
@@ -12,32 +13,65 @@ public final class Settings {
     private double sfxVolume;
     private int numSpecialCells;
 
+    /**
+     * Crea le impostazioni con i valori di default.
+     */
     public Settings() {
         this.musicVolume = DEFAULT_MUSIC_VOLUME;
         this.sfxVolume = DEFAULT_SFX_VOLUME;
         this.numSpecialCells = DEFAULT_SPECIAL_CELLS;
     }
 
+    /**
+     * Restituisce il volume della musica.
+     *
+     * @return il volume della musica, tra 0.0 e 1.0
+     */
     public double getMusicVolume() {
         return musicVolume;
     }
 
+    /**
+     * Imposta il volume della musica.
+     *
+     * @param musicVolume il nuovo volume della musica
+     */
     public void setMusicVolume(final double musicVolume) {
         this.musicVolume = Math.clamp(musicVolume, 0.0, 1.0);
     }
 
+    /**
+     * Restituisce il volume degli effetti sonori.
+     *
+     * @return il volume degli effetti sonori, tra 0.0 e 1.0
+     */
     public double getSfxVolume() {
         return sfxVolume;
     }
 
+    /**
+     * Imposta il volume degli effetti sonori.
+     *
+     * @param sfxVolume il nuovo volume degli effetti sonori
+     */
     public void setSfxVolume(final double sfxVolume) {
         this.sfxVolume = Math.clamp(sfxVolume, 0.0, 1.0);
     }
 
+    /**
+     * Restituisce il numero di caselle speciali configurate.
+     *
+     * @return il numero di caselle speciali
+     */
     public int getNumSpecialCells() {
         return numSpecialCells;
     }
 
+    /**
+     * Imposta il numero di caselle speciali.
+     *
+     * @param numSpecialCells il nuovo numero di caselle speciali, tra 1 e 20
+     */
     public void setNumSpecialCells(final int numSpecialCells) {
         if (numSpecialCells < 1 || numSpecialCells > MAX_SPECIAL_CELLS) {
             throw new IllegalArgumentException(

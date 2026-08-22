@@ -10,7 +10,10 @@ import it.unibo.giocooca.model.Board;
 
 import java.util.List;
 
-public class MatchImpl implements Match {
+/**
+ * Implementazione di una partita del gioco dell'oca.
+ */
+public final class MatchImpl implements Match {
 
     private final List<Player> players;
     private final Board board;
@@ -54,9 +57,9 @@ public class MatchImpl implements Match {
         if (this.gameOver) {
             return;
         }
-        Player currentPlayer = getCurrentPlayer();
+        final Player currentPlayer = getCurrentPlayer();
         int newPosition = currentPlayer.getPosition() + steps;
-        int endPosition = this.board.getSize();
+        final int endPosition = this.board.getSize();
         if (newPosition >= endPosition) {
             newPosition = endPosition;
             this.gameOver = true;
@@ -68,7 +71,7 @@ public class MatchImpl implements Match {
 
     @Override
     public void applyCurrentCellEffect(final Player player) {
-        int playerPos = player.getPosition();
+        final int playerPos = player.getPosition();
         board.getCell(playerPos).applyEffect(player);
 
     }
