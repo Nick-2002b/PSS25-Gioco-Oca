@@ -1,9 +1,6 @@
 package it.unibo.giocooca.view.impl;
 
-import it.unibo.giocooca.audio.SoundManager;
-import it.unibo.giocooca.controller.MenuController;
-import it.unibo.giocooca.model.Settings;
-import it.unibo.giocooca.model.impl.SettingsManager;
+import it.unibo.giocooca.controller.impl.SettingsControllerImpl;
 import it.unibo.giocooca.view.SettingsView;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -20,15 +17,11 @@ public class SettingsViewImpl implements SettingsView {
     private static final int MIN_SPECIAL = 1;
     private static final int MAX_SPECIAL = 20;
     private final Stage stage;
-    private final MenuController controller;
-    private final SettingsManager settingsManager;
-    private final Settings currentSettings;
+    private final SettingsControllerImpl controller;
 
-    public SettingsViewImpl(Stage stage, MenuController controller) {
+    public SettingsViewImpl(Stage stage, SettingsControllerImpl controller) {
         this.stage = stage;
         this.controller = controller;
-        this.settingsManager = new SettingsManager();
-        this.currentSettings = settingsManager.load();
     }
 
     @Override
@@ -40,24 +33,24 @@ public class SettingsViewImpl implements SettingsView {
         final Label audioTitle = new Label("Audio");
         audioTitle.setStyle("-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;");
 
-        final Slider musicSlider = new Slider(0.0, 1.0, currentSettings.getMusicVolume());
+        final Slider musicSlider = new Slider(0.0, 1.0, controller.getMusicVolume());
         musicSlider.setPrefWidth(SLIDER_WIDTH);
-        final Label musicValueLabel = new Label(toPrecent(currentSettings.getMusicVolume()));
+        final Label musicValueLabel = new Label(toPrecent(controller.getMusicVolume()));
 
         musicSlider.valueProperty().addListener((obs, oldVal, newVal) -> {
             musicValueLabel.setText(toPrecent(newVal.doubleValue()));
-            SoundManager.getInstance().setMusicVolume(newVal.doubleValue());
+            controller.onMusicVolumeChanger(newVal.doubleValue());
         });
 
         final HBox musicRow = buildRow("Volume Musica", musicSlider, musicValueLabel);
 
-        final Slider sfxSlider = new Slider(0.0, 1.0, currentSettings.getSfxVolume());
+        final Slider sfxSlider = new Slider(0.0, 1.0, controller.getSfxVolume());
         sfxSlider.setPrefWidth(SLIDER_WIDTH);
-        final Label sfxValueLabel = new Label(toPrecent(currentSettings.getSfxVolume()));
+        final Label sfxValueLabel = new Label(toPrecent(controller.getSfxVolume()));
 
         sfxSlider.valueProperty().addListener((obs, oldVal, newVal) -> {
             sfxValueLabel.setText(toPrecent(newVal.doubleValue()));
-            SoundManager.getInstance().setSfxVolume(newVal.doubleValue());
+            controller.onSfxVolumeChanged(newVal.doubleValue());
         });
         final HBox sfxRow = buildRow("Volume Effetti", sfxSlider, sfxValueLabel);
 
@@ -65,18 +58,22 @@ public class SettingsViewImpl implements SettingsView {
         final Label gameTitle = new Label("Partita");
         gameTitle.setStyle("-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;");
 
-        final Spinner<Integer> specialSpinner = new Spinner<>(MIN_SPECIAL, MAX_SPECIAL, currentSettings.getNumSpecialCells());
-        specialSpinner.setEditable(true);
+        final Spinner<Integer> specialSpinner = new Spinner<>(MIN_SPECIAL, MAX_SPECIAL, controller.getNumSpecialCells());
+//        specialSpinner.setEditable(true);
+        specialSpinner.valueProperty().addListener((obs, oldVal, newVal) -> {
+            controller.onNumSpecialCellsChanger(newVal);
+        });
+
         final HBox specialRow = buildRow("Caselle Speciali", specialSpinner);
 
         // --- Buttons ---
         final Button saveBtn = new Button("Salva");
         saveBtn.setStyle("-fx-font-size: 15px; -fx-padding: 10px 30px;");
-        saveBtn.setOnAction(x -> onSave(musicSlider, sfxSlider, specialSpinner));
+        saveBtn.setOnAction(x -> controller.onSave());
 
         final Button backBtn = new Button("Indietro");
         backBtn.setStyle("-fx-font-size: 15px; -fx-padding: 10px 30px;");
-        backBtn.setOnAction(x -> controller.start());
+        backBtn.setOnAction(x -> controller.onBack());
 
         final HBox buttons = new HBox(10, saveBtn, backBtn);
         buttons.setAlignment(Pos.CENTER);
@@ -106,14 +103,6 @@ public class SettingsViewImpl implements SettingsView {
             stage.getScene().setRoot(root);
         }
         stage.setTitle("Gioco dell'Oca - Impostazioni");
-    }
-
-    private void onSave(Slider musicSlider, Slider sfxSlider, Spinner<Integer> specialSpinner) {
-        currentSettings.setMusicVolume(musicSlider.getValue());
-        currentSettings.setSfxVolume(sfxSlider.getValue());
-        currentSettings.setNumSpecialCells(specialSpinner.getValue());
-        settingsManager.save(currentSettings);
-        controller.start();
     }
 
     private String toPrecent (double value) {

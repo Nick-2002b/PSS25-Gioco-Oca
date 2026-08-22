@@ -17,10 +17,10 @@ public class SoundManager {
         return INSTANCE;
     }
 
-    public void playMusic(String resourcePath) {
+    public void playMusic(SoundEffect resourcePath) {
         stopMusic();
         try {
-            final var url = getClass().getResource(resourcePath);
+            final var url = getClass().getResource(resourcePath.getResourcePath());
             if (url == null) { return; }
             final MediaPlayer player = new MediaPlayer(new Media(url.toExternalForm()));
             player.setVolume(musicVolume);
