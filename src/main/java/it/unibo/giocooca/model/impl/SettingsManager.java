@@ -61,7 +61,9 @@ public final class SettingsManager {
     public void save(final Settings settings) {
         final File dir = new File(SETTINGS_DIR);
         if (!dir.exists() && !dir.mkdirs()) {
-            LOGGER.log(Level.WARNING, "Unable to create the settings folder:Impossibile creare la cartella delle impostazioni: {0}", SETTINGS_DIR);
+            LOGGER.log(
+                    Level.WARNING,
+                    "Unable to create the settings folder:Impossibile creare la cartella delle impostazioni: {0}", SETTINGS_DIR);
         }
         final Properties props = new Properties();
         props.setProperty(KEY_MUSIC, String.valueOf(settings.getMusicVolume()));

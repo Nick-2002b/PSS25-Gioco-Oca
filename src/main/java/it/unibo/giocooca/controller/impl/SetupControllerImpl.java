@@ -48,8 +48,8 @@ public final class SetupControllerImpl implements SetupController {
         final Board board = new BoardImpl(config);
         final Dice dice = new DiceImpl();
         new MatchImpl(players, board, dice);
-        // TODO: creare l'implementazione dell'interfaccia MatchView
-        // TODO: creare l'implementazione dell'interfaccia MatchController
+        //TODO creare l'implementazione dell'interfaccia MatchView
+        //TODO creare l'implementazione dell'interfaccia MatchController
     }
 
     @Override

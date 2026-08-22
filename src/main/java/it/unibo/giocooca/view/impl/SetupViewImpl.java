@@ -22,8 +22,8 @@ import java.util.List;
 /**
  * Implementazione grafica JavaFX della schermata di setup della partita.
  *
- * <p>TODO: modificare addPlayer dove al momento è usato un valore fisso embeddato.
  */
+//TODO modificare addPlayer dove al momento è usato un valore fisso embeddato.
 public final class SetupViewImpl implements SetupView {
     private static final int PLAYERS_WIDTH = 500;
     private static final int PLAYERS_HEIGHT = 150;
