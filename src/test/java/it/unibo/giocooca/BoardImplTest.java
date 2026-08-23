@@ -10,7 +10,10 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-public class BoardImplTest {
+/**
+ * Test per il tavolo da gioco.
+ */
+final class BoardImplTest {
     private static final long SEED = 42L;
     private static final int NUM_SPECIAL = 10;
     private static final int BOARD_SIZE = 63;
@@ -18,7 +21,7 @@ public class BoardImplTest {
     private BoardImpl board;
 
     @BeforeEach
-    void setup() {
+    void setUp() {
         final GameConfig config = new GameConfig(BOARD_SIZE, NUM_SPECIAL, SEED);
         board = new BoardImpl(config);
     }
@@ -65,7 +68,7 @@ public class BoardImplTest {
     }
 
     @Test
-    void getCellShouldReturnCellAtCorrectPosition() {
+    void cellShouldBeAtCorrectPosition() {
         for (int i = 1; i <= BOARD_SIZE; i++) {
             Assertions.assertEquals(i, board.getCell(i).getPosition(),
                     "Cell" + i + "have wrong position number");

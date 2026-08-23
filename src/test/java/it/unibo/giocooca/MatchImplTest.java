@@ -25,27 +25,28 @@ import it.unibo.giocooca.model.impl.MatchImpl;
 import it.unibo.giocooca.model.impl.PieceImpl;
 import it.unibo.giocooca.model.impl.PlayerImpl;
 
-public class MatchImplTest {
+/**
+ * Test per la partita.
+ */
+final class MatchImplTest {
     private static final int BOARD_SIZE = 63;
     private static final int SPECIAL_CELLS_COUNT = 6;
     private static final long SEED = 42L;
 
     private Player player1;
     private Player player2;
-    private GameConfig config;
     private Board board;
-    private Dice dice;
     private Match match;
 
     @BeforeEach
-    void setUP() {
+    void setUp() {
         this.player1 = new PlayerImpl("Pippo", new PieceImpl("Mucca", "rosso"));
         this.player2 = new PlayerImpl("Pluto", new PieceImpl("Cane", "verde"));
 
-        this.config = new GameConfig(BOARD_SIZE, SPECIAL_CELLS_COUNT, SEED);
-        this.board = new BoardImpl(this.config);
-        this.dice = new DiceImpl();
-        this.match = new MatchImpl(List.of(this.player1, this.player2), this.board, this.dice);
+        final GameConfig config = new GameConfig(BOARD_SIZE, SPECIAL_CELLS_COUNT, SEED);
+        this.board = new BoardImpl(config);
+        final Dice dice = new DiceImpl();
+        this.match = new MatchImpl(List.of(this.player1, this.player2), this.board, dice);
 
     }
 
@@ -74,7 +75,7 @@ public class MatchImplTest {
     @Test
     void testApplySpecialCell() {
         Cell specialCell = null;
-        for (Cell cell : this.board.getAllCells()) {
+        for (final Cell cell : this.board.getAllCells()) {
             if (cell.getType() == CellType.SPECIAL) {
                 specialCell = cell;
                 break;
@@ -82,10 +83,10 @@ public class MatchImplTest {
         }
         assertNotNull(specialCell, "Deve esserci almeno una casella speciale");
 
-        int specialPosition = specialCell.getPosition();
-        int beforePosPlayer = this.match.getCurrentPlayer().getPosition();
+        final int specialPosition = specialCell.getPosition();
+        final int beforePosPlayer = this.match.getCurrentPlayer().getPosition();
         this.match.moveCurrentPlayer(specialPosition);
-        int afterPosPlayer = this.match.getCurrentPlayer().getPosition();
+        final int afterPosPlayer = this.match.getCurrentPlayer().getPosition();
         assertNotEquals(beforePosPlayer, afterPosPlayer);
     }
 }

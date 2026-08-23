@@ -6,13 +6,17 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class PlayerImplTest {
+/**
+ * Test per il giocatore.
+ */
+final class PlayerImplTest {
+    private static final int NEW_POSITION = 15;
+
     private PlayerImpl player;
-    private PieceImpl piece;
 
     @BeforeEach
     void setUp() {
-        piece = new PieceImpl("dog", "red");
+        final PieceImpl piece = new PieceImpl("dog", "red");
         player = new PlayerImpl("Mario", piece);
     }
 
@@ -23,8 +27,8 @@ public class PlayerImplTest {
 
     @Test
     void setPositionShouldUpdatePosition() {
-        player.setPosition(15);
-        Assertions.assertEquals(15, player.getPosition());
+        player.setPosition(NEW_POSITION);
+        Assertions.assertEquals(NEW_POSITION, player.getPosition());
     }
 
     @Test
@@ -46,7 +50,7 @@ public class PlayerImplTest {
     }
 
     @Test
-    void getPieceShouldReturnCorrectPiece() {
+    void pieceShouldReturnCorrectPiece() {
         Assertions.assertNotNull(player.getPiece());
         Assertions.assertEquals("dog", player.getPiece().getName());
         Assertions.assertEquals("red", player.getPiece().getColor());

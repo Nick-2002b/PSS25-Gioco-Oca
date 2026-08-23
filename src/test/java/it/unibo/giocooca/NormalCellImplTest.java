@@ -8,11 +8,14 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class NormalCellImplTest {
+/**
+ * Test per la cella normale.
+ */
+final class NormalCellImplTest {
     private NormalCellImpl cell;
 
     @BeforeEach
-    void setup() {
+    void setUp() {
         cell = new NormalCellImpl(10);
     }
 

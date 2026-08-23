@@ -8,11 +8,14 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class PrisonCellImplTest {
+/**
+ * Test per la cella prigione.
+ */
+final class PrisonCellImplTest {
     private PrisonCellImpl cell;
 
     @BeforeEach
-    void setup() {
+    void setUp() {
         cell = new PrisonCellImpl(32);
     }
 
