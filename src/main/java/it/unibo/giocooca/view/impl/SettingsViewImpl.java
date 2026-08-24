@@ -1,11 +1,11 @@
 package it.unibo.giocooca.view.impl;
 
-import it.unibo.giocooca.controller.impl.SettingsControllerImpl;
+import it.unibo.giocooca.controller.SettingsController;
+import it.unibo.giocooca.navigation.SceneManager;
 import it.unibo.giocooca.view.SettingsView;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
@@ -14,7 +14,6 @@ import javafx.scene.control.Spinner;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 
 /**
  * Implementazione grafica JavaFX della schermata delle impostazioni.
@@ -24,20 +23,19 @@ public final class SettingsViewImpl implements SettingsView {
     private static final int MIN_SPECIAL = 1;
     private static final int MAX_SPECIAL = 20;
     private static final int CONTENT_PADDING = 40;
-    private static final int SCENE_HEIGHT = 600;
-    private static final int SCENE_WIDTH = 800;
+    private static final int CONTENT_MAX_WIDTH = 600;
     private static final int LABEL_WIDTH = 150;
-    private final Stage stage;
-    private final SettingsControllerImpl controller;
+    private final SceneManager sceneManager;
+    private final SettingsController controller;
 
     /**
      * Costruttore della grafica delle impostazioni.
      *
-     * @param stage      la finestra principale contenitore
-     * @param controller gestione delle azioni dell'utente
+     * @param sceneManager il navigator usato per disegnare la schermata sullo stage
+     * @param controller   gestione delle azioni dell'utente
      */
-    public SettingsViewImpl(final Stage stage, final SettingsControllerImpl controller) {
-        this.stage = stage;
+    public SettingsViewImpl(final SceneManager sceneManager, final SettingsController controller) {
+        this.sceneManager = sceneManager;
         this.controller = controller;
     }
 
@@ -105,7 +103,7 @@ public final class SettingsViewImpl implements SettingsView {
                 buttons
         );
         content.setPadding(new Insets(CONTENT_PADDING));
-        content.setMaxWidth(SCENE_HEIGHT);
+        content.setMaxWidth(CONTENT_MAX_WIDTH);
         content.setAlignment(Pos.CENTER);
 
         final StackPane root = new StackPane(content);
@@ -113,12 +111,7 @@ public final class SettingsViewImpl implements SettingsView {
 
         StackPane.setAlignment(content, Pos.CENTER);
 
-        if (stage.getScene() == null) {
-            stage.setScene(new Scene(root, SCENE_WIDTH, SCENE_HEIGHT));
-        } else {
-            stage.getScene().setRoot(root);
-        }
-        stage.setTitle("Gioco dell'Oca - Impostazioni");
+        sceneManager.render(root, "Gioco dell'Oca - Impostazioni");
     }
 
     private String toPrecent(final double value) {

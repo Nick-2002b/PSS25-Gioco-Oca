@@ -1,15 +1,14 @@
 package it.unibo.giocooca.view.impl;
 
 import it.unibo.giocooca.controller.MenuController;
+import it.unibo.giocooca.navigation.SceneManager;
 import it.unibo.giocooca.view.MenuView;
 
-import javafx.scene.Scene;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.StackPane;
-import javafx.stage.Stage;
 
 /**
  * Implementazione grafica JavaFX del menu principale.
@@ -17,17 +16,17 @@ import javafx.stage.Stage;
 public final class MenuViewImpl implements MenuView {
     private static final String BUTTON_STYLE = "-fx-font-size: 18px; -fx-padding: 10px 30px;";
     private static final int BUTTON_WIDTH = 200;
-    private final Stage stage;
+    private final SceneManager sceneManager;
     private final MenuController controller;
 
    /**
     * Costruttore della grafica del menu.
     *
-    * @param stage      la finiestra principale contenitore
+    * @param sceneManager il navigator usato per disegnare la schermata sullo stage
     * @param controller gestione delle azioni dell'utente
     */
-   public MenuViewImpl(final Stage stage, final MenuController controller) {
-        this.stage = stage;
+   public MenuViewImpl(final SceneManager sceneManager, final MenuController controller) {
+        this.sceneManager = sceneManager;
         this.controller = controller;
     }
 
@@ -59,15 +58,6 @@ public final class MenuViewImpl implements MenuView {
         background.setStyle("-fx-background-color:#ecf0f1;");
         background.getChildren().add(menuBox);
 
-        this.stage.setTitle("Gioco dell'OCA - Menu\' principale");
-        if (this.stage.getScene() == null) {
-            final Scene scene = new Scene(background, 800, 600);
-            this.stage.setScene(scene);
-            this.stage.setMaximized(true);
-        } else {
-            this.stage.getScene().setRoot(background);
-        }
-        this.stage.show();
-
+        sceneManager.render(background, "Gioco dell'OCA - Menu' principale");
     }
 }

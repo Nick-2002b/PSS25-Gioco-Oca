@@ -1,6 +1,7 @@
 package it.unibo.giocooca.controller.impl;
 
 import it.unibo.giocooca.controller.SetupController;
+import it.unibo.giocooca.navigation.SceneManager;
 import it.unibo.giocooca.view.SetupView;
 import it.unibo.giocooca.view.impl.SetupViewImpl;
 import it.unibo.giocooca.model.Player;
@@ -10,7 +11,6 @@ import it.unibo.giocooca.model.Dice;
 import it.unibo.giocooca.model.impl.BoardImpl;
 import it.unibo.giocooca.model.impl.DiceImpl;
 import it.unibo.giocooca.model.impl.MatchImpl;
-import javafx.stage.Stage;
 
 import java.util.List;
 import java.util.logging.Level;
@@ -23,17 +23,17 @@ public final class SetupControllerImpl implements SetupController {
     private static final Logger LOGGER = Logger.getLogger(SetupControllerImpl.class.getName());
     private static final int DEFAULT_SPECIAL_CELLS = 6;
 
-    private final Stage stage;
+    private final SceneManager sceneManager;
     private final SetupView setupView;
 
     /**
      * Crea il controller di setup della partita.
      *
-     * @param stage la finestra principale dell'applicazione
+     * @param sceneManager il navigator dell'applicazione, usato per tornare al menu
      */
-    public SetupControllerImpl(final Stage stage) {
-        this.stage = stage;
-        this.setupView = new SetupViewImpl(stage, this);
+    public SetupControllerImpl(final SceneManager sceneManager) {
+        this.sceneManager = sceneManager;
+        this.setupView = new SetupViewImpl(sceneManager, this);
     }
 
     @Override
@@ -54,6 +54,6 @@ public final class SetupControllerImpl implements SetupController {
 
     @Override
     public void onBackToMenu() {
-        new MenuControllerImpl(this.stage).start();
+        sceneManager.showMenu();
     }
 }

@@ -2,34 +2,27 @@ package it.unibo.giocooca.controller.impl;
 
 import it.unibo.giocooca.audio.SoundEffect;
 import it.unibo.giocooca.audio.SoundManager;
-import it.unibo.giocooca.controller.SetupController;
 import it.unibo.giocooca.controller.MenuController;
-import it.unibo.giocooca.model.Settings;
-import it.unibo.giocooca.model.impl.SettingsManager;
+import it.unibo.giocooca.navigation.SceneManager;
 import it.unibo.giocooca.view.MenuView;
 import it.unibo.giocooca.view.impl.MenuViewImpl;
 import javafx.application.Platform;
-import javafx.stage.Stage;
 
 /**
  * Implementazione del controller del menu principale.
  */
 public final class MenuControllerImpl implements MenuController {
-    private final Stage stage;
+    private final SceneManager sceneManager;
     private final MenuView view;
-    private final Settings settings;
 
     /**
      * Crea il controller del menu principale.
      *
-     * @param stage la finestra principale dell'applicazione
+     * @param sceneManager il navigator dell'applicazione, usato per cambiare schermata
      */
-    public MenuControllerImpl(final Stage stage) {
-        this.stage = stage;
-        this.settings = new SettingsManager().load();
-        SoundManager.getInstance().setMusicVolume(settings.getMusicVolume());
-        SoundManager.getInstance().setSfxVolume(settings.getSfxVolume());
-        this.view = new MenuViewImpl(stage, this);
+    public MenuControllerImpl(final SceneManager sceneManager) {
+        this.sceneManager = sceneManager;
+        this.view = new MenuViewImpl(sceneManager, this);
     }
 
     @Override
@@ -42,13 +35,12 @@ public final class MenuControllerImpl implements MenuController {
 
     @Override
     public void onStartNewGame() {
-        final SetupController setupController = new SetupControllerImpl(this.stage);
-        setupController.start();
+        sceneManager.showSetup();
     }
 
     @Override
     public void onOpenSettings() {
-        new SettingsControllerImpl(stage, settings, this).show();
+        sceneManager.showSettings();
     }
 
     @Override

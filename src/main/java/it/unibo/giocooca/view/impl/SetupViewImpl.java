@@ -4,8 +4,8 @@ import it.unibo.giocooca.model.Player;
 import it.unibo.giocooca.model.impl.PieceImpl;
 import it.unibo.giocooca.model.impl.PlayerImpl;
 import it.unibo.giocooca.controller.SetupController;
+import it.unibo.giocooca.navigation.SceneManager;
 import it.unibo.giocooca.view.SetupView;
-import javafx.scene.Scene;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -14,7 +14,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
-import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,18 +27,18 @@ public final class SetupViewImpl implements SetupView {
     private static final int PLAYERS_WIDTH = 500;
     private static final int PLAYERS_HEIGHT = 150;
     private static final int BUTTON_WIDTH = 200;
-    private final Stage stage;
+    private final SceneManager sceneManager;
     private final SetupController controller;
     private final List<Player> players = new ArrayList<>();
 
     /**
      * Costruttore della grafica di setup.
      *
-     * @param stage      la finestra principale contenitore
-     * @param controller gestione delle azioni dell'utente
+     * @param sceneManager il navigator usato per disegnare la schermata sullo stage
+     * @param controller   gestione delle azioni dell'utente
      */
-    public SetupViewImpl(final Stage stage, final SetupController controller) {
-        this.stage = stage;
+    public SetupViewImpl(final SceneManager sceneManager, final SetupController controller) {
+        this.sceneManager = sceneManager;
         this.controller = controller;
 
     }
@@ -133,14 +132,6 @@ public final class SetupViewImpl implements SetupView {
         final StackPane background = new StackPane(allElements);
         background.setStyle("-fx-background-color: #ecf0f1;");
 
-        this.stage.setTitle("Setup Gioco");
-        if (this.stage.getScene() == null) {
-            final Scene scene = new Scene(background, 800, 600);
-            this.stage.setScene(scene);
-            this.stage.setMaximized(true);
-        } else {
-            this.stage.getScene().setRoot(background);
-        }
-        this.stage.show();
+        sceneManager.render(background, "Setup Gioco");
     }
 }

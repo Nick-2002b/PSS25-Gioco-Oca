@@ -4,8 +4,8 @@
 
 package it.unibo.giocooca;
 
-import it.unibo.giocooca.controller.MenuController;
-import it.unibo.giocooca.controller.impl.MenuControllerImpl;
+import it.unibo.giocooca.navigation.SceneManager;
+import it.unibo.giocooca.navigation.impl.SceneManagerImpl;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -25,7 +25,7 @@ public final class App extends Application {
 
     @Override
     public void start(final Stage primaryStage) {
-        final MenuController menuController = new MenuControllerImpl(primaryStage);
-        menuController.start();
+        final SceneManager sceneManager = new SceneManagerImpl(primaryStage);
+        sceneManager.showMenu();
     }
 }

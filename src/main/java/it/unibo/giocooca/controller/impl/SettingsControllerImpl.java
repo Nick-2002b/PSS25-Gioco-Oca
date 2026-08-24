@@ -1,39 +1,31 @@
 package it.unibo.giocooca.controller.impl;
 
 import it.unibo.giocooca.audio.SoundManager;
-import it.unibo.giocooca.controller.MenuController;
 import it.unibo.giocooca.controller.SettingsController;
 import it.unibo.giocooca.model.Settings;
 import it.unibo.giocooca.model.impl.SettingsManager;
+import it.unibo.giocooca.navigation.SceneManager;
 import it.unibo.giocooca.view.impl.SettingsViewImpl;
-import javafx.stage.Stage;
 
 /**
  * Implementazione del controller della schermata delle impostazioni.
  */
 public final class SettingsControllerImpl implements SettingsController {
 
-    private final Stage stage;
+    private final SceneManager sceneManager;
     private final Settings settings;
     private final SettingsManager settingsManager;
-    private final MenuController menuController;
 
     /**
      * Crea il controller delle impostazioni.
      *
-     * @param stage         la finestra principale dell'applicazione
-     * @param settings      le impostazioni correnti da modificare
-     * @param menuController il controller del menu principale a cui tornare
+     * @param sceneManager il navigator dell'applicazione, usato per tornare al menu
+     * @param settings     le impostazioni correnti da modificare
      */
-    public SettingsControllerImpl(
-            final Stage stage,
-            final Settings settings,
-            final MenuController menuController) {
-        this.stage = stage;
-        this.menuController = menuController;
+    public SettingsControllerImpl(final SceneManager sceneManager, final Settings settings) {
+        this.sceneManager = sceneManager;
         this.settings = settings;
         this.settingsManager = new SettingsManager();
-
     }
 
     @Override
@@ -71,16 +63,16 @@ public final class SettingsControllerImpl implements SettingsController {
     @Override
     public void onSave() {
         settingsManager.save(settings);
-        menuController.start();
+        sceneManager.showMenu();
     }
 
     @Override
     public void onBack() {
-        menuController.start();
+        sceneManager.showMenu();
     }
 
     @Override
     public void show() {
-        new SettingsViewImpl(stage, this).show();
+        new SettingsViewImpl(sceneManager, this).show();
     }
 }
