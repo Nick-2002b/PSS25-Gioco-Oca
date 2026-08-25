@@ -1,20 +1,21 @@
 package it.unibo.giocooca.controller.impl;
 
-import it.unibo.giocooca.controller.SetupController;
-import it.unibo.giocooca.navigation.SceneManager;
-import it.unibo.giocooca.view.SetupView;
-import it.unibo.giocooca.view.impl.SetupViewImpl;
-import it.unibo.giocooca.model.Player;
-import it.unibo.giocooca.model.GameConfig;
-import it.unibo.giocooca.model.Board;
-import it.unibo.giocooca.model.Dice;
-import it.unibo.giocooca.model.impl.BoardImpl;
-import it.unibo.giocooca.model.impl.DiceImpl;
-import it.unibo.giocooca.model.impl.MatchImpl;
-
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import it.unibo.giocooca.controller.SetupController;
+import it.unibo.giocooca.model.Board;
+import it.unibo.giocooca.model.Dice;
+import it.unibo.giocooca.model.GameConfig;
+import it.unibo.giocooca.model.Match;
+import it.unibo.giocooca.model.Player;
+import it.unibo.giocooca.model.impl.BoardImpl;
+import it.unibo.giocooca.model.impl.DiceImpl;
+import it.unibo.giocooca.model.impl.MatchImpl;
+import it.unibo.giocooca.navigation.SceneManager;
+import it.unibo.giocooca.view.SetupView;
+import it.unibo.giocooca.view.impl.SetupViewImpl;
 
 /**
  * Implementazione del controller della schermata di setup della partita.
@@ -47,9 +48,8 @@ public final class SetupControllerImpl implements SetupController {
         final GameConfig config = GameConfig.defaultConfig(DEFAULT_SPECIAL_CELLS);
         final Board board = new BoardImpl(config);
         final Dice dice = new DiceImpl();
-        new MatchImpl(players, board, dice);
-        //TODO creare l'implementazione dell'interfaccia MatchView
-        //TODO creare l'implementazione dell'interfaccia MatchController
+        final Match match = new MatchImpl(players, board, dice);
+        this.sceneManager.showMatch(match);
     }
 
     @Override

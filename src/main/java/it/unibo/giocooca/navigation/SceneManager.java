@@ -1,5 +1,5 @@
 package it.unibo.giocooca.navigation;
-
+import it.unibo.giocooca.model.Match;
 import javafx.scene.Parent;
 
 /**
@@ -22,6 +22,11 @@ public interface SceneManager {
      * Naviga verso la schermata di setup di una nuova partita.
      */
     void showSetup();
+
+    /**
+     * Naviga verso la schermata del gioco
+     */
+    void showMatch(Match match);
 
     /**
      * Disegna la radice della scena corrente sullo stage

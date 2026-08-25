@@ -5,6 +5,11 @@ package it.unibo.giocooca.view;
  */
 public interface MatchView {
     /**
+     * Mostra la schermata principale della partita
+     */
+    void show();
+    
+    /**
      * Mostra un messaggio generico all'utente.
      *
      * @param message il messaggio da mostrare

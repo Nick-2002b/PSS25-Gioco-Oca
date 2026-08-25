@@ -9,7 +9,8 @@ public enum SoundEffect {
     PRISON("/audio/malus_cell_grand_piano_negative.wav"),
     SPECIAL_CELL("/audio/positive_cell_grand_piano_positive_long.wav"),
     WIN("/audio/win-audio.wav"),
-    BACKGROUND_MUSIC("/audio/background-music.wav");
+    BACKGROUND_MUSIC("/audio/background-music.wav"),
+    PRISON_DOOR("/audio/prison-door.wav");
 
     private final String resourcePath;
 
