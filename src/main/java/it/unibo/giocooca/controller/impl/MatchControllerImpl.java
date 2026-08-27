@@ -49,31 +49,31 @@ public class MatchControllerImpl implements MatchController {
         
         if(currentPlayer.isInPrison()){
             currentPlayer.setInPrison(false);
-            SoundManager.getInstance().playMusic(SoundEffect.PRISON_DOOR);
+            SoundManager.getInstance().playSfx(SoundEffect.PRISON_DOOR);
             this.view.showMessage(currentPlayer.getNickName() + " è uscito di prigione");
             this.match.nextTurn();
             this.view.showCurrentTurn(this.match.getCurrentPlayer().getNickName());
             return;
         }
         final int diceResult = this.match.rollDice();
-        SoundManager.getInstance().playMusic(SoundEffect.DICE_ROLL);
+        SoundManager.getInstance().playSfx(SoundEffect.DICE_ROLL);
         this.view.showDiceResult(diceResult);
 
         final int currentPlayerPosition = this.match.getCurrentPlayer().getPosition();
         this.match.moveCurrentPlayer(diceResult);
-        SoundManager.getInstance().playMusic(SoundEffect.PIECE_MOVE);
+        SoundManager.getInstance().playSfx(SoundEffect.PIECE_MOVE);
         final int afterPlayerPosition = this.match.getCurrentPlayer().getPosition();
         
         if(this.match.getCurrentPlayer().isInPrison()){
-            SoundManager.getInstance().playMusic(SoundEffect.PRISON);
+            SoundManager.getInstance().playSfx(SoundEffect.PRISON);
             this.view.showMessage("Ops!!! " + this.match.getCurrentPlayer().getNickName() + " è finito in prigione!");
         }else if(afterPlayerPosition != currentPlayerPosition + diceResult){
-            SoundManager.getInstance().playMusic(SoundEffect.SPECIAL_CELL);
+            SoundManager.getInstance().playSfx(SoundEffect.SPECIAL_CELL);
             this.view.showMessage("Wow!!! " + this.match.getCurrentPlayer().getNickName() + " è finito in una cella speciale!");
         }
 
         if(this.match.isGameOver()){
-            SoundManager.getInstance().playMusic(SoundEffect.WIN);
+            SoundManager.getInstance().playSfx(SoundEffect.WIN);
             this.view.showWinner(this.match.getWinner().getNickName());
         } else{
             this.match.nextTurn();
