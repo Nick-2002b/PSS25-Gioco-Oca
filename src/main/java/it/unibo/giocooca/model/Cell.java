@@ -24,4 +24,13 @@ public interface Cell {
      * @param player il giocatore su cui applicare l'effetto
      */
     void applyEffect(Player player);
+
+    /**
+     * Offset di bonus/malus associato alla casella (0 se non applicabile).
+     *
+     * @return l'offset della casella, 0 se non previsto
+     */
+    default int getOffset() {
+        return 0;
+    }
 }

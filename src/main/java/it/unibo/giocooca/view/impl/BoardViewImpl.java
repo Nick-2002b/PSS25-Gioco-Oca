@@ -77,6 +77,10 @@ public class BoardViewImpl implements BoardView {
         };
     }
 
+    private static String formatOffset(final int offset) {
+        return offset > 0 ? "+" + offset : String.valueOf(offset);
+    }
+
     @Override
     public Pane getBoard() {
         return this.root;
@@ -95,7 +99,7 @@ public class BoardViewImpl implements BoardView {
         grid.setVgap(GAP);
         for (int pos = 1; pos <= controller.getBoardSize(); pos++) {
             final int[] coords = toGridCoords(pos);
-            final StackPane cell = buildCellPane(pos, controller.getCellType(pos));
+            final StackPane cell = buildCellPane(pos, controller.getCellType(pos), controller.getCellOffset(pos));
             grid.add(cell, coords[1], coords[0]);
             this.cellsByPosition.put(pos, cell);
         }
@@ -103,7 +107,7 @@ public class BoardViewImpl implements BoardView {
         return grid;
     }
 
-    private StackPane buildCellPane(final int position, final String cellType) {
+    private StackPane buildCellPane(final int position, final String cellType, final int cellOffset) {
         final Rectangle background = new Rectangle(CELL_SIZE, CELL_SIZE);
         background.setFill(cellTypeToColor(cellType));
         background.setStroke(COLOR_BORDER);
@@ -114,6 +118,14 @@ public class BoardViewImpl implements BoardView {
 
         final StackPane cell = new StackPane(background, numberLabel);
         StackPane.setAlignment(numberLabel, Pos.TOP_LEFT);
+
+        if (cellType.equals("SPECIAL")) {
+            final Label offsetLabel = new Label(formatOffset(cellOffset));
+            offsetLabel.setStyle("-fx-font-size: 11px; -fx-font-weight: bold; -fx-text-fill: #2d3436;");
+            StackPane.setAlignment(offsetLabel, Pos.BOTTOM_RIGHT);
+            cell.getChildren().add(offsetLabel);
+        }
+
         cell.setPrefSize(CELL_SIZE, CELL_SIZE);
         return cell;
     }

@@ -52,4 +52,9 @@ public final class SpecialCellImpl implements Cell {
             player.setPosition(newPos);
         }
     }
+
+    @Override
+    public int getOffset() {
+        return this.offset;
+    }
 }

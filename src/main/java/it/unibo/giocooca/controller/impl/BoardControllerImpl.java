@@ -37,6 +37,11 @@ public final class BoardControllerImpl implements BoardController {
     }
 
     @Override
+    public int getCellOffset(final int position) {
+        return this.board.getCell(position).getOffset();
+    }
+
+    @Override
     public Map<String, Integer> getPlayerPositions() {
         final Map<String, Integer> positions = new HashMap<>();
         for (final Player player : this.players) {

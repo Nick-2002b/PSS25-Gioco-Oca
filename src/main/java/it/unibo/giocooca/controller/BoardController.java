@@ -23,6 +23,15 @@ public interface BoardController {
     String getCellType(int position);
 
     /**
+     * Offset (bonus/malus) della casella alla posizione data.
+     * Restituisce 0 per caselle che non ne prevedono uno.
+     *
+     * @param position posizione 1-based
+     * @return l'offset della casella
+     */
+    int getCellOffset(int position);
+
+    /**
      * Posizioni attuali dei giocatori.
      *
      * @return mappa colore → posizione
