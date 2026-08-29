@@ -18,8 +18,8 @@ import javafx.stage.Stage;
  *
  */
 public final class SceneManagerImpl implements SceneManager {
-    private static final int SCENE_WIDTH = 800;
-    private static final int SCENE_HEIGHT = 600;
+    private static final int SCENE_WIDTH = 1280;
+    private static final int SCENE_HEIGHT = 800;
 
     private final Stage stage;
     private final Settings settings;
@@ -61,7 +61,7 @@ public final class SceneManagerImpl implements SceneManager {
         stage.setTitle(title);
         if (stage.getScene() == null) {
             stage.setScene(new Scene(root, SCENE_WIDTH, SCENE_HEIGHT));
-            stage.setMaximized(true);
+            stage.setResizable(false);
         } else {
             stage.getScene().setRoot(root);
         }
