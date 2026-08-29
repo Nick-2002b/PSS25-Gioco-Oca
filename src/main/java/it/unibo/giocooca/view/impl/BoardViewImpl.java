@@ -11,7 +11,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class BoardViewImpl implements BoardView {
@@ -77,6 +79,17 @@ public class BoardViewImpl implements BoardView {
         };
     }
 
+    private static double[] quadrantOffset(final String color) {
+        final double quarterCell = CELL_SIZE / 4.0;
+        return switch (color) {
+            case "Rosso"  -> new double[]{-quarterCell, -quarterCell};
+            case "Verde"  -> new double[]{ quarterCell, -quarterCell};
+            case "Blu"    -> new double[]{-quarterCell,  quarterCell};
+            case "Giallo" -> new double[]{ quarterCell,  quarterCell};
+            default       -> new double[]{0, 0};
+        };
+    }
+
     private static String formatOffset(final int offset) {
         return offset > 0 ? "+" + offset : String.valueOf(offset);
     }
@@ -88,8 +101,14 @@ public class BoardViewImpl implements BoardView {
 
     @Override
     public void updatePlayerPositions(Map<String, Integer> playerPositions) {
+        final Map<Integer, List<String>> colorsByPosition = new HashMap<>();
         for (final Map.Entry<String, Integer> entry : playerPositions.entrySet()) {
-            movePiece(entry.getKey(), entry.getValue());
+            colorsByPosition
+                    .computeIfAbsent(entry.getValue(), pos -> new ArrayList<>())
+                    .add(entry.getKey());
+        }
+        for (final Map.Entry<Integer, List<String>> entry : colorsByPosition.entrySet()) {
+            placePiecesOnCell(entry.getKey(), entry.getValue());
         }
     }
 
@@ -130,17 +149,24 @@ public class BoardViewImpl implements BoardView {
         return cell;
     }
 
-    private void movePiece(final String color, final int position) {
+    private void placePiecesOnCell(final int position, final List<String> colors) {
         final StackPane cell = this.cellsByPosition.get(position);
         if (cell == null) {
             return;
         }
-        // Il centro reale della cella viene letto dal suo bounding box già renderizzato,
-        // evitando di ricalcolarlo a mano (e di introdurre scostamenti dovuti a gap/arrotondamenti).
-        final var bounds = cell.getBoundsInParent();
-        final double centerX = bounds.getMinX() + bounds.getWidth() / 2.0;
-        final double centerY = bounds.getMinY() + bounds.getHeight() / 2.0;
 
+        final var bounds = cell.getBoundsInParent();
+        final double centerX = bounds.getMinX() + (bounds.getWidth() / 2.0);
+        final double centerY = bounds.getMinY() + (bounds.getHeight() / 2.0);
+
+        final boolean sharedCell = colors.size() > 1;
+        for (final String color : colors) {
+            final double[] offset = sharedCell ? quadrantOffset(color) : new double[]{0, 0};
+            movePiece(color, centerX + offset[0], centerY + offset[1]);
+        }
+    }
+
+    private void movePiece(final String color, final double x, final double y) {
         if (!pieces.containsKey(color)) {
             final Circle piece = new Circle(PIECE_RADIUS);
             piece.setFill(Color.web(mapPieceColor(color)));
@@ -150,7 +176,7 @@ public class BoardViewImpl implements BoardView {
         }
 
         final Circle piece = pieces.get(color);
-        piece.setLayoutX(centerX);
-        piece.setLayoutY(centerY);
+        piece.setLayoutX(x);
+        piece.setLayoutY(y);
     }
 }
