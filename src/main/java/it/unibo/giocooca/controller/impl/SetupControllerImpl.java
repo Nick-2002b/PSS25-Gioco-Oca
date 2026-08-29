@@ -10,6 +10,7 @@ import it.unibo.giocooca.model.Dice;
 import it.unibo.giocooca.model.GameConfig;
 import it.unibo.giocooca.model.Match;
 import it.unibo.giocooca.model.Player;
+import it.unibo.giocooca.model.Settings;
 import it.unibo.giocooca.model.impl.BoardImpl;
 import it.unibo.giocooca.model.impl.DiceImpl;
 import it.unibo.giocooca.model.impl.MatchImpl;
@@ -22,18 +23,20 @@ import it.unibo.giocooca.view.impl.SetupViewImpl;
  */
 public final class SetupControllerImpl implements SetupController {
     private static final Logger LOGGER = Logger.getLogger(SetupControllerImpl.class.getName());
-    private static final int DEFAULT_SPECIAL_CELLS = 6;
 
     private final SceneManager sceneManager;
+    private final Settings settings;
     private final SetupView setupView;
 
     /**
      * Crea il controller di setup della partita.
      *
      * @param sceneManager il navigator dell'applicazione, usato per tornare al menu
+     * @param settings     impostazioni correnti da applicare alla nuova partita
      */
-    public SetupControllerImpl(final SceneManager sceneManager) {
+    public SetupControllerImpl(final SceneManager sceneManager, final Settings settings) {
         this.sceneManager = sceneManager;
+        this.settings = settings;
         this.setupView = new SetupViewImpl(sceneManager, this);
     }
 
@@ -45,7 +48,7 @@ public final class SetupControllerImpl implements SetupController {
     @Override
     public void onStartGame(final List<Player> players) {
         LOGGER.log(Level.INFO, "La partita e'' iniziata con n. {0} giocatori", players.size());
-        final GameConfig config = GameConfig.defaultConfig(DEFAULT_SPECIAL_CELLS);
+        final GameConfig config = GameConfig.defaultConfig(settings.getNumSpecialCells());
         final Board board = new BoardImpl(config);
         final Dice dice = new DiceImpl();
         final Match match = new MatchImpl(players, board, dice);

@@ -48,7 +48,7 @@ public final class SceneManagerImpl implements SceneManager {
 
     @Override
     public void showSetup() {
-        new SetupControllerImpl(this).start();
+        new SetupControllerImpl(this, settings).start();
     }
 
     @Override
