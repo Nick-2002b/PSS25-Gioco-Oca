@@ -2,6 +2,7 @@ package it.unibo.giocooca.view.impl;
 
 import it.unibo.giocooca.controller.MatchController;
 import it.unibo.giocooca.navigation.SceneManager;
+import it.unibo.giocooca.view.BoardView;
 import it.unibo.giocooca.view.MatchView;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -25,6 +26,7 @@ public class MatchViewImpl implements MatchView{
 
    private final SceneManager sceneManager;
    private final MatchController controller;
+   private final BoardView boardView;
 
 
    private Label lblCurrentTurn;
@@ -35,8 +37,9 @@ public class MatchViewImpl implements MatchView{
     /**
      * @param sceneManager navigatore usato per visualizzare le view
      * @param controller controller centrale della partita
+     * @param board griglia di gioco
      */
-   public MatchViewImpl(final SceneManager sceneManager, final MatchController controller){
+   public MatchViewImpl(final SceneManager sceneManager, final MatchController controller, BoardView board){
       if (sceneManager == null) {
          throw new IllegalArgumentException("SceneManager non puo' essere null");
        }
@@ -46,6 +49,7 @@ public class MatchViewImpl implements MatchView{
 
       this.sceneManager = sceneManager;
       this.controller = controller;
+      this.boardView = board;
    }
    @Override
    public void show(){
@@ -56,10 +60,7 @@ public class MatchViewImpl implements MatchView{
       // --- Area Centrale: Tabellone  ---
       final StackPane centralBoard = new StackPane();
       centralBoard.setStyle("-fx-background-color: #ffffff; -fx-border-color: #bdc3c7; -fx-border-width: 2px; -fx-border-radius: 5px;");
-      final Label boardLabel = new Label("Area Tabellone Grafico");
-      boardLabel.setStyle("-fx-font-size: 20px; -fx-text-alignment: center; -fx-text-fill: #7f8c8d;");
-      centralBoard.getChildren().add(boardLabel);
-
+      centralBoard.getChildren().add(boardView.getBoard());
       rootLayout.setCenter(centralBoard);
 
       // --- Area Destra: Pannello Informazioni e Controlli ---
