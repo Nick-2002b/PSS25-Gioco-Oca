@@ -18,13 +18,15 @@ import java.util.Map;
 
 public class BoardViewImpl implements BoardView {
 
-    private static final int COLS = 9;
-    private static final int ROWS = 7;
-    private static final int CELL_SIZE = 100;
-    private static final int GAP = 2;
-    private static final int PIECE_RADIUS = 10;
-    private static final int BOARD_WIDTH = COLS * CELL_SIZE + (COLS - 1) * GAP;
-    private static final int BOARD_HEIGHT = ROWS * CELL_SIZE + (ROWS - 1) * GAP;
+    private static final int ROW_LENGTH = 10;
+    private static final int GROUP_SIZE = ROW_LENGTH + 1;
+
+    private static final int CELL_WIDTH = 80;
+    private static final int CELL_HEIGHT = 60;
+
+    private static final int HGAP = 6;
+    private static final int VGAP = 8;
+    private static final int PIECE_RADIUS = 8;
 
     private static final Color COLOR_NORMAL = Color.web("#dfe6e9");
     private static final Color COLOR_SPECIAL = Color.web("#fdcb6e");
@@ -32,23 +34,50 @@ public class BoardViewImpl implements BoardView {
     private static final Color COLOR_BORDER = Color.DARKGRAY;
 
     private final Pane root;
-
     private final Pane pieceLayer;
-
     private final Map<String, Circle> pieces = new HashMap<>();
-
     private final Map<Integer, StackPane> cellsByPosition = new HashMap<>();
 
     public BoardViewImpl(final BoardController controller) {
-        final GridPane cellLayer = buildCellLayer(controller);
+        final int boardSize = controller.getBoardSize();
+        final int maxLogicalRow = maxLogicalRow(boardSize);
+
+        double boardWidth = ROW_LENGTH * CELL_WIDTH + (ROW_LENGTH - 1) * HGAP;
+        double boardHeight = (maxLogicalRow + 1) * CELL_HEIGHT + maxLogicalRow * VGAP;
+
+        final GridPane cellLayer = buildCellLayer(controller, boardSize, maxLogicalRow);
 
         this.pieceLayer = new Pane();
-        this.pieceLayer.setPrefSize(BOARD_WIDTH, BOARD_HEIGHT);
+        this.pieceLayer.setPrefSize(boardWidth, boardHeight);
 
         final StackPane stackRoot = new StackPane(cellLayer, this.pieceLayer);
-        stackRoot.setAlignment(Pos.TOP_LEFT);
-        stackRoot.setMaxSize(BOARD_WIDTH, BOARD_HEIGHT);
+        stackRoot.setAlignment(Pos.CENTER);
+        stackRoot.setMaxSize(boardWidth, boardHeight);
         this.root = stackRoot;
+    }
+
+    private static LogicalCoords toLogicalCoords(final int position) {
+        final int zeroIndexed = position - 1;
+        final int group = zeroIndexed / GROUP_SIZE;
+        final int offset = zeroIndexed % GROUP_SIZE;
+        final boolean leftToRight = group % 2 == 0;
+        final boolean isCorner = offset == ROW_LENGTH;
+
+        if (isCorner) {
+            final int col = leftToRight ? ROW_LENGTH - 1 : 0;
+            return new LogicalCoords(2 * group + 1, col);
+        }
+        final int col = leftToRight ? offset : (ROW_LENGTH - 1 - offset);
+        return new LogicalCoords(2 * group, col);
+    }
+
+    private static int maxLogicalRow(final int boardSize) {
+        return toLogicalCoords(boardSize).row();
+    }
+
+    private static GridCoords toGridCoords(final int position, final int maxLogicalRow) {
+        final LogicalCoords logical = toLogicalCoords(position);
+        return new GridCoords(maxLogicalRow - logical.row(), logical.col());
     }
 
     private static Color cellTypeToColor(final String cellType) {
@@ -57,16 +86,6 @@ public class BoardViewImpl implements BoardView {
             case "PRISON" -> COLOR_PRISON;
             default -> COLOR_NORMAL;
         };
-    }
-
-    private static int[] toGridCoords(final int position) {
-        final int zeroIndex = position - 1;
-        final int rowFromBottom = zeroIndex / COLS;
-        final int colInRow = zeroIndex % COLS;
-        final int gridRow = (ROWS - 1) - rowFromBottom;
-        final int gridCol = (rowFromBottom % 2 == 0) ? colInRow : (COLS - 1) - colInRow;
-
-        return new int[]{gridRow, gridCol};
     }
 
     private static String mapPieceColor(final String colorName) {
@@ -80,12 +99,13 @@ public class BoardViewImpl implements BoardView {
     }
 
     private static double[] quadrantOffset(final String color) {
-        final double quarterCell = CELL_SIZE / 4.0;
+        final double quarterCellX = CELL_WIDTH / 4.0;
+        final double quarterCellY = CELL_HEIGHT / 4.0;
         return switch (color) {
-            case "Rosso"  -> new double[]{-quarterCell, -quarterCell};
-            case "Verde"  -> new double[]{ quarterCell, -quarterCell};
-            case "Blu"    -> new double[]{-quarterCell,  quarterCell};
-            case "Giallo" -> new double[]{ quarterCell,  quarterCell};
+            case "Rosso"  -> new double[]{-quarterCellX, -quarterCellY};
+            case "Verde"  -> new double[]{ quarterCellX, -quarterCellY};
+            case "Blu"    -> new double[]{-quarterCellX,  quarterCellY};
+            case "Giallo" -> new double[]{ quarterCellX,  quarterCellY};
             default       -> new double[]{0, 0};
         };
     }
@@ -112,22 +132,21 @@ public class BoardViewImpl implements BoardView {
         }
     }
 
-    private GridPane buildCellLayer(final BoardController controller) {
+    private GridPane buildCellLayer(final BoardController controller, final int boardSize, final int maxLogicalRow) {
         final GridPane grid = new GridPane();
-        grid.setHgap(GAP);
-        grid.setVgap(GAP);
-        for (int pos = 1; pos <= controller.getBoardSize(); pos++) {
-            final int[] coords = toGridCoords(pos);
+        grid.setHgap(HGAP);
+        grid.setVgap(VGAP);
+        for (int pos = 1; pos <= boardSize; pos++) {
+            final GridCoords coords = toGridCoords(pos, maxLogicalRow);
             final StackPane cell = buildCellPane(pos, controller.getCellType(pos), controller.getCellOffset(pos));
-            grid.add(cell, coords[1], coords[0]);
+            grid.add(cell, coords.col(), coords.row());
             this.cellsByPosition.put(pos, cell);
         }
-
         return grid;
     }
 
     private StackPane buildCellPane(final int position, final String cellType, final int cellOffset) {
-        final Rectangle background = new Rectangle(CELL_SIZE, CELL_SIZE);
+        final Rectangle background = new Rectangle(CELL_WIDTH, CELL_HEIGHT);
         background.setFill(cellTypeToColor(cellType));
         background.setStroke(COLOR_BORDER);
         background.setStrokeWidth(1);
@@ -145,7 +164,7 @@ public class BoardViewImpl implements BoardView {
             cell.getChildren().add(offsetLabel);
         }
 
-        cell.setPrefSize(CELL_SIZE, CELL_SIZE);
+        cell.setPrefSize(CELL_WIDTH, CELL_HEIGHT);
         return cell;
     }
 
@@ -179,4 +198,8 @@ public class BoardViewImpl implements BoardView {
         piece.setLayoutX(x);
         piece.setLayoutY(y);
     }
+
+    private record LogicalCoords(int row, int col) { }
+
+    private record GridCoords(int row, int col) { }
 }
