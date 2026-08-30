@@ -137,9 +137,9 @@ public class MatchViewImpl implements MatchView{
    }
 
    @Override
-   public void showCurrentTurn(final String player) {
+   public void showCurrentTurn(final String nickNamePlayer) {
       if (this.lblCurrentTurn != null) {
-         this.lblCurrentTurn.setText("Turno di: " + player);
+         this.lblCurrentTurn.setText("Turno di: " + nickNamePlayer);
       }
    }
 }

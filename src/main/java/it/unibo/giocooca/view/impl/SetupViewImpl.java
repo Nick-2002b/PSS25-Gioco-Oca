@@ -1,22 +1,22 @@
 package it.unibo.giocooca.view.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import it.unibo.giocooca.controller.SetupController;
 import it.unibo.giocooca.model.Player;
 import it.unibo.giocooca.model.impl.PieceImpl;
 import it.unibo.giocooca.model.impl.PlayerImpl;
-import it.unibo.giocooca.controller.SetupController;
 import it.unibo.giocooca.navigation.SceneManager;
 import it.unibo.giocooca.view.SetupView;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
-
-import java.util.ArrayList;
-import java.util.List;
+import javafx.scene.layout.VBox;
 
 /**
  * Implementazione grafica JavaFX della schermata di setup della partita.
@@ -42,7 +42,12 @@ public final class SetupViewImpl implements SetupView {
         this.controller = controller;
 
     }
-
+    private String getFirstCapital(String s){
+        if(s == null || s.isBlank()){
+            return s;
+        }
+        return s.substring(0, 1).toUpperCase() + s.substring(1).toLowerCase();
+    }
     @Override
     public void show() {
         final boolean debug = false;
@@ -96,7 +101,7 @@ public final class SetupViewImpl implements SetupView {
         btnStartGame.setOnAction(event -> this.controller.onStartGame(players));
         // l'action del btnAddPlayer setta delle variabili che vengono create dopo questo elemento quindi ho spostato qui
         btnAddPlayer.setOnAction(event -> {
-            final String playerName = txtPlayerName.getText().trim();
+            final String playerName = getFirstCapital(txtPlayerName.getText().trim());
             final String pieceColor = cmbPieceColor.getValue();
             if (!playerName.isBlank() && pieceColor != null) {
                 final String temporaryNameEmbedded = "Cane";
