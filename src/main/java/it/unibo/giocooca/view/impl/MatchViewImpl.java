@@ -1,5 +1,12 @@
 package it.unibo.giocooca.view.impl;
 
+import java.util.Objects;
+import java.util.List;
+import java.util.Random;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.util.Duration;
+
 import it.unibo.giocooca.controller.MatchController;
 import it.unibo.giocooca.navigation.SceneManager;
 import it.unibo.giocooca.view.BoardView;
@@ -10,6 +17,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -33,13 +42,22 @@ public class MatchViewImpl implements MatchView{
    private Label lblDiceResult;
    private TextArea txtLogArea;
    private Button btnRollDice;
+   private Image diceFaceOne;
+   private Image diceFaceTwo;
+   private Image diceFaceThree;
+   private Image diceFaceFour;
+   private Image diceFaceFive;
+   private Image diceFaceSix;
+   private ImageView diceView;
+   private List<Image> diceFaces;
+   private final Random random = new Random();
 
     /**
      * @param sceneManager navigatore usato per visualizzare le view
      * @param controller controller centrale della partita
      * @param board griglia di gioco
      */
-   public MatchViewImpl(final SceneManager sceneManager, final MatchController controller, BoardView board){
+   public MatchViewImpl(final SceneManager sceneManager, final MatchController controller, final BoardView board) {
       if (sceneManager == null) {
          throw new IllegalArgumentException("SceneManager non puo' essere null");
        }
@@ -75,9 +93,23 @@ public class MatchViewImpl implements MatchView{
       this.txtLogArea.setWrapText(true);
       this.txtLogArea.setPrefHeight(LOG_AREA_HEIGHT);
 
+      this.diceFaceOne = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/diceOne.png")));
+      this.diceFaceTwo = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/diceTwo.png")));
+      this.diceFaceThree = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/diceThree.png")));
+      this.diceFaceFour = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/diceFour.png")));
+      this.diceFaceFive = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/diceFive.png")));
+      this.diceFaceSix = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/diceSix.png")));
+      
+      this.diceFaces = List.of(diceFaceOne, diceFaceTwo, diceFaceThree, diceFaceFour, diceFaceFive, diceFaceSix);
+      
+      this.diceView = new ImageView(this.diceFaceOne);
+      this.diceView.setFitWidth(50);
+      this.diceView.setPreserveRatio(true);
+
       this.btnRollDice = new Button("Lancia Dado");
       this.btnRollDice.setStyle("-fx-font-size: 16px; -fx-padding: 10px 20px; -fx-font-weight: bold;");
       this.btnRollDice.setPrefWidth(BUTTON_WIDTH);
+      this.btnRollDice.setGraphic(this.diceView);
       this.btnRollDice.setOnAction(event -> this.controller.rollDice());
 
       final Button btnQuit = new Button("Esci al Menu");
@@ -115,8 +147,37 @@ public class MatchViewImpl implements MatchView{
 
    @Override
    public void showDiceResult(final int result) {
+      if (this.btnRollDice != null) {
+         this.btnRollDice.setDisable(true);
+      }
+      final Timeline diceAnimation = new Timeline(
+         new KeyFrame(Duration.millis(80), event ->{
+            final int randomIndex = this.random.nextInt(this.diceFaces.size());
+            this.diceView.setImage(this.diceFaces.get(randomIndex));
+         })
+      );
+      diceAnimation.setCycleCount(10);
+      diceAnimation.setOnFinished(event -> {
+         this.diceView.setImage(this.diceFaces.get(result -1));
+      });
       if (this.lblDiceResult != null) {
          this.lblDiceResult.setText("Ultimo lancio: " + result);
+      }
+      if (this.btnRollDice != null){
+         this.btnRollDice.setDisable(false);
+      }
+      diceAnimation.play();
+
+      if (this.diceView != null) {
+         switch (result) {
+            case 1 -> this.diceView.setImage(this.diceFaceOne);
+            case 2 -> this.diceView.setImage(this.diceFaceTwo);
+            case 3 -> this.diceView.setImage(this.diceFaceThree);
+            case 4 -> this.diceView.setImage(this.diceFaceFour);
+            case 5 -> this.diceView.setImage(this.diceFaceFive);
+            case 6 -> this.diceView.setImage(this.diceFaceSix);
+            default -> { }
+         }
       }
    }
 
