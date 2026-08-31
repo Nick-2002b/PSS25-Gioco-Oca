@@ -1,16 +1,15 @@
 package it.unibo.giocooca.view.impl;
 
-import java.util.Objects;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.util.Duration;
 
 import it.unibo.giocooca.controller.MatchController;
 import it.unibo.giocooca.navigation.SceneManager;
 import it.unibo.giocooca.view.BoardView;
 import it.unibo.giocooca.view.MatchView;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
@@ -22,6 +21,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 
 /**
  * Implementazione grafica della partita.
@@ -107,7 +107,7 @@ public class MatchViewImpl implements MatchView{
       this.diceView.setPreserveRatio(true);
 
       this.btnRollDice = new Button("Lancia Dado");
-      this.btnRollDice.setStyle("-fx-font-size: 16px; -fx-padding: 10px 20px; -fx-font-weight: bold;");
+      this.btnRollDice.setStyle("-fx-cursor: hand; -fx-background-color: transparent; -fx-border-color: transparent; -fx-font-size: 16px; -fx-padding: 10px 20px; -fx-font-weight: bold;");
       this.btnRollDice.setPrefWidth(BUTTON_WIDTH);
       this.btnRollDice.setGraphic(this.diceView);
       this.btnRollDice.setOnAction(event -> this.controller.rollDice());
@@ -125,8 +125,8 @@ public class MatchViewImpl implements MatchView{
       controlPanel.setPadding(new Insets(0, 0, 0, PADDING));
       controlPanel.setAlignment(Pos.TOP_CENTER);
       controlPanel.getChildren().addAll(
-         this.lblCurrentTurn,
          this.btnRollDice,
+         this.lblCurrentTurn,
          this.lblDiceResult,
          logTitle,
          this.txtLogArea,
