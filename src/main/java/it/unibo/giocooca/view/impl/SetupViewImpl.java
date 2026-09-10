@@ -109,6 +109,7 @@ public final class SetupViewImpl implements SetupView {
                 players.add(player);
                 boxPlayersList.getChildren().add(new Label(players.size() + ". " + playerName + " (" + pieceColor + ")"));
                 txtPlayerName.clear();
+                txtPlayerName.requestFocus();
                 cmbPieceColor.getItems().remove(pieceColor);
                 if (!cmbPieceColor.getItems().isEmpty()) {
                     cmbPieceColor.setValue(cmbPieceColor.getItems().get(0));
@@ -118,6 +119,8 @@ public final class SetupViewImpl implements SetupView {
                 }
                 if (players.size() == cmbNumPlayers.getValue()) {
                     btnAddPlayer.setDisable(true);
+                    txtPlayerName.setEditable(false);
+                    
                     btnStartGame.setDisable(false);
                 }
             }
