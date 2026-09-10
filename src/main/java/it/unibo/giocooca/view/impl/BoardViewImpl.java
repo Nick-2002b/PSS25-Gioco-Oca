@@ -2,18 +2,18 @@ package it.unibo.giocooca.view.impl;
 
 import it.unibo.giocooca.controller.BoardController;
 import it.unibo.giocooca.view.BoardView;
+import javafx.animation.SequentialTransition;
+import javafx.animation.TranslateTransition;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.util.Duration;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
-
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class BoardViewImpl implements BoardView {
@@ -37,6 +37,7 @@ public class BoardViewImpl implements BoardView {
     private final Pane pieceLayer;
     private final Map<String, Circle> pieces = new HashMap<>();
     private final Map<Integer, StackPane> cellsByPosition = new HashMap<>();
+    private final Map<String, Integer> currentPositions = new HashMap<>();
 
     public BoardViewImpl(final BoardController controller) {
         final int boardSize = controller.getBoardSize();
@@ -121,14 +122,25 @@ public class BoardViewImpl implements BoardView {
 
     @Override
     public void updatePlayerPositions(Map<String, Integer> playerPositions) {
-        final Map<Integer, List<String>> colorsByPosition = new HashMap<>();
-        for (final Map.Entry<String, Integer> entry : playerPositions.entrySet()) {
-            colorsByPosition
-                    .computeIfAbsent(entry.getValue(), pos -> new ArrayList<>())
-                    .add(entry.getKey());
+        Map<Integer, Integer> playersPerCell = new HashMap<>();
+        for (Integer pos : playerPositions.values()) {
+            playersPerCell.put(pos, playersPerCell.getOrDefault(pos, 0) + 1);
         }
-        for (final Map.Entry<Integer, List<String>> entry : colorsByPosition.entrySet()) {
-            placePiecesOnCell(entry.getKey(), entry.getValue());
+
+        for (Map.Entry<String, Integer> entry : playerPositions.entrySet()) {
+            String color = entry.getKey();
+            int newPos = entry.getValue();
+            
+            int currentPos = currentPositions.getOrDefault(color, 1);
+            boolean sharedDest = playersPerCell.get(newPos) > 1;
+
+            if (currentPos != newPos) {
+                animatePiecePath(color, currentPos, newPos, sharedDest);
+            } else {
+                movePieceDirectly(color, newPos, sharedDest);
+            }
+            
+            currentPositions.put(color, newPos);
         }
     }
 
@@ -168,35 +180,70 @@ public class BoardViewImpl implements BoardView {
         return cell;
     }
 
-    private void placePiecesOnCell(final int position, final List<String> colors) {
-        final StackPane cell = this.cellsByPosition.get(position);
-        if (cell == null) {
-            return;
-        }
-
-        final var bounds = cell.getBoundsInParent();
-        final double centerX = bounds.getMinX() + (bounds.getWidth() / 2.0);
-        final double centerY = bounds.getMinY() + (bounds.getHeight() / 2.0);
-
-        final boolean sharedCell = colors.size() > 1;
-        for (final String color : colors) {
-            final double[] offset = sharedCell ? quadrantOffset(color) : new double[]{0, 0};
-            movePiece(color, centerX + offset[0], centerY + offset[1]);
-        }
-    }
-
-    private void movePiece(final String color, final double x, final double y) {
+    private Circle getOrCreatePiece(String color) {
         if (!pieces.containsKey(color)) {
             final Circle piece = new Circle(PIECE_RADIUS);
             piece.setFill(Color.web(mapPieceColor(color)));
             piece.setStroke(Color.BLACK);
             pieces.put(color, piece);
             pieceLayer.getChildren().add(piece);
+            
+            StackPane startCell = cellsByPosition.get(1);
+            if (startCell != null) {
+                var bounds = startCell.getBoundsInParent();
+                piece.setTranslateX(bounds.getMinX() + (bounds.getWidth() / 2.0));
+                piece.setTranslateY(bounds.getMinY() + (bounds.getHeight() / 2.0));
+            }
+        }
+        return pieces.get(color);
+    }
+
+    private void animatePiecePath(String color, int startPos, int endPos, boolean sharedDest) {
+        Circle piece = getOrCreatePiece(color);
+        SequentialTransition sequence = new SequentialTransition();
+
+        int step = (startPos < endPos) ? 1 : -1;
+
+        for (int i = startPos + step; i != endPos + step; i += step) {
+            StackPane cell = cellsByPosition.get(i);
+            if (cell == null) continue;
+
+            var bounds = cell.getBoundsInParent();
+            double targetX = bounds.getMinX() + (bounds.getWidth() / 2.0);
+            double targetY = bounds.getMinY() + (bounds.getHeight() / 2.0);
+
+            if (i == endPos && sharedDest) {
+                double[] offset = quadrantOffset(color);
+                targetX += offset[0];
+                targetY += offset[1];
+            }
+
+            TranslateTransition tt = new TranslateTransition(Duration.millis(300), piece);
+            tt.setToX(targetX);
+            tt.setToY(targetY);
+            sequence.getChildren().add(tt);
         }
 
-        final Circle piece = pieces.get(color);
-        piece.setLayoutX(x);
-        piece.setLayoutY(y);
+        sequence.play();
+    }
+
+    private void movePieceDirectly(String color, int position, boolean sharedDest) {
+        Circle piece = getOrCreatePiece(color);
+        StackPane cell = cellsByPosition.get(position);
+        if (cell == null) return;
+
+        var bounds = cell.getBoundsInParent();
+        double targetX = bounds.getMinX() + (bounds.getWidth() / 2.0);
+        double targetY = bounds.getMinY() + (bounds.getHeight() / 2.0);
+
+        if (sharedDest) {
+            double[] offset = quadrantOffset(color);
+            targetX += offset[0];
+            targetY += offset[1];
+        }
+
+        piece.setTranslateX(targetX);
+        piece.setTranslateY(targetY);
     }
 
     private record LogicalCoords(int row, int col) { }
