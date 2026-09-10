@@ -31,6 +31,7 @@ public class BoardViewImpl implements BoardView {
     private static final Color COLOR_NORMAL = Color.web("#dfe6e9");
     private static final Color COLOR_SPECIAL = Color.web("#fdcb6e");
     private static final Color COLOR_PRISON = Color.web("#d63031");
+    private static final Color COLOR_START = Color.web("#74b9ff");
     private static final Color COLOR_BORDER = Color.DARKGRAY;
 
     private final Pane root;
@@ -41,12 +42,13 @@ public class BoardViewImpl implements BoardView {
 
     public BoardViewImpl(final BoardController controller) {
         final int boardSize = controller.getBoardSize();
-        final int maxLogicalRow = maxLogicalRow(boardSize);
+        final int lastPosition = boardSize - 1;
+        final int maxLogicalRow = maxLogicalRow(lastPosition);
 
         double boardWidth = ROW_LENGTH * CELL_WIDTH + (ROW_LENGTH - 1) * HGAP;
         double boardHeight = (maxLogicalRow + 1) * CELL_HEIGHT + maxLogicalRow * VGAP;
 
-        final GridPane cellLayer = buildCellLayer(controller, boardSize, maxLogicalRow);
+        final GridPane cellLayer = buildCellLayer(controller, lastPosition, maxLogicalRow);
 
         this.pieceLayer = new Pane();
         this.pieceLayer.setPrefSize(boardWidth, boardHeight);
@@ -58,9 +60,8 @@ public class BoardViewImpl implements BoardView {
     }
 
     private static LogicalCoords toLogicalCoords(final int position) {
-        final int zeroIndexed = position - 1;
-        final int group = zeroIndexed / GROUP_SIZE;
-        final int offset = zeroIndexed % GROUP_SIZE;
+        final int group = position / GROUP_SIZE;
+        final int offset = position % GROUP_SIZE;
         final boolean leftToRight = group % 2 == 0;
         final boolean isCorner = offset == ROW_LENGTH;
 
@@ -72,8 +73,8 @@ public class BoardViewImpl implements BoardView {
         return new LogicalCoords(2 * group, col);
     }
 
-    private static int maxLogicalRow(final int boardSize) {
-        return toLogicalCoords(boardSize).row();
+    private static int maxLogicalRow(final int lastPosition) {
+        return toLogicalCoords(lastPosition).row();
     }
 
     private static GridCoords toGridCoords(final int position, final int maxLogicalRow) {
@@ -83,6 +84,7 @@ public class BoardViewImpl implements BoardView {
 
     private static Color cellTypeToColor(final String cellType) {
         return switch (cellType) {
+            case "START" -> COLOR_START;
             case "SPECIAL" -> COLOR_SPECIAL;
             case "PRISON" -> COLOR_PRISON;
             default -> COLOR_NORMAL;
@@ -131,7 +133,7 @@ public class BoardViewImpl implements BoardView {
             String color = entry.getKey();
             int newPos = entry.getValue();
             
-            int currentPos = currentPositions.getOrDefault(color, 1);
+            int currentPos = currentPositions.getOrDefault(color, 0);
             boolean sharedDest = playersPerCell.get(newPos) > 1;
 
             if (currentPos != newPos) {
@@ -148,7 +150,7 @@ public class BoardViewImpl implements BoardView {
         final GridPane grid = new GridPane();
         grid.setHgap(HGAP);
         grid.setVgap(VGAP);
-        for (int pos = 1; pos <= boardSize; pos++) {
+        for (int pos = 0; pos <= boardSize; pos++) {
             final GridCoords coords = toGridCoords(pos, maxLogicalRow);
             final StackPane cell = buildCellPane(pos, controller.getCellType(pos), controller.getCellOffset(pos));
             grid.add(cell, coords.col(), coords.row());
@@ -163,7 +165,7 @@ public class BoardViewImpl implements BoardView {
         background.setStroke(COLOR_BORDER);
         background.setStrokeWidth(1);
 
-        final Label numberLabel = new Label(String.valueOf(position));
+        final Label numberLabel = new Label(cellType.equals("START") ? "START" : String.valueOf(position));
         numberLabel.setStyle("-fx-font-size: 10px; -fx-font-weight: bold;");
 
         final StackPane cell = new StackPane(background, numberLabel);
@@ -188,7 +190,7 @@ public class BoardViewImpl implements BoardView {
             pieces.put(color, piece);
             pieceLayer.getChildren().add(piece);
             
-            StackPane startCell = cellsByPosition.get(1);
+            StackPane startCell = cellsByPosition.get(0);
             if (startCell != null) {
                 var bounds = startCell.getBoundsInParent();
                 piece.setTranslateX(bounds.getMinX() + (bounds.getWidth() / 2.0));

@@ -25,12 +25,13 @@ public final class BoardImpl implements Board {
         final Random random = new Random(config.seed());
         final int size = config.size();
 
-        final Cell[] board = new Cell[size];
-        for (int i = 0; i < size; i++) {
-            board[i] = new NormalCellImpl(i + 1); // 1-based index
+        final Cell[] board = new Cell[size + 1];
+        board[0] = new StartCellImpl();
+        for (int i = 1; i <= size; i++) {
+            board[i] = new NormalCellImpl(i); // 1-based index
         }
 
-        board[GameConfig.PRISON_POSITION - 1] = new PrisonCellImpl(GameConfig.PRISON_POSITION);
+        board[GameConfig.PRISON_POSITION] = new PrisonCellImpl(GameConfig.PRISON_POSITION);
 
         final List<Integer> freePos = new ArrayList<>();
         for (int pos = 2; pos < size; pos++) {
@@ -44,7 +45,7 @@ public final class BoardImpl implements Board {
         for (int i = 0; i < config.numSpecialCells(); i++) {
             final int pos = freePos.get(i);
             final int offset = generateOffset(random);
-            board[pos - 1] = new SpecialCellImpl(pos, offset, size);
+            board[pos] = new SpecialCellImpl(pos, offset, size);
         }
 
         this.cells = List.of(board);
@@ -69,16 +70,16 @@ public final class BoardImpl implements Board {
     /**
      * Restituisce la casella alla posizione indicata.
      *
-     * @param position posizione 1-based (da 1 a 63)
+     * @param position posizione 0-based (0 = start, da 1 a 63 le caselle di gioco)
      * @return la casella corrispondente
      * @throws IllegalArgumentException se la posizione è fuori range
      */
     @Override
     public Cell getCell(final int position) {
-        if (position < 1 || position > this.cells.size()) {
+        if (position < 0 || position >= this.cells.size()) {
             throw new IllegalArgumentException("Position out of bounds:" + position);
         }
-        return this.cells.get(position - 1);
+        return this.cells.get(position);
     }
 
     @Override

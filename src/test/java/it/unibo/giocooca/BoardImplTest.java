@@ -32,6 +32,11 @@ final class BoardImplTest {
     }
 
     @Test
+    void cell0ShouldBeStart() {
+        Assertions.assertEquals(CellType.START, board.getCell(0).getType());
+    }
+
+    @Test
     void cell1ShouldBeNormal() {
         Assertions.assertEquals(CellType.NORMAL, board.getCell(1).getType());
     }

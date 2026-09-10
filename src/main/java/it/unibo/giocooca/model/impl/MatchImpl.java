@@ -59,7 +59,7 @@ public final class MatchImpl implements Match {
         }
         final Player currentPlayer = getCurrentPlayer();
         int newPosition = currentPlayer.getPosition() + steps;
-        final int endPosition = this.board.getSize();
+        final int endPosition = this.board.getSize() - 1;
         if (newPosition >= endPosition) {
             newPosition = endPosition;
             this.gameOver = true;

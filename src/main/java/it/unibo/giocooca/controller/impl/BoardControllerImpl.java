@@ -45,9 +45,7 @@ public final class BoardControllerImpl implements BoardController {
     public Map<String, Integer> getPlayerPositions() {
         final Map<String, Integer> positions = new HashMap<>();
         for (final Player player : this.players) {
-            if (player.getPosition() >= 1) {
-                positions.put(player.getPiece().getColor(), player.getPosition());
-            }
+            positions.put(player.getPiece().getColor(), player.getPosition());
         }
         return positions;
     }
