@@ -17,9 +17,11 @@ public interface BoardView {
     Pane getBoard();
 
     /**
-     * Aggiorna la posizione visiva delle pedine dei giocatori..
+     * Aggiorna la posizione visiva delle pedine dei giocatori.
      *
-     * @param playerPositions mappa colore pedina → posizione sul tabellone
+     * @param playerPositions mappa colore pedina -> posizione sul tabellone
+     * @param movingPieceColor colore della pedina da animare
+     * @param intermediatePosition posizione intermedia da attraversare
      */
-    void updatePlayerPositions(Map<String, Integer> playerPositions);
+    void updatePlayerPositions(Map<String, Integer> playerPositions, String movingPieceColor, Integer intermediatePosition);
 }

@@ -27,8 +27,8 @@ final class BoardImplTest {
     }
 
     @Test
-    void boardShouldHave63Cells() {
-        Assertions.assertEquals(BOARD_SIZE, board.getSize());
+    void boardShouldHave63LogicalCells() {
+        Assertions.assertEquals(BOARD_SIZE, board.getSize() - 1);
     }
 
     @Test

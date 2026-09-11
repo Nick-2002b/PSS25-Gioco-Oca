@@ -43,7 +43,7 @@ public class MatchControllerImpl implements MatchController {
     @Override
     public void startMatch(){
         this.view.show();
-        this.boardView.updatePlayerPositions(this.boardController.getPlayerPositions());
+        this.boardView.updatePlayerPositions(this.boardController.getPlayerPositions(), null, null);
         this.view.showCurrentTurn(this.match.getCurrentPlayer().getNickName());
         this.view.showMessage("La partita e' iniziata - Gioca: " + this.match.getCurrentPlayer().getNickName() + " (" + this.match.getCurrentPlayer().getPiece().getColor() + ")");
 
@@ -59,7 +59,7 @@ public class MatchControllerImpl implements MatchController {
             currentPlayer.setInPrison(false);
             SoundManager.getInstance().playSfx(SoundEffect.PRISON_DOOR);
             this.view.showMessage(currentPlayer.getNickName() + " (" + currentPlayer.getPiece().getColor() + ") e' uscito di prigione");
-            this.boardView.updatePlayerPositions(this.boardController.getPlayerPositions());
+            this.boardView.updatePlayerPositions(this.boardController.getPlayerPositions(), null, null);
             this.match.nextTurn();
             this.view.showCurrentTurn(currentPlayer.getNickName()+ " (" + currentPlayer.getPiece().getColor() + ")");
             return;
@@ -72,7 +72,9 @@ public class MatchControllerImpl implements MatchController {
         this.match.moveCurrentPlayer(diceResult);
         SoundManager.getInstance().playSfx(SoundEffect.PIECE_MOVE);
         final int afterPlayerPosition = currentPlayer.getPosition();
-        this.boardView.updatePlayerPositions(this.boardController.getPlayerPositions());
+        final int diceLandingPosition = currentPlayerPosition + diceResult;
+        this.boardView.updatePlayerPositions(this.boardController.getPlayerPositions(),
+                currentPlayer.getPiece().getColor(), diceLandingPosition);
 
         if(currentPlayer.isInPrison()){
             SoundManager.getInstance().playSfx(SoundEffect.PRISON_DOOR);

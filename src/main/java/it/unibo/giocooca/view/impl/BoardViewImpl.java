@@ -123,7 +123,7 @@ public class BoardViewImpl implements BoardView {
     }
 
     @Override
-    public void updatePlayerPositions(Map<String, Integer> playerPositions) {
+    public void updatePlayerPositions(Map<String, Integer> playerPositions, String movingPieceColor, Integer intermediatePosition) {
         Map<Integer, Integer> playersPerCell = new HashMap<>();
         for (Integer pos : playerPositions.values()) {
             playersPerCell.put(pos, playersPerCell.getOrDefault(pos, 0) + 1);
@@ -135,13 +135,21 @@ public class BoardViewImpl implements BoardView {
             
             int currentPos = currentPositions.getOrDefault(color, 0);
             boolean sharedDest = playersPerCell.get(newPos) > 1;
+            boolean hasIntermediateStep = color.equals(movingPieceColor)
+                    && intermediatePosition != null
+                    && intermediatePosition != newPos
+                    && intermediatePosition != currentPos;
 
             if (currentPos != newPos) {
-                animatePiecePath(color, currentPos, newPos, sharedDest);
+                if (hasIntermediateStep) {
+                    animatePiecePathThroughInterPos(color, currentPos, intermediatePosition, newPos, sharedDest);
+                } else {
+                    animatePiecePath(color, currentPos, newPos, sharedDest);
+                }
             } else {
                 movePieceDirectly(color, newPos, sharedDest);
             }
-            
+
             currentPositions.put(color, newPos);
         }
     }
@@ -204,9 +212,28 @@ public class BoardViewImpl implements BoardView {
         Circle piece = getOrCreatePiece(color);
         SequentialTransition sequence = new SequentialTransition();
 
-        int step = (startPos < endPos) ? 1 : -1;
+        addPathSegment(sequence, piece, color, startPos, endPos, endPos, sharedDest);
 
-        for (int i = startPos + step; i != endPos + step; i += step) {
+        sequence.play();
+    }
+
+    private void animatePiecePathThroughInterPos(String color, int startPos, int intermediatePos, int endPos, boolean sharedDest) {
+        Circle piece = getOrCreatePiece(color);
+        SequentialTransition sequence = new SequentialTransition();
+
+        addPathSegment(sequence, piece, color, startPos, intermediatePos, endPos, false);
+        addPathSegment(sequence, piece, color, intermediatePos, endPos, endPos, sharedDest);
+
+        sequence.play();
+    }
+
+    private void addPathSegment(SequentialTransition sequence, Circle piece, String color, int fromPos, int toPos, int destinationPos, boolean sharedDest) {
+        if (fromPos == toPos) {
+            return;
+        }
+        int step = (fromPos < toPos) ? 1 : -1;
+
+        for (int i = fromPos + step; i != toPos + step; i += step) {
             StackPane cell = cellsByPosition.get(i);
             if (cell == null) continue;
 
@@ -214,19 +241,17 @@ public class BoardViewImpl implements BoardView {
             double targetX = bounds.getMinX() + (bounds.getWidth() / 2.0);
             double targetY = bounds.getMinY() + (bounds.getHeight() / 2.0);
 
-            if (i == endPos && sharedDest) {
+            if (i == destinationPos && sharedDest) {
                 double[] offset = quadrantOffset(color);
                 targetX += offset[0];
                 targetY += offset[1];
             }
 
-            TranslateTransition tt = new TranslateTransition(Duration.millis(300), piece);
+            TranslateTransition tt = new TranslateTransition(Duration.millis(400), piece);
             tt.setToX(targetX);
             tt.setToY(targetY);
             sequence.getChildren().add(tt);
         }
-
-        sequence.play();
     }
 
     private void movePieceDirectly(String color, int position, boolean sharedDest) {
