@@ -200,6 +200,7 @@ public class BoardViewImpl implements BoardView {
             
             StackPane startCell = cellsByPosition.get(0);
             if (startCell != null) {
+                this.root.layout();
                 var bounds = startCell.getBoundsInParent();
                 piece.setTranslateX(bounds.getMinX() + (bounds.getWidth() / 2.0));
                 piece.setTranslateY(bounds.getMinY() + (bounds.getHeight() / 2.0));
