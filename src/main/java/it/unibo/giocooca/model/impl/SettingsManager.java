@@ -25,6 +25,7 @@ public final class SettingsManager {
     private static final String KEY_MUSIC = "audio.musicVolume";
     private static final String KEY_SFX = "audio.sfxVolume";
     private static final String KEY_SPECIAL = "game.numSpecialCells";
+    private static final String KEY_FIXED_PLACEMENT = "game.fixed.placement";
 
     /**
      * Carica le impostazioni salvate su file, oppure restituisce quelle di default se il file non esiste
@@ -46,6 +47,7 @@ public final class SettingsManager {
             settings.setMusicVolume(Double.parseDouble(props.getProperty(KEY_MUSIC, "0.5")));
             settings.setSfxVolume(Double.parseDouble(props.getProperty(KEY_SFX, "0.7")));
             settings.setNumSpecialCells((int) Double.parseDouble(props.getProperty(KEY_SPECIAL, "7")));
+            settings.setFixedPlacement(Boolean.parseBoolean(props.getProperty(KEY_FIXED_PLACEMENT, "true")));
         } catch (final IOException | NumberFormatException e) {
             LOGGER.log(Level.WARNING, "Unable to load settings; default values will be used.", e);
         }
@@ -69,6 +71,7 @@ public final class SettingsManager {
         props.setProperty(KEY_MUSIC, String.valueOf(settings.getMusicVolume()));
         props.setProperty(KEY_SFX, String.valueOf(settings.getSfxVolume()));
         props.setProperty(KEY_SPECIAL, String.valueOf(settings.getNumSpecialCells()));
+        props.setProperty(KEY_FIXED_PLACEMENT, String.valueOf(settings.isFixedPlacement()));
 
         try (OutputStream out = new FileOutputStream(SETTINGS_FILE)) {
             props.store(out, "Goose Game - User settings");

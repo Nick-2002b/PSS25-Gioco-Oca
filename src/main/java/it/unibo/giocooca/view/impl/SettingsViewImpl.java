@@ -18,9 +18,8 @@ public final class SettingsViewImpl implements SettingsView {
     private static final int SLIDER_WIDTH = 250;
     private static final int MIN_SPECIAL = 1;
     private static final int MAX_SPECIAL = 20;
-    private static final int CONTENT_PADDING = 40;
     private static final int CONTENT_MAX_WIDTH = 600;
-    private static final int LABEL_WIDTH = 150;
+    private static final int LABEL_WIDTH = 180;
     private final SceneManager sceneManager;
     private final SettingsController controller;
 
@@ -92,7 +91,7 @@ public final class SettingsViewImpl implements SettingsView {
             controller.onPlacementChanged(newT == fixedBtn);
         });
 
-        final HBox placementRow = buildRow("Tipo ", randomBtn, fixedBtn);
+        final HBox placementRow = buildRow("Tipo Piazzamento", randomBtn, fixedBtn);
 
         // --- Buttons ---
         final Button saveBtn = new Button("Salva");
@@ -116,7 +115,7 @@ public final class SettingsViewImpl implements SettingsView {
                 new Separator(),
                 buttons
         );
-        content.setPadding(new Insets(CONTENT_PADDING));
+
         content.setMaxWidth(CONTENT_MAX_WIDTH);
         content.setAlignment(Pos.CENTER);
 
