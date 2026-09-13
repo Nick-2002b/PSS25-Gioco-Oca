@@ -4,6 +4,11 @@ package it.unibo.giocooca.controller;
  * Contratto per il controller della schermata delle impostazioni.
  */
 public interface SettingsController {
+
+    boolean isFixedPlacement();
+
+    void onPlacementChanged(boolean fixed);
+
     /**
      * Restituisce il volume della musica.
      *

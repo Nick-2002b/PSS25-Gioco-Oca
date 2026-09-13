@@ -9,6 +9,7 @@ public final class Settings {
     private static final double DEFAULT_SFX_VOLUME = 0.7;
     private static final int DEFAULT_SPECIAL_CELLS = 7;
 
+    private boolean fixedPlacement;
     private double musicVolume;
     private double sfxVolume;
     private int numSpecialCells;
@@ -21,6 +22,10 @@ public final class Settings {
         this.sfxVolume = DEFAULT_SFX_VOLUME;
         this.numSpecialCells = DEFAULT_SPECIAL_CELLS;
     }
+
+    public boolean isFixedPlacement() { return fixedPlacement; }
+
+    public void setFixedPlacement(final boolean fixedPlacement) { this.fixedPlacement = fixedPlacement; }
 
     /**
      * Restituisce il volume della musica.

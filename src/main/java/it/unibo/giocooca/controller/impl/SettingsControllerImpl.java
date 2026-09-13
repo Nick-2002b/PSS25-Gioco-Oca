@@ -29,6 +29,16 @@ public final class SettingsControllerImpl implements SettingsController {
     }
 
     @Override
+    public boolean isFixedPlacement() {
+        return settings.isFixedPlacement();
+    }
+
+    @Override
+    public void onPlacementChanged(boolean fixed) {
+        settings.setFixedPlacement(fixed);
+    }
+
+    @Override
     public double getMusicVolume() {
         return settings.getMusicVolume();
     }

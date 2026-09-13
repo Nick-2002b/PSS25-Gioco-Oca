@@ -4,8 +4,6 @@ import it.unibo.giocooca.model.Board;
 import it.unibo.giocooca.model.Cell;
 import it.unibo.giocooca.model.GameConfig;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -33,17 +31,9 @@ public final class BoardImpl implements Board {
 
         board[GameConfig.PRISON_POSITION] = new PrisonCellImpl(GameConfig.PRISON_POSITION);
 
-        final List<Integer> freePos = new ArrayList<>();
-        for (int pos = 2; pos < size; pos++) {
-            if (pos != GameConfig.PRISON_POSITION) {
-                freePos.add(pos);
-            }
-        }
+        final List<Integer> specialPositions = config.strategy().getSpecialCellPositions(size, config.numSpecialCells(), GameConfig.PRISON_POSITION, random);
 
-        Collections.shuffle(freePos, random);
-
-        for (int i = 0; i < config.numSpecialCells(); i++) {
-            final int pos = freePos.get(i);
+        for (final int pos : specialPositions) {
             final int offset = generateOffset(random);
             board[pos] = new SpecialCellImpl(pos, offset, size);
         }

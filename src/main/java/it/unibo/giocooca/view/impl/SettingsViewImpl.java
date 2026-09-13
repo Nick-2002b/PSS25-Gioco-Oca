@@ -6,11 +6,7 @@ import it.unibo.giocooca.view.SettingsView;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Separator;
-import javafx.scene.control.Slider;
-import javafx.scene.control.Spinner;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -80,6 +76,24 @@ public final class SettingsViewImpl implements SettingsView {
 
         final HBox specialRow = buildRow("Caselle Speciali", specialSpinner);
 
+        final ToggleGroup placementGroup = new ToggleGroup();
+        final RadioButton randomBtn = new RadioButton("Casuale");
+        final RadioButton fixedBtn = new RadioButton("Frequenza fissa");
+        randomBtn.setToggleGroup(placementGroup);
+        fixedBtn.setToggleGroup(placementGroup);
+
+        if (controller.isFixedPlacement()) {
+            fixedBtn.setSelected(true);
+        } else {
+            randomBtn.setSelected(true);
+        }
+
+        placementGroup.selectedToggleProperty().addListener((obs, oldT, newT) -> {
+            controller.onPlacementChanged(newT == fixedBtn);
+        });
+
+        final HBox placementRow = buildRow("Tipo ", randomBtn, fixedBtn);
+
         // --- Buttons ---
         final Button saveBtn = new Button("Salva");
         saveBtn.setStyle("-fx-font-size: 15px; -fx-padding: 10px 30px;");
@@ -98,7 +112,7 @@ public final class SettingsViewImpl implements SettingsView {
                 new Separator(),
                 audioTitle, musicRow, sfxRow,
                 new Separator(),
-                gameTitle, specialRow,
+                gameTitle, specialRow, placementRow,
                 new Separator(),
                 buttons
         );
