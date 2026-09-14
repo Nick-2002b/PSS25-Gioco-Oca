@@ -17,6 +17,8 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
@@ -134,33 +136,48 @@ public class BoardViewImpl implements BoardView {
             List<Integer> intermediatePositions,
             final Runnable onIntermediateReached,
             Runnable onAnimationFinished) {
-
         Map<Integer, Integer> playersPerCell = new HashMap<>();
         for (Integer pos : playerPositions.values()) {
             playersPerCell.put(pos, playersPerCell.getOrDefault(pos, 0) + 1);
         }
 
-        for (Map.Entry<String, Integer> entry : playerPositions.entrySet()) {
-            String color = entry.getKey();
-            int newPos = entry.getValue();
-            
-            int currentPos = currentPositions.getOrDefault(color, 0);
-            boolean sharedDest = playersPerCell.get(newPos) > 1;
-            boolean hasIntermediateSteps = color.equals(movingPieceColor)
-                    && intermediatePositions != null
-                    && !intermediatePositions.isEmpty();
+        final int oldPos = currentPositions.getOrDefault(movingPieceColor, 0);
 
-            if (currentPos != newPos) {
-                if (hasIntermediateSteps) {
-                    animatePiecePathThroughSteps(color, currentPos, intermediatePositions, newPos, sharedDest, onIntermediateReached, onAnimationFinished);
-                } else {
-                    animatePiecePath(color, currentPos, newPos, sharedDest, onAnimationFinished);
-                }
-            } else {
-                movePieceDirectly(color, newPos, sharedDest);
-            }
-
+        final List<Runnable> deferredMoves = new ArrayList<>();
+        for (final Map.Entry<String, Integer> entry : playerPositions.entrySet()) {
+            final String color = entry.getKey();
+            final int newPos = entry.getValue();
+            final boolean sharedDest = playersPerCell.get(newPos) > 1;
             currentPositions.put(color, newPos);
+            if (!color.equals(movingPieceColor)) {
+                deferredMoves.add(() -> movePieceDirectly(color, newPos, sharedDest));
+            }
+        }
+
+        final Runnable onFinished = () -> {
+            deferredMoves.forEach(Runnable::run);
+            if (onAnimationFinished != null) {
+                onAnimationFinished.run();
+            }
+        };
+
+        if (movingPieceColor != null && playerPositions.containsKey(movingPieceColor)) {
+            final int newPos = playerPositions.get(movingPieceColor);
+            final boolean sharedDest = playersPerCell.get(newPos) > 1;
+            final boolean hasIntermediateSteps = intermediatePositions != null && !intermediatePositions.isEmpty();
+            if (oldPos != newPos) {
+                if (hasIntermediateSteps) {
+                    animatePiecePathThroughSteps(movingPieceColor, oldPos,
+                            intermediatePositions, newPos, sharedDest, onIntermediateReached, onFinished);
+                } else {
+                    animatePiecePath(movingPieceColor, oldPos, newPos, sharedDest, onFinished);
+                }
+            }
+        } else {
+            deferredMoves.forEach(Runnable::run);
+            if (onAnimationFinished != null) {
+                onAnimationFinished.run();
+            }
         }
     }
 
@@ -322,8 +339,10 @@ public class BoardViewImpl implements BoardView {
             targetY += offset[1];
         }
 
-        piece.setTranslateX(targetX);
-        piece.setTranslateY(targetY);
+        final TranslateTransition tt = new TranslateTransition(Duration.millis(400), piece);
+        tt.setToX(targetX);
+        tt.setToY(targetY);
+        tt.play();
     }
 
     private record LogicalCoords(int row, int col) { }
