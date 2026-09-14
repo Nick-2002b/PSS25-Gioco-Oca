@@ -2,6 +2,7 @@ package it.unibo.giocooca.view.impl;
 
 import it.unibo.giocooca.controller.BoardController;
 import it.unibo.giocooca.view.BoardView;
+import javafx.animation.PauseTransition;
 import javafx.animation.SequentialTransition;
 import javafx.animation.TranslateTransition;
 import javafx.geometry.Pos;
@@ -123,7 +124,13 @@ public class BoardViewImpl implements BoardView {
     }
 
     @Override
-    public void updatePlayerPositions(Map<String, Integer> playerPositions, String movingPieceColor, Integer intermediatePosition) {
+    public void updatePlayerPositions(
+            Map<String, Integer> playerPositions,
+            String movingPieceColor,
+            Integer intermediatePosition,
+            final Runnable onIntermediateReached,
+            Runnable onAnimationFinished) {
+
         Map<Integer, Integer> playersPerCell = new HashMap<>();
         for (Integer pos : playerPositions.values()) {
             playersPerCell.put(pos, playersPerCell.getOrDefault(pos, 0) + 1);
@@ -142,9 +149,9 @@ public class BoardViewImpl implements BoardView {
 
             if (currentPos != newPos) {
                 if (hasIntermediateStep) {
-                    animatePiecePathThroughInterPos(color, currentPos, intermediatePosition, newPos, sharedDest);
+                    animatePiecePathThroughInterPos(color, currentPos, intermediatePosition, newPos, sharedDest, onIntermediateReached, onAnimationFinished);
                 } else {
-                    animatePiecePath(color, currentPos, newPos, sharedDest);
+                    animatePiecePath(color, currentPos, newPos, sharedDest, onAnimationFinished);
                 }
             } else {
                 movePieceDirectly(color, newPos, sharedDest);
@@ -209,23 +216,63 @@ public class BoardViewImpl implements BoardView {
         return pieces.get(color);
     }
 
-    private void animatePiecePath(String color, int startPos, int endPos, boolean sharedDest) {
+    private void animatePiecePath(
+            String color,
+            int startPos,
+            int endPos,
+            boolean sharedDest,
+            Runnable onFinished) {
         Circle piece = getOrCreatePiece(color);
         SequentialTransition sequence = new SequentialTransition();
 
         addPathSegment(sequence, piece, color, startPos, endPos, endPos, sharedDest);
 
+        sequence.setOnFinished(e -> {
+            if (onFinished != null) {
+                onFinished.run();
+            }
+        });
+
         sequence.play();
     }
 
-    private void animatePiecePathThroughInterPos(String color, int startPos, int intermediatePos, int endPos, boolean sharedDest) {
+    private void animatePiecePathThroughInterPos(
+            String color,
+            int startPos,
+            int intermediatePos,
+            int endPos,
+            boolean sharedDest,
+            final Runnable onIntermediateReached,
+            final Runnable onFinished) {
         Circle piece = getOrCreatePiece(color);
-        SequentialTransition sequence = new SequentialTransition();
 
-        addPathSegment(sequence, piece, color, startPos, intermediatePos, endPos, false);
-        addPathSegment(sequence, piece, color, intermediatePos, endPos, endPos, sharedDest);
+        final SequentialTransition firstSegment = new SequentialTransition();
 
-        sequence.play();
+        addPathSegment(firstSegment, piece, color, startPos, intermediatePos, intermediatePos, false);
+
+        firstSegment.setOnFinished(e -> {
+            if (onIntermediateReached != null) {
+                onIntermediateReached.run();
+            }
+
+            final PauseTransition pause = new PauseTransition(Duration.millis(700));
+
+
+            pause.setOnFinished(e2 -> {
+                final SequentialTransition secondSegment = new SequentialTransition();
+                addPathSegment(secondSegment, piece, color, intermediatePos, endPos, endPos, sharedDest);
+
+                secondSegment.setOnFinished(e3 -> {
+                    if (onFinished != null) {
+                        onFinished.run();
+                    }
+                });
+                secondSegment.play();
+            });
+            pause.play();
+        });
+
+        firstSegment.play();
     }
 
     private void addPathSegment(SequentialTransition sequence, Circle piece, String color, int fromPos, int toPos, int destinationPos, boolean sharedDest) {

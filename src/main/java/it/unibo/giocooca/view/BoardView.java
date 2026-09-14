@@ -22,6 +22,13 @@ public interface BoardView {
      * @param playerPositions mappa colore pedina -> posizione sul tabellone
      * @param movingPieceColor colore della pedina da animare
      * @param intermediatePosition posizione intermedia da attraversare
+     * @param onIntermediateReached callback quando la pedina raggiunge la posizione intermedia
+     * @param onAnimationFinished callback quando la pedina raggiunge la posizione finale
      */
-    void updatePlayerPositions(Map<String, Integer> playerPositions, String movingPieceColor, Integer intermediatePosition);
+    void updatePlayerPositions(
+            Map<String, Integer> playerPositions,
+            String movingPieceColor,
+            Integer intermediatePosition,
+            Runnable onIntermediateReached,
+            Runnable onAnimationFinished);
 }
