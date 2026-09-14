@@ -11,6 +11,7 @@ import it.unibo.giocooca.view.BoardView;
 import it.unibo.giocooca.view.MatchView;
 import it.unibo.giocooca.view.impl.BoardViewImpl;
 import it.unibo.giocooca.view.impl.MatchViewImpl;
+import java.util.List;
 
 //TODO Aggiungere un delay tra il lancio del dado e lo spostamento della pedina
 public class MatchControllerImpl implements MatchController {
@@ -43,7 +44,7 @@ public class MatchControllerImpl implements MatchController {
     @Override
     public void startMatch(){
         this.view.show();
-        this.boardView.updatePlayerPositions(this.boardController.getPlayerPositions(), null, null);
+        this.boardView.updatePlayerPositions(this.boardController.getPlayerPositions(), null, List.of());
         this.view.showCurrentTurn(this.match.getCurrentPlayer().getNickName());
         this.view.showMessage("La partita e' iniziata - Gioca: " + this.match.getCurrentPlayer().getNickName() + " (" + this.match.getCurrentPlayer().getPiece().getColor() + ")");
 
@@ -59,43 +60,45 @@ public class MatchControllerImpl implements MatchController {
             currentPlayer.setInPrison(false);
             SoundManager.getInstance().playSfx(SoundEffect.PRISON_DOOR);
             this.view.showMessage(currentPlayer.getNickName() + " (" + currentPlayer.getPiece().getColor() + ") e' uscito di prigione");
-            this.boardView.updatePlayerPositions(this.boardController.getPlayerPositions(), null, null);
+            this.boardView.updatePlayerPositions(this.boardController.getPlayerPositions(), null, List.of());
             this.match.nextTurn();
-            this.view.showCurrentTurn(currentPlayer.getNickName()+ " (" + currentPlayer.getPiece().getColor() + ")");
+            final Player nextPlayer = this.match.getCurrentPlayer();
+            this.view.showCurrentTurn(nextPlayer.getNickName()+ " (" + nextPlayer.getPiece().getColor() + ")");
             return;
         }
         final int diceResult = this.match.rollDice();
         SoundManager.getInstance().playSfx(SoundEffect.DICE_ROLL);
         this.view.showDiceResult(diceResult);
 
-        final int currentPlayerPosition = currentPlayer.getPosition();
         this.match.moveCurrentPlayer(diceResult);
-        SoundManager.getInstance().playSfx(SoundEffect.PIECE_MOVE);
-        final int afterPlayerPosition = currentPlayer.getPosition();
-        final int diceLandingPosition = currentPlayerPosition + diceResult;
+        final List<Integer> movePositions = this.match.getLastMovePositions();
+        final List<Integer> intermediatePositions = movePositions.size() > 1 ? movePositions.subList(0, movePositions.size() -1) : List.of();
         this.boardView.updatePlayerPositions(this.boardController.getPlayerPositions(),
-                currentPlayer.getPiece().getColor(), diceLandingPosition);
-
-        if(currentPlayer.isInPrison()){
-            SoundManager.getInstance().playSfx(SoundEffect.PRISON_DOOR);
-            this.view.showMessage("Ops!!! " + currentPlayer.getNickName() + " (" + currentPlayer.getPiece().getColor() + ") e' finito in prigione!");
-        }else if(!this.match.isGameOver() && afterPlayerPosition != currentPlayerPosition + diceResult){
-            final int offset = this.boardController.getCellOffset(currentPlayerPosition + diceResult);
-            if(offset != 0){
+                currentPlayer.getPiece().getColor(), intermediatePositions);
+        for (int i=0; i < movePositions.size() -1; i++){
+            final int pos = movePositions.get(i);
+            final int offset = this.boardController.getCellOffset(pos);
+            if (offset !=0){
                 SoundManager.getInstance().playSfx(SoundEffect.SPECIAL_CELL);
                 final String direzione = offset > 0 ? "avanti" : "indietro";
                 this.view.showMessage("Wow!!! " + currentPlayer.getNickName() + 
-                " (" + currentPlayer.getPiece().getColor() + ") e' finito in una cella speciale! " + 
+                " (" + currentPlayer.getPiece().getColor() + ") e' finito nella cella speciale " + pos + "! " +
                 direzione + " di " + Math.abs(offset) + " caselle");
             }
         }
-
+        
+        
+        if(currentPlayer.isInPrison()){
+            SoundManager.getInstance().playSfx(SoundEffect.PRISON_DOOR);
+            this.view.showMessage("Ops!!! " + currentPlayer.getNickName() + " (" + currentPlayer.getPiece().getColor() + ") e' finito in prigione!");
+        }
         if(this.match.isGameOver()){
             SoundManager.getInstance().playSfx(SoundEffect.WIN);
             this.view.showWinner(this.match.getWinner().getNickName() + " (" + this.match.getWinner().getPiece().getColor() + ")");
-        } else{
+        } else {
             this.match.nextTurn();
-            this.view.showCurrentTurn(currentPlayer.getNickName() + " (" + currentPlayer.getPiece().getColor() + ")");
+            final Player nextPlayer = this.match.getCurrentPlayer();
+            this.view.showCurrentTurn(nextPlayer.getNickName() + " (" + nextPlayer.getPiece().getColor() + ")");
         }
     }
     

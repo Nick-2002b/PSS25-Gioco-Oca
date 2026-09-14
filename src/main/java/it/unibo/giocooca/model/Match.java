@@ -66,4 +66,9 @@ public interface Match {
      * @return il tabellone
      */
     Board getBoard();
+    /**
+     * Restituisce la lista delle posizioni dei salti del giocatore quando incontra le caselle speciali
+     * @return lista delle posizioni dei salti
+     */
+    List<Integer> getLastMovePositions();
 }

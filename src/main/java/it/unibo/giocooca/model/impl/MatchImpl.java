@@ -8,7 +8,17 @@ import it.unibo.giocooca.model.Player;
 
 import it.unibo.giocooca.model.Board;
 
+import it.unibo.giocooca.model.Cell;
+
 import java.util.List;
+
+import java.util.ArrayList;
+
+import java.util.Collections;
+
+import java.util.HashSet;
+
+import java.util.Set;
 
 /**
  * Implementazione di una partita del gioco dell'oca.
@@ -21,6 +31,7 @@ public final class MatchImpl implements Match {
     private int currentPlayerIndex;
     private boolean gameOver;
     private Player winner;
+    private List<Integer> lastMovePositions;
 
   /**
    * Costruttore.
@@ -45,13 +56,17 @@ public final class MatchImpl implements Match {
         this.currentPlayerIndex = 0;
         this.gameOver = false;
         this.winner = null;
+        this.lastMovePositions = new ArrayList<>();
     }
 
     @Override
     public int rollDice() {
         return this.dice.roll();
     }
-
+    @Override
+    public List<Integer> getLastMovePositions() {
+        return Collections.unmodifiableList(this.lastMovePositions);
+    }
     @Override
     public void moveCurrentPlayer(final int steps) {
         if (this.gameOver) {
@@ -60,21 +75,52 @@ public final class MatchImpl implements Match {
         final Player currentPlayer = getCurrentPlayer();
         int newPosition = currentPlayer.getPosition() + steps;
         final int endPosition = this.board.getSize() - 1;
+        this.lastMovePositions = new ArrayList<>();
         if (newPosition >= endPosition) {
             newPosition = endPosition;
             this.gameOver = true;
             this.winner = currentPlayer;
+            currentPlayer.setPosition(newPosition);
+            this.lastMovePositions.add(newPosition);
+            return;
         }
         currentPlayer.setPosition(newPosition);
+        this.lastMovePositions.add(newPosition);
         applyCurrentCellEffect(currentPlayer);
     }
 
     @Override
     public void applyCurrentCellEffect(final Player player) {
-        final int playerPos = player.getPosition();
-        board.getCell(playerPos).applyEffect(player);
-
-    }
+        if (this.gameOver){
+            return;
+        }
+        final Set<Integer>visitedPositions = new HashSet<>();
+        final int endPosition = this.board.getSize() -1;
+        if (this.lastMovePositions == null){
+            this.lastMovePositions = new ArrayList<>();
+        }
+        while (!this.gameOver){
+            final int playerPos = player.getPosition();
+            if (visitedPositions.contains(playerPos)){
+                break;
+            }
+            visitedPositions.add(playerPos);
+            final Cell cell = this.board.getCell(playerPos);
+            cell.applyEffect(player);
+            final int newPos = player.getPosition();
+            if (newPos >= endPosition){
+                player.setPosition(endPosition);
+                this.gameOver = true;
+                this.winner = player;
+                this.lastMovePositions.add(endPosition);
+                break;
+            }
+            if (newPos == playerPos) {
+                break;
+            }
+            this.lastMovePositions.add(newPos);
+        }
+     }
 
     @Override
     public void nextTurn() {
