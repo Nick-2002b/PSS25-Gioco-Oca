@@ -10,6 +10,14 @@ public interface SettingsController {
     void onPlacementChanged(boolean fixed);
 
     /**
+     * Restituisce il massimo di caselle speciali
+     * da poter piazzare sul percorso.
+     *
+     * @return massimo di caselle speciali
+     */
+    int getMaxSpecialCells();
+
+    /**
      * Restituisce il volume della musica.
      *
      * @return il volume della musica

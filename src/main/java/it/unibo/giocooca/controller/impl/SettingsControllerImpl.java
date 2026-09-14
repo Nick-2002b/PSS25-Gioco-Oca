@@ -39,6 +39,11 @@ public final class SettingsControllerImpl implements SettingsController {
     }
 
     @Override
+    public int getMaxSpecialCells() {
+        return settings.getMaxSpecialCells();
+    }
+
+    @Override
     public double getMusicVolume() {
         return settings.getMusicVolume();
     }

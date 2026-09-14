@@ -17,7 +17,6 @@ import javafx.scene.layout.VBox;
 public final class SettingsViewImpl implements SettingsView {
     private static final int SLIDER_WIDTH = 250;
     private static final int MIN_SPECIAL = 1;
-    private static final int MAX_SPECIAL = 20;
     private static final int CONTENT_MAX_WIDTH = 600;
     private static final int LABEL_WIDTH = 180;
     private final SceneManager sceneManager;
@@ -68,7 +67,7 @@ public final class SettingsViewImpl implements SettingsView {
         final Label gameTitle = new Label("Partita");
         gameTitle.setStyle("-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;");
 
-        final Spinner<Integer> specialSpinner = new Spinner<>(MIN_SPECIAL, MAX_SPECIAL, controller.getNumSpecialCells());
+        final Spinner<Integer> specialSpinner = new Spinner<>(MIN_SPECIAL, controller.getMaxSpecialCells(), controller.getNumSpecialCells());
         specialSpinner.valueProperty().addListener((obs, oldVal, newVal) -> {
             controller.onNumSpecialCellsChanger(newVal);
         });

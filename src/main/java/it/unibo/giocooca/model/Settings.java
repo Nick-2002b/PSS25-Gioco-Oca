@@ -46,6 +46,15 @@ public final class Settings {
     }
 
     /**
+     * Restituisce il numero di caselle speciali
+     *
+     * @return numero massimo di caselle speciali
+     */
+    public int getMaxSpecialCells() {
+        return MAX_SPECIAL_CELLS;
+    }
+
+    /**
      * Restituisce il volume degli effetti sonori.
      *
      * @return il volume degli effetti sonori, tra 0.0 e 1.0
@@ -80,7 +89,7 @@ public final class Settings {
     public void setNumSpecialCells(final int numSpecialCells) {
         if (numSpecialCells < 1 || numSpecialCells > MAX_SPECIAL_CELLS) {
             throw new IllegalArgumentException(
-                    "The special cells must be within the range of 1–20."
+                    "The special cells must be within the range of 1-20."
             );
         }
         this.numSpecialCells = numSpecialCells;
