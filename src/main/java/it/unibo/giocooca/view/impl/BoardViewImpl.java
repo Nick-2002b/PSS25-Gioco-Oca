@@ -3,8 +3,11 @@ package it.unibo.giocooca.view.impl;
 import it.unibo.giocooca.controller.BoardController;
 import it.unibo.giocooca.view.BoardView;
 import javafx.animation.PauseTransition;
+import it.unibo.giocooca.audio.SoundEffect;
+import it.unibo.giocooca.audio.SoundManager;
 import javafx.animation.SequentialTransition;
 import javafx.animation.TranslateTransition;
+import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.util.Duration;
@@ -16,6 +19,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
 
 public class BoardViewImpl implements BoardView {
 
@@ -127,7 +131,7 @@ public class BoardViewImpl implements BoardView {
     public void updatePlayerPositions(
             Map<String, Integer> playerPositions,
             String movingPieceColor,
-            Integer intermediatePosition,
+            List<Integer> intermediatePositions,
             final Runnable onIntermediateReached,
             Runnable onAnimationFinished) {
 
@@ -142,14 +146,13 @@ public class BoardViewImpl implements BoardView {
             
             int currentPos = currentPositions.getOrDefault(color, 0);
             boolean sharedDest = playersPerCell.get(newPos) > 1;
-            boolean hasIntermediateStep = color.equals(movingPieceColor)
-                    && intermediatePosition != null
-                    && intermediatePosition != newPos
-                    && intermediatePosition != currentPos;
+            boolean hasIntermediateSteps = color.equals(movingPieceColor)
+                    && intermediatePositions != null
+                    && !intermediatePositions.isEmpty();
 
             if (currentPos != newPos) {
-                if (hasIntermediateStep) {
-                    animatePiecePathThroughInterPos(color, currentPos, intermediatePosition, newPos, sharedDest, onIntermediateReached, onAnimationFinished);
+                if (hasIntermediateSteps) {
+                    animatePiecePathThroughSteps(color, currentPos, intermediatePositions, newPos, sharedDest, onIntermediateReached, onAnimationFinished);
                 } else {
                     animatePiecePath(color, currentPos, newPos, sharedDest, onAnimationFinished);
                 }
@@ -229,50 +232,51 @@ public class BoardViewImpl implements BoardView {
 
         sequence.setOnFinished(e -> {
             if (onFinished != null) {
-                onFinished.run();
+                Platform.runLater(onFinished);
             }
         });
 
         sequence.play();
     }
 
-    private void animatePiecePathThroughInterPos(
+    private void animatePiecePathThroughSteps(
             String color,
             int startPos,
-            int intermediatePos,
+            List<Integer> intermediateSteps,
             int endPos,
             boolean sharedDest,
             final Runnable onIntermediateReached,
             final Runnable onFinished) {
-        Circle piece = getOrCreatePiece(color);
+        final Circle piece = getOrCreatePiece(color);
+        final SequentialTransition full = new SequentialTransition();
 
-        final SequentialTransition firstSegment = new SequentialTransition();
+        int fromPos = startPos;
+        for (final int interPos : intermediateSteps) {
+            final int from = fromPos;
+            final SequentialTransition seg = new SequentialTransition();
 
-        addPathSegment(firstSegment, piece, color, startPos, intermediatePos, intermediatePos, false);
+            addPathSegment(seg, piece, color, from, interPos, interPos, false);
 
-        firstSegment.setOnFinished(e -> {
-            if (onIntermediateReached != null) {
-                onIntermediateReached.run();
-            }
-
-            final PauseTransition pause = new PauseTransition(Duration.millis(700));
-
-
-            pause.setOnFinished(e2 -> {
-                final SequentialTransition secondSegment = new SequentialTransition();
-                addPathSegment(secondSegment, piece, color, intermediatePos, endPos, endPos, sharedDest);
-
-                secondSegment.setOnFinished(e3 -> {
-                    if (onFinished != null) {
-                        onFinished.run();
-                    }
-                });
-                secondSegment.play();
+            seg.setOnFinished(e -> {
+                if (onIntermediateReached != null) {
+                    onIntermediateReached.run();
+                }
             });
-            pause.play();
-        });
+            full.getChildren().add(seg);
+            full.getChildren().add(new PauseTransition(Duration.millis(700)));
+            fromPos = interPos;
+        }
 
-        firstSegment.play();
+        final int lastFrom = fromPos;
+        final SequentialTransition lastSeg = new SequentialTransition();
+        addPathSegment(lastSeg, piece, color, lastFrom, endPos, endPos, sharedDest);
+        full.getChildren().add(lastSeg);
+        full.setOnFinished(e -> {
+            if (onFinished != null) {
+                Platform.runLater(onFinished);
+            }
+        });
+        full.play();
     }
 
     private void addPathSegment(SequentialTransition sequence, Circle piece, String color, int fromPos, int toPos, int destinationPos, boolean sharedDest) {
@@ -298,6 +302,7 @@ public class BoardViewImpl implements BoardView {
             TranslateTransition tt = new TranslateTransition(Duration.millis(400), piece);
             tt.setToX(targetX);
             tt.setToY(targetY);
+            tt.setOnFinished(e -> SoundManager.getInstance().playSfx(SoundEffect.PIECE_MOVE));
             sequence.getChildren().add(tt);
         }
     }
