@@ -151,34 +151,21 @@ public class MatchViewImpl implements MatchView{
          this.btnRollDice.setDisable(true);
       }
       final Timeline diceAnimation = new Timeline(
-         new KeyFrame(Duration.millis(80), event ->{
+         new KeyFrame(Duration.millis(100), event -> {
             final int randomIndex = this.random.nextInt(this.diceFaces.size());
             this.diceView.setImage(this.diceFaces.get(randomIndex));
          })
       );
       diceAnimation.setCycleCount(10);
       diceAnimation.setOnFinished(event -> {
-         this.diceView.setImage(this.diceFaces.get(result -1));
-      });
-      if (this.lblDiceResult != null) {
-         this.lblDiceResult.setText("Ultimo lancio: " + result);
-      }
-      if (this.btnRollDice != null){
-         this.btnRollDice.setDisable(false);
-      }
-      diceAnimation.play();
-
-      if (this.diceView != null) {
-         switch (result) {
-            case 1 -> this.diceView.setImage(this.diceFaceOne);
-            case 2 -> this.diceView.setImage(this.diceFaceTwo);
-            case 3 -> this.diceView.setImage(this.diceFaceThree);
-            case 4 -> this.diceView.setImage(this.diceFaceFour);
-            case 5 -> this.diceView.setImage(this.diceFaceFive);
-            case 6 -> this.diceView.setImage(this.diceFaceSix);
-            default -> { }
+         if (result >= 1 && result <= this.diceFaces.size()) {
+            this.diceView.setImage(this.diceFaces.get(result - 1));
          }
-      }
+         if (this.lblDiceResult != null) {
+            this.lblDiceResult.setText("Ultimo lancio: " + result);
+         }
+      });
+      diceAnimation.play();
    }
 
    @Override
@@ -201,6 +188,9 @@ public class MatchViewImpl implements MatchView{
    public void showCurrentTurn(final String nickNamePlayer) {
       if (this.lblCurrentTurn != null) {
          this.lblCurrentTurn.setText("Turno di: " + nickNamePlayer);
+      }
+      if (this.btnRollDice != null) {
+         this.btnRollDice.setDisable(false);
       }
    }
 }
