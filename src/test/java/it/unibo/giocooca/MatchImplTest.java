@@ -85,4 +85,27 @@ final class MatchImplTest {
         final int afterPosPlayer = this.match.getCurrentPlayer().getPosition();
         assertNotEquals(beforePosPlayer, afterPosPlayer);
     }
+
+    @Test
+    void testChainedSpecialCells() {
+        final Cell[] cells = new Cell[64];
+        cells[0] = new StartCellImpl();
+        for (int i = 1; i < 64; i++) {
+            cells[i] = new NormalCellImpl(i);
+        }
+        cells[10] = new SpecialCellImpl(10, 4, 63);
+        cells[14] = new SpecialCellImpl(14, 3, 63);
+        final Board customBoard = new Board() {
+            @Override
+            public int getSize() { return 64; }
+            @Override
+            public Cell getCell(int pos) { return cells[pos]; }
+            @Override
+            public List<Cell> getAllCells() { return List.of(cells); }
+        };
+        final Match customMatch = new MatchImpl(List.of(player1, player2), customBoard, new DiceImpl());
+        customMatch.moveCurrentPlayer(10);
+        assertEquals(17, player1.getPosition());
+        assertEquals(List.of(10, 14, 17), customMatch.getLastMovePositions());
+    }
 }
