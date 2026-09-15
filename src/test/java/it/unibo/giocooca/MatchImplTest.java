@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+import it.unibo.giocooca.model.impl.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -19,11 +20,6 @@ import it.unibo.giocooca.model.Dice;
 import it.unibo.giocooca.model.GameConfig;
 import it.unibo.giocooca.model.Match;
 import it.unibo.giocooca.model.Player;
-import it.unibo.giocooca.model.impl.BoardImpl;
-import it.unibo.giocooca.model.impl.DiceImpl;
-import it.unibo.giocooca.model.impl.MatchImpl;
-import it.unibo.giocooca.model.impl.PieceImpl;
-import it.unibo.giocooca.model.impl.PlayerImpl;
 
 /**
  * Test per la partita.
@@ -43,7 +39,7 @@ final class MatchImplTest {
         this.player1 = new PlayerImpl("Pippo", new PieceImpl("Mucca", "rosso"));
         this.player2 = new PlayerImpl("Pluto", new PieceImpl("Cane", "verde"));
 
-        final GameConfig config = new GameConfig(BOARD_SIZE, SPECIAL_CELLS_COUNT, SEED);
+        final GameConfig config = new GameConfig(BOARD_SIZE, SPECIAL_CELLS_COUNT, SEED, new RandomPlacementStrategy());
         this.board = new BoardImpl(config);
         final Dice dice = new DiceImpl();
         this.match = new MatchImpl(List.of(this.player1, this.player2), this.board, dice);

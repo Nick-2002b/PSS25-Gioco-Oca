@@ -4,6 +4,7 @@ import it.unibo.giocooca.model.Cell;
 import it.unibo.giocooca.model.CellType;
 import it.unibo.giocooca.model.GameConfig;
 import it.unibo.giocooca.model.impl.BoardImpl;
+import it.unibo.giocooca.model.impl.RandomPlacementStrategy;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,7 +23,7 @@ final class BoardImplTest {
 
     @BeforeEach
     void setUp() {
-        final GameConfig config = new GameConfig(BOARD_SIZE, NUM_SPECIAL, SEED);
+        final GameConfig config = new GameConfig(BOARD_SIZE, NUM_SPECIAL, SEED, new RandomPlacementStrategy());
         board = new BoardImpl(config);
     }
 
@@ -82,8 +83,8 @@ final class BoardImplTest {
 
     @Test
     void differentSeedsShouldProduceDifferentBoards() {
-        final GameConfig cfg1 = new GameConfig(BOARD_SIZE, 10, 42L);
-        final GameConfig cfg2 = new GameConfig(BOARD_SIZE, 10, 84L);
+        final GameConfig cfg1 = new GameConfig(BOARD_SIZE, 10, 42L, new RandomPlacementStrategy());
+        final GameConfig cfg2 = new GameConfig(BOARD_SIZE, 10, 84L, new RandomPlacementStrategy());
         final BoardImpl board1 = new BoardImpl(cfg1);
         final BoardImpl board2 = new BoardImpl(cfg2);
 
