@@ -23,6 +23,8 @@ public class MatchControllerImpl implements MatchController {
     private final MatchView view;
     private final BoardView boardView;
     private final BoardController boardController;
+    private boolean isMatchActive = true;
+    private PauseTransition currentPause;
 
     /**
      * Controller della partita
@@ -73,7 +75,9 @@ public class MatchControllerImpl implements MatchController {
         this.view.showDiceResult(diceResult);
 
         final PauseTransition pause = new PauseTransition(Duration.millis(1000));
+        this.currentPause = pause;
         pause.setOnFinished(event -> {
+            if (!this.isMatchActive) { return; }
             this.match.moveCurrentPlayer(diceResult);
             final List<Integer> movePositions = this.match.getLastMovePositions();
             final List<Integer> intermediatePositions = movePositions.size() > 1
@@ -81,10 +85,12 @@ public class MatchControllerImpl implements MatchController {
                     : List.of();
 
             final Runnable onIntermediate = () -> {
+                if (!this.isMatchActive) { return; }
                 SoundManager.getInstance().playSfx(SoundEffect.SPECIAL_CELL);
             };
 
             final Runnable onFinal = () -> {
+                if (!this.isMatchActive) { return; }
                 for (final int pos : intermediatePositions) {
                     final int offset = this.boardController.getCellOffset(pos);
                     if (offset != 0) {
@@ -123,6 +129,11 @@ public class MatchControllerImpl implements MatchController {
     
     @Override
     public void quitMatch() {
+        this.isMatchActive = false;
+        if (this.currentPause != null) {
+            this.currentPause.stop();
+        }
+        this.boardView.stopAnimations();
         this.sceneManager.showMenu();
     }
 

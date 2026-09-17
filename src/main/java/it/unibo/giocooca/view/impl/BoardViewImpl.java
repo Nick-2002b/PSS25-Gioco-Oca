@@ -2,6 +2,7 @@ package it.unibo.giocooca.view.impl;
 
 import it.unibo.giocooca.controller.BoardController;
 import it.unibo.giocooca.view.BoardView;
+import javafx.animation.Animation;
 import javafx.animation.PauseTransition;
 import it.unibo.giocooca.audio.SoundEffect;
 import it.unibo.giocooca.audio.SoundManager;
@@ -46,6 +47,7 @@ public class BoardViewImpl implements BoardView {
     private final Map<String, Circle> pieces = new HashMap<>();
     private final Map<Integer, StackPane> cellsByPosition = new HashMap<>();
     private final Map<String, Integer> currentPositions = new HashMap<>();
+    private Animation currentAnimation;
 
     public BoardViewImpl(final BoardController controller) {
         final int boardSize = controller.getBoardSize();
@@ -127,6 +129,14 @@ public class BoardViewImpl implements BoardView {
     @Override
     public Pane getBoard() {
         return this.root;
+    }
+
+    @Override
+    public void stopAnimations() {
+        if (this.currentAnimation != null) {
+            this.currentAnimation.stop();
+            this.currentAnimation = null;
+        }
     }
 
     @Override
@@ -255,6 +265,7 @@ public class BoardViewImpl implements BoardView {
             }
         });
 
+        this.currentAnimation = sequence;
         sequence.play();
     }
 
@@ -295,6 +306,8 @@ public class BoardViewImpl implements BoardView {
                 Platform.runLater(onFinished);
             }
         });
+        
+        this.currentAnimation = full;
         full.play();
     }
 

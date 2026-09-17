@@ -33,4 +33,9 @@ public interface BoardView {
             List<Integer> intermediatePosition,
             Runnable onIntermediateReached,
             Runnable onAnimationFinished);
+
+    /**
+     * Ferma tutte le animazioni in corso sul tabellone.
+     */
+    void stopAnimations();
 }
