@@ -36,8 +36,7 @@ public class MatchViewImpl implements MatchView{
    private final SceneManager sceneManager;
    private final MatchController controller;
    private final BoardView boardView;
-
-
+   private final Random random = new Random();
    private Label lblCurrentTurn;
    private Label lblDiceResult;
    private TextArea txtLogArea;
@@ -50,7 +49,6 @@ public class MatchViewImpl implements MatchView{
    private Image diceFaceSix;
    private ImageView diceView;
    private List<Image> diceFaces;
-   private final Random random = new Random();
 
     /**
      * @param sceneManager navigatore usato per visualizzare le view
@@ -93,12 +91,12 @@ public class MatchViewImpl implements MatchView{
       this.txtLogArea.setWrapText(true);
       this.txtLogArea.setPrefHeight(LOG_AREA_HEIGHT);
 
-      this.diceFaceOne = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/diceOne.png")));
-      this.diceFaceTwo = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/diceTwo.png")));
-      this.diceFaceThree = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/diceThree.png")));
-      this.diceFaceFour = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/diceFour.png")));
-      this.diceFaceFive = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/diceFive.png")));
-      this.diceFaceSix = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/diceSix.png")));
+      this.diceFaceOne = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/dice/diceOne.png")));
+      this.diceFaceTwo = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/dice/diceTwo.png")));
+      this.diceFaceThree = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/dice/diceThree.png")));
+      this.diceFaceFour = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/dice/diceFour.png")));
+      this.diceFaceFive = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/dice/diceFive.png")));
+      this.diceFaceSix = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/dice/diceSix.png")));
       
       this.diceFaces = List.of(diceFaceOne, diceFaceTwo, diceFaceThree, diceFaceFour, diceFaceFive, diceFaceSix);
       
