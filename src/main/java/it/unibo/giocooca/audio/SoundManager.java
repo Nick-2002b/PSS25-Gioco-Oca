@@ -5,6 +5,8 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaException;
 import javafx.scene.media.MediaPlayer;
 
+import java.util.EnumMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -14,6 +16,8 @@ import java.util.logging.Logger;
 public final class SoundManager {
     private static final Logger LOGGER = Logger.getLogger(SoundManager.class.getName());
     private static final SoundManager INSTANCE = new SoundManager();
+
+    private final Map<SoundEffect, AudioClip> sfxCache = new EnumMap<>(SoundEffect.class);
 
     private MediaPlayer musicPlayer;
     private double musicVolume;
@@ -71,13 +75,20 @@ public final class SoundManager {
      */
     public void playSfx(final SoundEffect effect) {
         try {
-            final var url = getClass().getResource(effect.getResourcePath());
-            if (url == null) {
+            final AudioClip clip = sfxCache.computeIfAbsent(effect, e -> {
+                final var url = getClass().getResource(effect.getResourcePath());
+                if (url == null) {
+                    return null;
+                }
+                return new AudioClip(url.toExternalForm());
+            });
+
+            if (clip == null) {
                 return;
             }
-            final AudioClip sfx = new AudioClip(url.toExternalForm());
-            sfx.setVolume(sfxVolume);
-            sfx.play();
+
+            clip.setVolume(sfxVolume);
+            clip.play();
         } catch (final MediaException e) {
             LOGGER.log(Level.WARNING, "Unable to play the sound effect: the game continues without audio.", e);
         }

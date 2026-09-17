@@ -172,6 +172,8 @@ public class BoardViewImpl implements BoardView {
                 } else {
                     animatePiecePath(movingPieceColor, oldPos, newPos, sharedDest, onFinished);
                 }
+            } else {
+                onFinished.run();
             }
         } else {
             deferredMoves.forEach(Runnable::run);
@@ -276,7 +278,7 @@ public class BoardViewImpl implements BoardView {
 
             seg.setOnFinished(e -> {
                 if (onIntermediateReached != null) {
-                    onIntermediateReached.run();
+                    Platform.runLater(onIntermediateReached);
                 }
             });
             full.getChildren().add(seg);
@@ -319,7 +321,7 @@ public class BoardViewImpl implements BoardView {
             TranslateTransition tt = new TranslateTransition(Duration.millis(400), piece);
             tt.setToX(targetX);
             tt.setToY(targetY);
-            tt.setOnFinished(e -> SoundManager.getInstance().playSfx(SoundEffect.PIECE_MOVE));
+            tt.setOnFinished(e -> Platform.runLater(() -> SoundManager.getInstance().playSfx(SoundEffect.PIECE_MOVE)));
             sequence.getChildren().add(tt);
         }
     }
