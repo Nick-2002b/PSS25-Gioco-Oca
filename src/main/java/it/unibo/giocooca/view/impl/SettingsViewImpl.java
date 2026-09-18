@@ -7,8 +7,10 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
 /**
@@ -19,6 +21,21 @@ public final class SettingsViewImpl implements SettingsView {
     private static final int MIN_SPECIAL = 1;
     private static final int CONTENT_MAX_WIDTH = 600;
     private static final int LABEL_WIDTH = 180;
+    private static final int HEADER_ICON_SIZE = 32;
+    private static final int LOGO_SIZE = 100;
+    private static final Image diceIcon = new Image("/images/diceIcon.png");
+    private static final Image speakerIcon = new Image("/images/speakerIcon.png");
+
+    private static final String CARD_STYLE =
+            "-fx-background-color: white;"
+            + "-fx-background-radius: 14;"
+            + "-fx-padding: 25;"
+            + "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 15, 0, 0, 3);";
+    private static final String SECTION_TITLE_STYLE =
+            "-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #144C30;";
+    private static final String ROW_LABEL_STYLE = "-fx-font-size: 15px;";
+    private static final String BUTTON_STYLE = "-fx-font-size: 15px; -fx-padding: 10px 30px;";
+
     private final SceneManager sceneManager;
     private final SettingsController controller;
 
@@ -35,13 +52,32 @@ public final class SettingsViewImpl implements SettingsView {
 
     @Override
     public void show() {
+        final BorderPane root = new BorderPane();
+        root.setStyle("-fx-background-color: #eef1f5;");
+
+        root.setTop(buildHeader());
+        root.setCenter(buildContent());
+        root.setBottom(buildFooter());
+
+        sceneManager.render(root, "Gioco dell'Oca - Impostazioni");
+    }
+
+    private VBox buildHeader() {
+        final ImageView logo = new ImageView(new Image("/images/OcaLogo.png"));
+        logo.setFitWidth(LOGO_SIZE);
+        logo.setFitHeight(LOGO_SIZE);
+
         final Label title = new Label("Impostazioni");
-        title.setStyle("-fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;");
+        title.setStyle("-fx-font-size: 34px; -fx-font-weight: bold; -fx-text-fill: #144C30;");
 
+        final VBox header = new VBox(10, logo, title);
+        header.setAlignment(Pos.CENTER);
+        header.setPadding(new Insets(25, 0, 0, 0));
+        return header;
+    }
+
+    private VBox buildContent() {
         // --- Audio Section ---
-        final Label audioTitle = new Label("Audio");
-        audioTitle.setStyle("-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;");
-
         final Slider musicSlider = new Slider(0.0, 1.0, controller.getMusicVolume());
         musicSlider.setPrefWidth(SLIDER_WIDTH);
         final Label musicValueLabel = new Label(toPrecent(controller.getMusicVolume()));
@@ -63,11 +99,15 @@ public final class SettingsViewImpl implements SettingsView {
         });
         final HBox sfxRow = buildRow("Volume Effetti", sfxSlider, sfxValueLabel);
 
-        //--- Game Section ---
-        final Label gameTitle = new Label("Partita");
-        gameTitle.setStyle("-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;");
+        final ImageView speaker = new ImageView(speakerIcon);
+        speaker.setFitWidth(HEADER_ICON_SIZE);
+        speaker.setFitHeight(HEADER_ICON_SIZE);
+        final VBox audioCard = buildCard(speaker, "Impostazioni Audio", musicRow, sfxRow);
 
-        final Spinner<Integer> specialSpinner = new Spinner<>(MIN_SPECIAL, controller.getMaxSpecialCells(), controller.getNumSpecialCells());
+        // --- Game Section ---
+        final Spinner<Integer> specialSpinner =
+                new Spinner<>(MIN_SPECIAL, controller.getMaxSpecialCells(), controller.getNumSpecialCells());
+
         specialSpinner.valueProperty().addListener((obs, oldVal, newVal) -> {
             controller.onNumSpecialCellsChanger(newVal);
         });
@@ -76,7 +116,9 @@ public final class SettingsViewImpl implements SettingsView {
 
         final ToggleGroup placementGroup = new ToggleGroup();
         final RadioButton randomBtn = new RadioButton("Casuale");
+        randomBtn.setStyle(ROW_LABEL_STYLE);
         final RadioButton fixedBtn = new RadioButton("Frequenza fissa");
+        fixedBtn.setStyle(ROW_LABEL_STYLE);
         randomBtn.setToggleGroup(placementGroup);
         fixedBtn.setToggleGroup(placementGroup);
 
@@ -92,38 +134,52 @@ public final class SettingsViewImpl implements SettingsView {
 
         final HBox placementRow = buildRow("Tipo Piazzamento", randomBtn, fixedBtn);
 
-        // --- Buttons ---
+        final ImageView gameIcon = new ImageView(diceIcon);
+        gameIcon.setFitWidth(HEADER_ICON_SIZE);
+        gameIcon.setFitHeight(HEADER_ICON_SIZE);
+
+        final VBox gameCard = buildCard(gameIcon, "Impostazioni di Gioco", specialRow, placementRow);
+
+        final VBox content = new VBox(25, audioCard, gameCard);
+        content.setMaxWidth(CONTENT_MAX_WIDTH);
+        content.setAlignment(Pos.TOP_CENTER);
+        content.setPadding(new Insets(0, 20, 20, 20));
+
+        final VBox centerWrapper = new VBox(content);
+        centerWrapper.setAlignment(Pos.CENTER);
+        return centerWrapper;
+    }
+
+    private VBox buildCard(final Node icon, final String titleText, final Node... rows) {
+        final Label sectionTitle = new Label(titleText);
+        sectionTitle.setStyle(SECTION_TITLE_STYLE);
+
+        final HBox headerRow = new HBox(15, icon, sectionTitle);
+        headerRow.setAlignment(Pos.CENTER_LEFT);
+
+        final VBox card = new VBox(20, headerRow);
+        card.getChildren().addAll(rows);
+        card.setStyle(CARD_STYLE);
+        card.setMaxWidth(CONTENT_MAX_WIDTH);
+        return card;
+    }
+
+    private VBox buildFooter() {
         final Button saveBtn = new Button("Salva");
-        saveBtn.setStyle("-fx-font-size: 15px; -fx-padding: 10px 30px;");
+        saveBtn.setStyle(BUTTON_STYLE);
         saveBtn.setOnAction(x -> controller.onSave());
 
         final Button backBtn = new Button("Indietro");
-        backBtn.setStyle("-fx-font-size: 15px; -fx-padding: 10px 30px;");
+        backBtn.setStyle(BUTTON_STYLE);
         backBtn.setOnAction(x -> controller.onBack());
 
-        final HBox buttons = new HBox(10, saveBtn, backBtn);
+        final HBox buttons = new HBox(15, saveBtn, backBtn);
         buttons.setAlignment(Pos.CENTER);
 
-        // --- Main Layout ---
-        final VBox content = new VBox(10,
-                title,
-                new Separator(),
-                audioTitle, musicRow, sfxRow,
-                new Separator(),
-                gameTitle, specialRow, placementRow,
-                new Separator(),
-                buttons
-        );
-
-        content.setMaxWidth(CONTENT_MAX_WIDTH);
-        content.setAlignment(Pos.CENTER);
-
-        final StackPane root = new StackPane(content);
-        root.setStyle("-fx-background-color: #ecf0f1;");
-
-        StackPane.setAlignment(content, Pos.CENTER);
-
-        sceneManager.render(root, "Gioco dell'Oca - Impostazioni");
+        final VBox footer = new VBox(buttons);
+        footer.setAlignment(Pos.CENTER);
+        footer.setPadding(new Insets(0, 0, 25, 0));
+        return footer;
     }
 
     private String toPrecent(final double value) {
@@ -133,6 +189,7 @@ public final class SettingsViewImpl implements SettingsView {
    private HBox buildRow(final String labelText, final Node... nodes) {
         final Label label = new Label(labelText);
         label.setMinWidth(LABEL_WIDTH);
+        label.setStyle(ROW_LABEL_STYLE);
 
         final HBox row = new HBox(10);
         row.setAlignment(Pos.CENTER_LEFT);
