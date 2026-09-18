@@ -11,6 +11,7 @@ import it.unibo.giocooca.model.impl.SettingsManager;
 import it.unibo.giocooca.navigation.SceneManager;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 /**
@@ -20,6 +21,7 @@ import javafx.stage.Stage;
 public final class SceneManagerImpl implements SceneManager {
     private static final int SCENE_WIDTH = 1280;
     private static final int SCENE_HEIGHT = 800;
+    private final Image logo = new Image("/images/OcaLogo.png");
 
     private final Stage stage;
     private final Settings settings;
@@ -59,6 +61,7 @@ public final class SceneManagerImpl implements SceneManager {
     @Override
     public void render(final Parent root, final String title) {
         stage.setTitle(title);
+        stage.getIcons().add(logo);
         if (stage.getScene() == null) {
             stage.setScene(new Scene(root, SCENE_WIDTH, SCENE_HEIGHT));
             stage.setResizable(false);
