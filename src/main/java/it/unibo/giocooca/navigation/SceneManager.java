@@ -24,6 +24,11 @@ public interface SceneManager {
     void showSetup();
 
     /**
+     * Naviga verso la schermata delle regole.
+     */
+    void showRules();
+
+    /**
      * Naviga verso la schermata del gioco
      */
     void showMatch(Match match);

@@ -44,6 +44,11 @@ public final class MenuControllerImpl implements MenuController {
     }
 
     @Override
+    public void onShowRules() {
+        sceneManager.showRules();
+    }
+
+    @Override
     public void onQuit() {
         Platform.exit();
     }

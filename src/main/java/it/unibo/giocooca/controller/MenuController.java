@@ -21,6 +21,11 @@ public interface MenuController {
     void onOpenSettings();
 
     /**
+     * Apre la schermata delle regole.
+     */
+    void onShowRules();
+
+    /**
      * Uscita dalla partita.
      */
     void onQuit();

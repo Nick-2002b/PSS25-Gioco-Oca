@@ -45,6 +45,11 @@ public final class MenuViewImpl implements MenuView {
         btnSettings.setPrefWidth(BUTTON_WIDTH);
         btnSettings.setOnAction(event -> this.controller.onOpenSettings());
 
+        final Button btnRules = new Button("Regole");
+        btnRules.setStyle(BUTTON_STYLE);
+        btnRules.setPrefWidth(BUTTON_WIDTH);
+        btnRules.setOnAction(event -> this.controller.onShowRules());
+
         final Button btnQuit = new Button("Esci");
         btnQuit.setStyle(BUTTON_STYLE);
         btnQuit.setPrefWidth(BUTTON_WIDTH);
@@ -52,7 +57,7 @@ public final class MenuViewImpl implements MenuView {
 
         final VBox menuBox = new VBox(20);
         menuBox.setAlignment(Pos.CENTER);
-        menuBox.getChildren().addAll(titleLabel, btnStart, btnSettings, btnQuit);
+        menuBox.getChildren().addAll(titleLabel, btnStart, btnSettings, btnRules, btnQuit);
 
         final StackPane background = new StackPane();
         background.setStyle("-fx-background-color:#ecf0f1;");

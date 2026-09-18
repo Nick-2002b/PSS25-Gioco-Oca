@@ -1,10 +1,7 @@
 package it.unibo.giocooca.navigation.impl;
 
 import it.unibo.giocooca.audio.SoundManager;
-import it.unibo.giocooca.controller.impl.MatchControllerImpl;
-import it.unibo.giocooca.controller.impl.MenuControllerImpl;
-import it.unibo.giocooca.controller.impl.SettingsControllerImpl;
-import it.unibo.giocooca.controller.impl.SetupControllerImpl;
+import it.unibo.giocooca.controller.impl.*;
 import it.unibo.giocooca.model.Match;
 import it.unibo.giocooca.model.Settings;
 import it.unibo.giocooca.model.impl.SettingsManager;
@@ -51,6 +48,11 @@ public final class SceneManagerImpl implements SceneManager {
     @Override
     public void showSetup() {
         new SetupControllerImpl(this, settings).start();
+    }
+
+    @Override
+    public void showRules() {
+        new RulesControllerImpl(this).show();
     }
 
     @Override
