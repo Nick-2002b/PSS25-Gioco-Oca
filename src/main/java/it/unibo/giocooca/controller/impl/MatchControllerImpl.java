@@ -55,6 +55,10 @@ public class MatchControllerImpl implements MatchController {
 
     }
     @Override
+    public int getDiceNumber(){
+        return this.match.getDiceNumber();
+    }
+    @Override
     public void rollDice() {
         if(this.match.isGameOver()){
             return;
@@ -70,7 +74,8 @@ public class MatchControllerImpl implements MatchController {
             this.view.showCurrentTurn(nextPlayer.getNickName() + " (" + nextPlayer.getPiece().getColor() + ")");
             return;
         }
-        final int diceResult = this.match.rollDice();
+        final List<Integer> diceResult = this.match.rollDice();
+        
         SoundManager.getInstance().playSfx(SoundEffect.DICE_ROLL);
         this.view.showDiceResult(diceResult);
 
@@ -78,7 +83,11 @@ public class MatchControllerImpl implements MatchController {
         this.currentPause = pause;
         pause.setOnFinished(event -> {
             if (!this.isMatchActive) { return; }
-            this.match.moveCurrentPlayer(diceResult);
+            int totalSteps = 0;
+            for (final int roll : diceResult) {
+                totalSteps += roll;
+            }
+            this.match.moveCurrentPlayer(totalSteps);
             final List<Integer> movePositions = this.match.getLastMovePositions();
             final List<Integer> intermediatePositions = movePositions.size() > 1
                     ? movePositions.subList(0, movePositions.size() - 1)

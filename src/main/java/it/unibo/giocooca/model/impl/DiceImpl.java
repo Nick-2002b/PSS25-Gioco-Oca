@@ -1,8 +1,8 @@
 package it.unibo.giocooca.model.impl;
 
-import it.unibo.giocooca.model.Dice;
-
 import java.util.Random;
+
+import it.unibo.giocooca.model.Dice;
 
 /**
  * Implementazione di un dado a 6 facce.
@@ -32,7 +32,7 @@ public final class DiceImpl implements Dice {
     /**
      * Lancia il dado.
      *
-     * @return un valore casuale compreso tra 1 e 6
+     * @return un valore casuale compreso tra 1 e il numero delle facce (6)
      */
     @Override
     public int roll() {

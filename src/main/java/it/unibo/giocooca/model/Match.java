@@ -7,11 +7,16 @@ import java.util.List;
  */
 public interface Match {
     /**
-     * Lancia il dado per il giocatore corrente.
-     *
-     * @return il valore ottenuto dal lancio
+     * Restituisce il numero di dadi selezionati e memorizzati nel setting
+     * @return numero di dadi
      */
-    int rollDice();
+    int getDiceNumber();
+    /**
+     * Lancia i dadi per il giocatore corrente.
+     *
+     * @return una lista con i valori ottenuti da ciascun dado
+     */
+    List<Integer> rollDice();
 
     /**
      * Sposta il giocatore corrente di un certo numero di passi.

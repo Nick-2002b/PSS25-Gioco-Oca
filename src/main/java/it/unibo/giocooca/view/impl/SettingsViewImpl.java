@@ -6,7 +6,12 @@ import it.unibo.giocooca.view.SettingsView;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.Slider;
+import javafx.scene.control.Spinner;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
@@ -105,6 +110,13 @@ public final class SettingsViewImpl implements SettingsView {
         final VBox audioCard = buildCard(speaker, "Impostazioni Audio", musicRow, sfxRow);
 
         // --- Game Section ---
+        final Spinner<Integer> numDiceSpinner =
+                new Spinner<>(1, 2, controller.getNumDice());
+        numDiceSpinner.valueProperty().addListener((obs, oldVal, newVal) -> {
+            controller.onNumDiceChanged(newVal);
+        });
+        final HBox numDiceRow = buildRow("Numero di dadi", numDiceSpinner);
+
         final Spinner<Integer> specialSpinner =
                 new Spinner<>(MIN_SPECIAL, controller.getMaxSpecialCells(), controller.getNumSpecialCells());
 
@@ -138,7 +150,7 @@ public final class SettingsViewImpl implements SettingsView {
         gameIcon.setFitWidth(HEADER_ICON_SIZE);
         gameIcon.setFitHeight(HEADER_ICON_SIZE);
 
-        final VBox gameCard = buildCard(gameIcon, "Impostazioni di Gioco", specialRow, placementRow);
+        final VBox gameCard = buildCard(gameIcon, "Impostazioni di Gioco", numDiceRow, specialRow, placementRow);
 
         final VBox content = new VBox(25, audioCard, gameCard);
         content.setMaxWidth(CONTENT_MAX_WIDTH);
@@ -186,7 +198,7 @@ public final class SettingsViewImpl implements SettingsView {
         return (int) (value * 100) + "%";
     }
 
-   private HBox buildRow(final String labelText, final Node... nodes) {
+    private HBox buildRow(final String labelText, final Node... nodes) {
         final Label label = new Label(labelText);
         label.setMinWidth(LABEL_WIDTH);
         label.setStyle(ROW_LABEL_STYLE);

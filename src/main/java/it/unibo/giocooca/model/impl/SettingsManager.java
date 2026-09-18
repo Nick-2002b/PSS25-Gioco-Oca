@@ -1,7 +1,5 @@
 package it.unibo.giocooca.model.impl;
 
-import it.unibo.giocooca.model.Settings;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -11,6 +9,8 @@ import java.io.OutputStream;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import it.unibo.giocooca.model.Settings;
 
 /**
  * Carica e salva le impostazioni utente su file.
@@ -26,6 +26,7 @@ public final class SettingsManager {
     private static final String KEY_SFX = "audio.sfxVolume";
     private static final String KEY_SPECIAL = "game.numSpecialCells";
     private static final String KEY_FIXED_PLACEMENT = "game.fixed.placement";
+    private static final String KEY_NUM_DICE = "game.numDice";
 
     /**
      * Carica le impostazioni salvate su file, oppure restituisce quelle di default se il file non esiste
@@ -48,6 +49,7 @@ public final class SettingsManager {
             settings.setSfxVolume(Double.parseDouble(props.getProperty(KEY_SFX, "0.7")));
             settings.setNumSpecialCells((int) Double.parseDouble(props.getProperty(KEY_SPECIAL, "7")));
             settings.setFixedPlacement(Boolean.parseBoolean(props.getProperty(KEY_FIXED_PLACEMENT, "true")));
+            settings.setNumDice(Integer.parseInt(props.getProperty(KEY_NUM_DICE, "1")));
         } catch (final IOException | NumberFormatException e) {
             LOGGER.log(Level.WARNING, "Unable to load settings; default values will be used.", e);
         }
@@ -72,6 +74,7 @@ public final class SettingsManager {
         props.setProperty(KEY_SFX, String.valueOf(settings.getSfxVolume()));
         props.setProperty(KEY_SPECIAL, String.valueOf(settings.getNumSpecialCells()));
         props.setProperty(KEY_FIXED_PLACEMENT, String.valueOf(settings.isFixedPlacement()));
+        props.setProperty(KEY_NUM_DICE, String.valueOf(settings.getNumDice()));
 
         try (OutputStream out = new FileOutputStream(SETTINGS_FILE)) {
             props.store(out, "Goose Game - User settings");

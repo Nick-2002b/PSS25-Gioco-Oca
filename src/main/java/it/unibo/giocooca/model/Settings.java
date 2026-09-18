@@ -8,12 +8,15 @@ public final class Settings {
     private static final double DEFAULT_MUSIC_VOLUME = 0.5;
     private static final double DEFAULT_SFX_VOLUME = 0.7;
     private static final int DEFAULT_SPECIAL_CELLS = 7;
+    private static final int DEFAULT_NUM_DICE = 1;
+    private static final int MIN_DICE = 1;
+    private static final int MAX_DICE = 2;
 
     private boolean fixedPlacement;
     private double musicVolume;
     private double sfxVolume;
     private int numSpecialCells;
-
+    private int numDice;
     /**
      * Crea le impostazioni con i valori di default.
      */
@@ -21,12 +24,35 @@ public final class Settings {
         this.musicVolume = DEFAULT_MUSIC_VOLUME;
         this.sfxVolume = DEFAULT_SFX_VOLUME;
         this.numSpecialCells = DEFAULT_SPECIAL_CELLS;
+        this.numDice = DEFAULT_NUM_DICE;
     }
 
     public boolean isFixedPlacement() { return fixedPlacement; }
 
     public void setFixedPlacement(final boolean fixedPlacement) { this.fixedPlacement = fixedPlacement; }
 
+    /**
+     * Restituisce il numero di dadi
+     * 
+     * @return il numero di dadi, tra 1 e 2
+    */
+    public int getNumDice() {
+        return numDice;
+    }
+
+    /**
+     * Imposta il numero di dadi.
+     *
+     * @param numDice il nuovo numero di dadi
+     */
+    public void setNumDice(final int numDice) {
+        if (numDice < MIN_DICE || numDice > MAX_DICE) {
+            throw new IllegalArgumentException(
+                    "The number of dice must be between " + MIN_DICE + " and " + MAX_DICE + "."
+            );
+        }
+        this.numDice = numDice;
+    }
     /**
      * Restituisce il volume della musica.
      *

@@ -1,4 +1,5 @@
 package it.unibo.giocooca.view;
+import java.util.List;
 
 /**
  * Contratto per la vista di una partita in corso.
@@ -21,7 +22,7 @@ public interface MatchView {
      *
      * @param result il valore ottenuto dal lancio
      */
-    void showDiceResult(int result);
+    void showDiceResult(List<Integer> result);
 
     /**
      * Mostra il vincitore della partita.
