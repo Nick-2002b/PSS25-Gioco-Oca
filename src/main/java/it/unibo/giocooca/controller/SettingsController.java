@@ -10,6 +10,12 @@ public interface SettingsController {
     void onPlacementChanged(boolean fixed);
 
     /**
+     * Restituisce il numero di dadi da utilizzare 
+     * @return numero di dadi
+     */
+    int getNumDice();
+
+    /**
      * Restituisce il massimo di caselle speciali
      * da poter piazzare sul percorso.
      *
@@ -44,6 +50,12 @@ public interface SettingsController {
      * @param volume il nuovo volume della musica
      */
     void onMusicVolumeChanger(double volume);
+
+    /**
+     * Notifica un cambiamento del numero di dadi da utilizzare
+     * @param num numero di dadi
+     */
+    void onNumDiceChanged(int num);
 
     /**
      * Notifica un cambiamento del volume degli effetti sonori.

@@ -3,10 +3,15 @@ package it.unibo.giocooca.view.impl;
 import it.unibo.giocooca.controller.SettingsController;
 import it.unibo.giocooca.navigation.SceneManager;
 import it.unibo.giocooca.view.SettingsView;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.Separator;
+import javafx.scene.control.Slider;
+import javafx.scene.control.Spinner;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -67,6 +72,16 @@ public final class SettingsViewImpl implements SettingsView {
         final Label gameTitle = new Label("Partita");
         gameTitle.setStyle("-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;");
 
+        // --- Num dice Section ---
+        
+        final Spinner<Integer> numDiceSpinner = new Spinner<>(1, 2, controller.getNumDice());
+        numDiceSpinner.valueProperty().addListener((obs, oldVal, newVal) -> {
+            controller.onNumDiceChanged(newVal);
+        });
+
+        final HBox numDiceRow = buildRow("Numero di dadi", numDiceSpinner);
+
+        // --- Special cells Section ---
         final Spinner<Integer> specialSpinner = new Spinner<>(MIN_SPECIAL, controller.getMaxSpecialCells(), controller.getNumSpecialCells());
         specialSpinner.valueProperty().addListener((obs, oldVal, newVal) -> {
             controller.onNumSpecialCellsChanger(newVal);
@@ -110,7 +125,7 @@ public final class SettingsViewImpl implements SettingsView {
                 new Separator(),
                 audioTitle, musicRow, sfxRow,
                 new Separator(),
-                gameTitle, specialRow, placementRow,
+                gameTitle, numDiceRow, specialRow, placementRow,
                 new Separator(),
                 buttons
         );

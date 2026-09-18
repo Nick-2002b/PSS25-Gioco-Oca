@@ -21,6 +21,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.layout.HBox;
 import javafx.util.Duration;
 
 /**
@@ -47,7 +48,9 @@ public class MatchViewImpl implements MatchView{
    private Image diceFaceFour;
    private Image diceFaceFive;
    private Image diceFaceSix;
-   private ImageView diceView;
+   private ImageView diceView1;
+   private ImageView diceView2;
+   private HBox diceBox;
    private List<Image> diceFaces;
 
     /**
@@ -100,14 +103,24 @@ public class MatchViewImpl implements MatchView{
       
       this.diceFaces = List.of(diceFaceOne, diceFaceTwo, diceFaceThree, diceFaceFour, diceFaceFive, diceFaceSix);
       
-      this.diceView = new ImageView(this.diceFaceOne);
-      this.diceView.setFitWidth(50);
-      this.diceView.setPreserveRatio(true);
+      this.diceView1 = new ImageView(this.diceFaceOne);
+      this.diceView1.setFitWidth(45);
+      this.diceView1.setPreserveRatio(true);
 
-      this.btnRollDice = new Button("Lancia Dado");
+      this.diceView2 = new ImageView(this.diceFaceOne);
+      this.diceView2.setFitWidth(45);
+      this.diceView2.setPreserveRatio(true);
+      final boolean twoDice = this.controller.getDiceNumber() > 1;
+      this.diceView2.setVisible(twoDice);
+      this.diceView2.setManaged(twoDice);
+
+      this.diceBox = new HBox(8, this.diceView1, this.diceView2);
+      this.diceBox.setAlignment(Pos.CENTER);
+
+      this.btnRollDice = new Button(twoDice ? "Lancia Dadi" : "Lancia Dado");
       this.btnRollDice.setStyle("-fx-cursor: hand; -fx-background-color: transparent; -fx-border-color: transparent; -fx-font-size: 16px; -fx-padding: 10px 20px; -fx-font-weight: bold;");
       this.btnRollDice.setPrefWidth(BUTTON_WIDTH);
-      this.btnRollDice.setGraphic(this.diceView);
+      this.btnRollDice.setGraphic(this.diceBox);
       this.btnRollDice.setOnAction(event -> this.controller.rollDice());
 
       final Button btnQuit = new Button("Esci al Menu");
@@ -144,23 +157,42 @@ public class MatchViewImpl implements MatchView{
    }
 
    @Override
-   public void showDiceResult(final int result) {
+   public void showDiceResult(final List<Integer> results) {
       if (this.btnRollDice != null) {
          this.btnRollDice.setDisable(true);
       }
+      final boolean twoDice = results.size() > 1 ;
+      this.diceView2.setVisible(twoDice);
+      this.diceView2.setManaged(twoDice);
       final Timeline diceAnimation = new Timeline(
          new KeyFrame(Duration.millis(100), event -> {
-            final int randomIndex = this.random.nextInt(this.diceFaces.size());
-            this.diceView.setImage(this.diceFaces.get(randomIndex));
+            final int randomIndex1 = this.random.nextInt(this.diceFaces.size());
+            this.diceView1.setImage(this.diceFaces.get(randomIndex1));
+            if (twoDice) {
+               final int randomIndex2 = this.random.nextInt(this.diceFaces.size());
+               this.diceView2.setImage(this.diceFaces.get(randomIndex2));
+            }
          })
       );
       diceAnimation.setCycleCount(10);
       diceAnimation.setOnFinished(event -> {
-         if (result >= 1 && result <= this.diceFaces.size()) {
-            this.diceView.setImage(this.diceFaces.get(result - 1));
+         final int firstDiceResult = results.get(0);
+         if (firstDiceResult >= 1 && firstDiceResult <= this.diceFaces.size()) {
+            this.diceView1.setImage(this.diceFaces.get(firstDiceResult - 1));
          }
-         if (this.lblDiceResult != null) {
-            this.lblDiceResult.setText("Ultimo lancio: " + result);
+         if (twoDice) {
+            final int secondDiceResult = results.get(1);
+            if (secondDiceResult >= 1 && secondDiceResult <= this.diceFaces.size()) {
+               this.diceView2.setImage(this.diceFaces.get(secondDiceResult - 1));
+            }
+            final int totalResult = firstDiceResult + secondDiceResult;
+            if (this.lblDiceResult != null) {
+               this.lblDiceResult.setText("Ultimo lancio: " + firstDiceResult + " + " + secondDiceResult + " = " + totalResult);
+            }
+         }else{
+            if (this.lblDiceResult != null) {
+               this.lblDiceResult.setText("Ultimo lancio: " + firstDiceResult);
+            }
          }
       });
       diceAnimation.play();

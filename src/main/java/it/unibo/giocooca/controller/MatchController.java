@@ -10,6 +10,10 @@ public interface MatchController {
      */
     void startMatch();
     /**
+     * Ricaviamo il numero di dadi
+     */
+    int getDiceNumber();
+    /**
      * Lancia il dado, muove il giocatore, gestisce il caso di cella speciale, controlla se ha vinto, turno successivo.
      */
     void rollDice();

@@ -27,7 +27,7 @@ public final class MatchImpl implements Match {
 
     private final List<Player> players;
     private final Board board;
-    private final Dice dice;
+    private final List<Dice> dice;
     private int currentPlayerIndex;
     private boolean gameOver;
     private Player winner;
@@ -40,18 +40,18 @@ public final class MatchImpl implements Match {
    * @param board   tabellone da gioco
    * @param dice    dado
    */
-  public MatchImpl(final List<Player> players, final Board board, final Dice dice) {
+  public MatchImpl(final List<Player> players, final Board board, final List<Dice> dice) {
         if (players == null || players.isEmpty()) {
             throw new IllegalArgumentException("Almeno un giocatore");
         }
         if (board == null) {
             throw new IllegalArgumentException("Board non può essere null");
         }
-        if (dice == null) {
+        if (dice == null || dice.isEmpty()){
             throw new IllegalArgumentException("Dice non può essere null");
         }
         this.players = List.copyOf(players);
-        this.dice = dice;
+        this.dice = List.copyOf(dice);
         this.board = board;
         this.currentPlayerIndex = 0;
         this.gameOver = false;
@@ -59,9 +59,23 @@ public final class MatchImpl implements Match {
         this.lastMovePositions = new ArrayList<>();
     }
 
+    /** 
+     * Costruttore con un solo dado utilizzato nei test (lo teniamo per non rompere il test)
+     */
+    public MatchImpl(final List<Player> players, final Board board, final Dice singleDice){
+        this(players, board, List.of(singleDice));
+    }
     @Override
-    public int rollDice() {
-        return this.dice.roll();
+    public int getDiceNumber() {
+        return this.dice.size();
+    }
+    @Override
+    public List<Integer> rollDice() {
+        final List<Integer> results = new ArrayList<>();
+        for (final Dice d : this.dice){
+            results.add(d.roll());
+        }
+        return results;
     }
     @Override
     public List<Integer> getLastMovePositions() {
