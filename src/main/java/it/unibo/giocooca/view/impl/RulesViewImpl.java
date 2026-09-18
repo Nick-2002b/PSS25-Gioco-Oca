@@ -22,7 +22,6 @@ public final class RulesViewImpl implements RulesView {
     private static final int ICON_SIZE = 64;
     private static final int CARD_ICON_SIZE = 28;
     private static final int GRID_COLUMNS = 2;
-    private static final double COLUMN_PERCENT_WIDTH = 100.0 / GRID_COLUMNS;
     private static final int CARD_MAX_WIDTH = 480;
     private static final Image diceIcon = new Image("/images/diceIcon.png");
     private static final Image starIcon = new Image("/images/starIcon.png");
@@ -67,7 +66,7 @@ public final class RulesViewImpl implements RulesView {
         icon.setPreserveRatio(true);
 
         final Label titleLabel = new Label("Regole del Gioco dell'OCA");
-        titleLabel.setStyle("-fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;");
+        titleLabel.setStyle("-fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: #144C30;");
 
         final VBox topBox = new VBox(10, icon, titleLabel);
         topBox.setAlignment(Pos.CENTER);
@@ -80,11 +79,9 @@ public final class RulesViewImpl implements RulesView {
         grid.setAlignment(Pos.CENTER);
         grid.setHgap(20);
         grid.setVgap(20);
-        grid.setPadding(new Insets(10, 50, 20, 50));
 
         for (int i = 0; i < GRID_COLUMNS; i++) {
             final ColumnConstraints column = new ColumnConstraints();
-            column.setPercentWidth(COLUMN_PERCENT_WIDTH);
             column.setHalignment(HPos.CENTER);
             grid.getColumnConstraints().add(column);
         }
@@ -118,7 +115,7 @@ public final class RulesViewImpl implements RulesView {
         iconView.setPreserveRatio(true);
 
         final Label titleLabel = new Label(title);
-        titleLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;");
+        titleLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #144C30;");
 
         final Label descriptionLabel = new Label(description);
         descriptionLabel.setWrapText(true);
