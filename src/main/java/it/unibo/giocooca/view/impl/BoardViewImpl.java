@@ -1,6 +1,7 @@
 package it.unibo.giocooca.view.impl;
 
 import it.unibo.giocooca.controller.BoardController;
+import it.unibo.giocooca.model.CellType;
 import it.unibo.giocooca.view.BoardView;
 import javafx.animation.Animation;
 import javafx.animation.PauseTransition;
@@ -94,11 +95,11 @@ public class BoardViewImpl implements BoardView {
         return new GridCoords(maxLogicalRow - logical.row(), logical.col());
     }
 
-    private static Color cellTypeToColor(final String cellType) {
+    private static Color cellTypeToColor(final CellType cellType) {
         return switch (cellType) {
-            case "START" -> COLOR_START;
-            case "SPECIAL" -> COLOR_SPECIAL;
-            case "PRISON" -> COLOR_PRISON;
+            case CellType.START -> COLOR_START;
+            case CellType.SPECIAL -> COLOR_SPECIAL;
+            case CellType.PRISON -> COLOR_PRISON;
             default -> COLOR_NORMAL;
         };
     }
@@ -209,7 +210,7 @@ public class BoardViewImpl implements BoardView {
         return grid;
     }
 
-    private StackPane buildCellPane(final int position, final String cellType, final int cellOffset) {
+    private StackPane buildCellPane(final int position, final CellType cellType, final int cellOffset) {
         final Rectangle background = new Rectangle(CELL_WIDTH, CELL_HEIGHT);
         background.setFill(cellTypeToColor(cellType));
         background.setStroke(COLOR_BORDER);
@@ -217,18 +218,18 @@ public class BoardViewImpl implements BoardView {
         background.setArcWidth(15);
         background.setArcHeight(15);
 
-        final Label numberLabel = new Label(cellType.equals("START") ? "START" : String.valueOf(position));
+        final Label numberLabel = new Label(cellType == CellType.START ? "START" : String.valueOf(position));
         numberLabel.setStyle("-fx-font-size: 10px; -fx-font-weight: bold; -fx-text-fill: #144C30;");
         numberLabel.setPadding(new Insets(3, 0, 0, 5));
 
         final StackPane cell = new StackPane(background, numberLabel);
         StackPane.setAlignment(numberLabel, Pos.TOP_LEFT);
 
-        if (cellType.equals("PRISON")) {
+        if (cellType == CellType.PRISON) {
             Label icon = new Label("🔒");
             icon.setStyle("-fx-font-size: 20px;");
             cell.getChildren().add(icon);
-        } else if (cellType.equals("SPECIAL")) {
+        } else if (cellType == CellType.SPECIAL) {
             Label icon = new Label("⭐");
             icon.setStyle("-fx-font-size: 30px;");
             cell.getChildren().add(icon);

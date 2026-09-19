@@ -1,6 +1,8 @@
 package it.unibo.giocooca.controller;
 
 
+import it.unibo.giocooca.model.CellType;
+
 import java.util.Map;
 
 /**
@@ -20,7 +22,7 @@ public interface BoardController {
      * @param position posizione 1-based
      * @return il tipo come stringa
      */
-    String getCellType(int position);
+    CellType getCellType(int position);
 
     /**
      * Offset (bonus/malus) della casella alla posizione data.
