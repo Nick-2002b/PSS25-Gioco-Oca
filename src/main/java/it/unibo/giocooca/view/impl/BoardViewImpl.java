@@ -11,12 +11,13 @@ import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.util.Duration;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 
 import java.util.ArrayList;
@@ -34,17 +35,18 @@ public class BoardViewImpl implements BoardView {
 
     private static final int HGAP = 6;
     private static final int VGAP = 8;
-    private static final int PIECE_RADIUS = 8;
+    private static final int PIECE_SIZE = 30;
 
     private static final Color COLOR_NORMAL = Color.web("#dfe6e9");
     private static final Color COLOR_SPECIAL = Color.web("#fdcb6e");
     private static final Color COLOR_PRISON = Color.web("#d63031");
     private static final Color COLOR_START = Color.web("#74b9ff");
     private static final Color COLOR_BORDER = Color.DARKGRAY;
+    private static final String PIECE_IMAGE_PATH = "/images/pieces/";
 
     private final Pane root;
     private final Pane pieceLayer;
-    private final Map<String, Circle> pieces = new HashMap<>();
+    private final Map<String, ImageView> pieces = new HashMap<>();
     private final Map<Integer, StackPane> cellsByPosition = new HashMap<>();
     private final Map<String, Integer> currentPositions = new HashMap<>();
     private Animation currentAnimation;
@@ -100,13 +102,13 @@ public class BoardViewImpl implements BoardView {
         };
     }
 
-    private static String mapPieceColor(final String colorName) {
+    private static String pieceImageName(final String colorName) {
         return switch (colorName) {
-            case "Rosso"  -> "#e74c3c";
-            case "Verde"  -> "#2ecc71";
-            case "Blu"    -> "#3498db";
-            case "Giallo" -> "#f1c40f";
-            default       -> "#95a5a6";
+            case "Rosso" -> "OcaRossoSvg.png";
+            case "Verde" -> "OcaVerdeSvg.png";
+            case "Blu" -> "OcaBluSvg.png";
+            case "Giallo" -> "OcaGialloSvg.png";
+            default -> throw new IllegalArgumentException("Colore pedina non supportato: " + colorName);
         };
     }
 
@@ -229,20 +231,22 @@ public class BoardViewImpl implements BoardView {
         return cell;
     }
 
-    private Circle getOrCreatePiece(String color) {
+    private ImageView getOrCreatePiece(final String color) {
         if (!pieces.containsKey(color)) {
-            final Circle piece = new Circle(PIECE_RADIUS);
-            piece.setFill(Color.web(mapPieceColor(color)));
-            piece.setStroke(Color.BLACK);
+            final Image pieceImage = new Image(PIECE_IMAGE_PATH + pieceImageName(color));
+            final ImageView piece = new ImageView(pieceImage);
+            piece.setFitWidth(PIECE_SIZE);
+            piece.setFitHeight(PIECE_SIZE);
+
             pieces.put(color, piece);
             pieceLayer.getChildren().add(piece);
             
-            StackPane startCell = cellsByPosition.get(0);
+            final StackPane startCell = cellsByPosition.get(0);
             if (startCell != null) {
                 this.root.layout();
                 var bounds = startCell.getBoundsInParent();
-                piece.setTranslateX(bounds.getMinX() + (bounds.getWidth() / 2.0));
-                piece.setTranslateY(bounds.getMinY() + (bounds.getHeight() / 2.0));
+                piece.setTranslateX(bounds.getMinX() + (bounds.getWidth() / 2.0) - (PIECE_SIZE / 2.0));
+                piece.setTranslateY(bounds.getMinY() + (bounds.getHeight() / 2.0) - (PIECE_SIZE / 2.0));
             }
         }
         return pieces.get(color);
@@ -254,8 +258,8 @@ public class BoardViewImpl implements BoardView {
             int endPos,
             boolean sharedDest,
             Runnable onFinished) {
-        Circle piece = getOrCreatePiece(color);
-        SequentialTransition sequence = new SequentialTransition();
+        final ImageView piece = getOrCreatePiece(color);
+        final SequentialTransition sequence = new SequentialTransition();
 
         addPathSegment(sequence, piece, color, startPos, endPos, endPos, sharedDest);
 
@@ -277,7 +281,7 @@ public class BoardViewImpl implements BoardView {
             boolean sharedDest,
             final Runnable onIntermediateReached,
             final Runnable onFinished) {
-        final Circle piece = getOrCreatePiece(color);
+        final ImageView piece = getOrCreatePiece(color);
         final SequentialTransition full = new SequentialTransition();
 
         int fromPos = startPos;
@@ -311,22 +315,23 @@ public class BoardViewImpl implements BoardView {
         full.play();
     }
 
-    private void addPathSegment(SequentialTransition sequence, Circle piece, String color, int fromPos, int toPos, int destinationPos, boolean sharedDest) {
+    private void addPathSegment(final SequentialTransition sequence, final ImageView piece, final String color,
+            final int fromPos, final int toPos, final int destinationPos, final boolean sharedDest) {
         if (fromPos == toPos) {
             return;
         }
-        int step = (fromPos < toPos) ? 1 : -1;
+        final int step = (fromPos < toPos) ? 1 : -1;
 
         for (int i = fromPos + step; i != toPos + step; i += step) {
-            StackPane cell = cellsByPosition.get(i);
+            final StackPane cell = cellsByPosition.get(i);
             if (cell == null) continue;
 
-            var bounds = cell.getBoundsInParent();
-            double targetX = bounds.getMinX() + (bounds.getWidth() / 2.0);
-            double targetY = bounds.getMinY() + (bounds.getHeight() / 2.0);
+            final var bounds = cell.getBoundsInParent();
+            double targetX = bounds.getMinX() + (bounds.getWidth() / 2.0) - (PIECE_SIZE / 2.0);
+            double targetY = bounds.getMinY() + (bounds.getHeight() / 2.0) - (PIECE_SIZE / 2.0);
 
             if (i == destinationPos && sharedDest) {
-                double[] offset = quadrantOffset(color);
+                final double[] offset = quadrantOffset(color);
                 targetX += offset[0];
                 targetY += offset[1];
             }
@@ -340,16 +345,16 @@ public class BoardViewImpl implements BoardView {
     }
 
     private void movePieceDirectly(String color, int position, boolean sharedDest) {
-        Circle piece = getOrCreatePiece(color);
+        final ImageView piece = getOrCreatePiece(color);
         StackPane cell = cellsByPosition.get(position);
         if (cell == null) return;
 
-        var bounds = cell.getBoundsInParent();
-        double targetX = bounds.getMinX() + (bounds.getWidth() / 2.0);
-        double targetY = bounds.getMinY() + (bounds.getHeight() / 2.0);
+        final var bounds = cell.getBoundsInParent();
+        double targetX = bounds.getMinX() + (bounds.getWidth() / 2.0) - (PIECE_SIZE / 2.0);
+        double targetY = bounds.getMinY() + (bounds.getHeight() / 2.0) - (PIECE_SIZE / 2.0);
 
         if (sharedDest) {
-            double[] offset = quadrantOffset(color);
+            final double[] offset = quadrantOffset(color);
             targetX += offset[0];
             targetY += offset[1];
         }
