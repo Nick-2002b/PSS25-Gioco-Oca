@@ -9,6 +9,7 @@ import it.unibo.giocooca.audio.SoundManager;
 import javafx.animation.SequentialTransition;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -38,10 +39,10 @@ public class BoardViewImpl implements BoardView {
     private static final int PIECE_SIZE = 30;
 
     private static final Color COLOR_NORMAL = Color.web("#dfe6e9");
-    private static final Color COLOR_SPECIAL = Color.web("#fdcb6e");
-    private static final Color COLOR_PRISON = Color.web("#d63031");
-    private static final Color COLOR_START = Color.web("#74b9ff");
-    private static final Color COLOR_BORDER = Color.DARKGRAY;
+    private static final Color COLOR_SPECIAL = Color.web("#fff9c4");
+    private static final Color COLOR_PRISON = Color.web("#ffcdd2");
+    private static final Color COLOR_START = Color.web("#bbdefb");
+    private static final Color COLOR_BORDER = Color.web("#e0e0e0");
     private static final String PIECE_IMAGE_PATH = "/images/pieces/";
 
     private final Pane root;
@@ -212,17 +213,33 @@ public class BoardViewImpl implements BoardView {
         final Rectangle background = new Rectangle(CELL_WIDTH, CELL_HEIGHT);
         background.setFill(cellTypeToColor(cellType));
         background.setStroke(COLOR_BORDER);
-        background.setStrokeWidth(1);
+        background.setStrokeWidth(2);
+        background.setArcWidth(15);
+        background.setArcHeight(15);
 
         final Label numberLabel = new Label(cellType.equals("START") ? "START" : String.valueOf(position));
-        numberLabel.setStyle("-fx-font-size: 10px; -fx-font-weight: bold;");
+        numberLabel.setStyle("-fx-font-size: 10px; -fx-font-weight: bold; -fx-text-fill: #144C30;");
+        numberLabel.setPadding(new Insets(3, 0, 0, 5));
 
         final StackPane cell = new StackPane(background, numberLabel);
         StackPane.setAlignment(numberLabel, Pos.TOP_LEFT);
 
-        if (cellType.equals("SPECIAL")) {
+        if (cellType.equals("PRISON")) {
+            Label icon = new Label("🔒");
+            icon.setStyle("-fx-font-size: 20px;");
+            cell.getChildren().add(icon);
+        } else if (cellType.equals("SPECIAL")) {
+            Label icon = new Label("⭐");
+            icon.setStyle("-fx-font-size: 30px;");
+            cell.getChildren().add(icon);
+
             final Label offsetLabel = new Label(formatOffset(cellOffset));
-            offsetLabel.setStyle("-fx-font-size: 11px; -fx-font-weight: bold; -fx-text-fill: #2d3436;");
+            if (cellOffset < 0) {
+                offsetLabel.setStyle("-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #ae273b;");
+            } else {
+                offsetLabel.setStyle("-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #27ae60;");
+            }
+            offsetLabel.setPadding(new Insets(0, 5, 3, 0));
             StackPane.setAlignment(offsetLabel, Pos.BOTTOM_RIGHT);
             cell.getChildren().add(offsetLabel);
         }

@@ -128,21 +128,50 @@ public class MatchViewImpl implements MatchView{
       btnQuit.setPrefWidth(BUTTON_WIDTH);
       btnQuit.setOnAction(event -> this.controller.quitMatch());
 
-      final Label logTitle = new Label("Cronologia eventi:");
-      logTitle.setStyle("-fx-font-weight: bold;");
+      rootLayout.setStyle("-fx-background-color: #f4f6f8;");
+
+      centralBoard.setStyle("-fx-background-color: transparent;");
+
+      String cardStyle = "-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 15; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.08), 10, 0, 0, 2);";
+
+      VBox topCard = new VBox(SPACING);
+      topCard.setAlignment(Pos.CENTER);
+      topCard.setStyle(cardStyle);
+      topCard.getChildren().addAll(
+              this.btnRollDice,
+              this.lblCurrentTurn,
+              this.lblDiceResult
+      );
+
+      final Label logTitle = new Label("Cronologia eventi");
+      logTitle.setStyle("-fx-font-weight: bold; -fx-font-size: 14px; -fx-text-fill: #2c3e50;");
+
+      this.txtLogArea.setStyle(
+              "-fx-focus-color: transparent; " +
+              "-fx-faint-focus-color: transparent; " +
+              "-fx-text-box-border: transparent;"
+      );
+      this.txtLogArea.setFocusTraversable(false);
+
+      VBox bottomCard = new VBox(10);
+      bottomCard.setAlignment(Pos.TOP_LEFT);
+      bottomCard.setStyle(cardStyle);
+      bottomCard.getChildren().addAll(logTitle, this.txtLogArea);
+
+      btnQuit.setStyle("-fx-background-color: white; " +
+              "-fx-border-color: #bdc3c7; " +
+              "-fx-border-radius: 5; " +
+              "-fx-background-radius: 5; " +
+              "-fx-font-size: 14px; " +
+              "-fx-padding: 8px 16px; " +
+              "-fx-cursor: hand;");
 
       final VBox controlPanel = new VBox(SPACING);
       controlPanel.setPrefWidth(SIDEBAR_WIDTH);
       controlPanel.setPadding(new Insets(0, 0, 0, PADDING));
       controlPanel.setAlignment(Pos.TOP_CENTER);
-      controlPanel.getChildren().addAll(
-         this.btnRollDice,
-         this.lblCurrentTurn,
-         this.lblDiceResult,
-         logTitle,
-         this.txtLogArea,
-         btnQuit
-      );
+
+      controlPanel.getChildren().addAll(topCard, bottomCard, btnQuit);
 
       rootLayout.setRight(controlPanel);
 
