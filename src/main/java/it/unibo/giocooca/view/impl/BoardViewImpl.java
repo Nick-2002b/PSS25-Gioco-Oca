@@ -39,10 +39,11 @@ public class BoardViewImpl implements BoardView {
     private static final int VGAP = 8;
     private static final int PIECE_SIZE = 30;
 
-    private static final Color COLOR_NORMAL = Color.web("#dfe6e9");
-    private static final Color COLOR_SPECIAL = Color.web("#fff9c4");
-    private static final Color COLOR_PRISON = Color.web("#ffcdd2");
-    private static final Color COLOR_START = Color.web("#bbdefb");
+    private static final double CELL_OPACITY = 0.80;
+    private static final Color COLOR_NORMAL = Color.web("#dfe6e9", CELL_OPACITY);
+    private static final Color COLOR_SPECIAL = Color.web("#fff9c4", CELL_OPACITY);
+    private static final Color COLOR_PRISON = Color.web("#ffcdd2", CELL_OPACITY);
+    private static final Color COLOR_START = Color.web("#bbdefb", CELL_OPACITY);
     private static final Color COLOR_BORDER = Color.web("#e0e0e0");
     private static final String PIECE_IMAGE_PATH = "/images/pieces/";
 

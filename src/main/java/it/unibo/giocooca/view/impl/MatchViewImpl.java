@@ -38,6 +38,7 @@ public class MatchViewImpl implements MatchView{
    private static final int SIDEBAR_WIDTH = 280;
    private static final int BUTTON_WIDTH = 220;
    private static final int LOG_AREA_HEIGHT = 200;
+   private static final int LOGO_SIZE = 100;
 
    private final SceneManager sceneManager;
    private final MatchController controller;
@@ -102,6 +103,9 @@ public class MatchViewImpl implements MatchView{
       this.lblDiceResult = new Label("Ultimo lancio: -");
       this.lblDiceResult.setStyle("-fx-font-size: 16px; -fx-text-fill: #34495e;");
 
+      final Label titleLabel = new Label("Gioco dell'OCA");
+      titleLabel.setStyle("-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #144C30;");
+
       this.txtLogArea = new TextArea();
       this.txtLogArea.setEditable(false);
       this.txtLogArea.setWrapText(true);
@@ -113,7 +117,15 @@ public class MatchViewImpl implements MatchView{
       this.diceFaceFour = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/dice/diceFour.png")));
       this.diceFaceFive = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/dice/diceFive.png")));
       this.diceFaceSix = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/dice/diceSix.png")));
-      
+
+      final ImageView logo = new ImageView(new Image("/images/ocalogo.png"));
+      logo.setFitWidth(LOGO_SIZE);
+      logo.setFitHeight(LOGO_SIZE);
+
+      final VBox topBox = new VBox(10, logo, titleLabel);
+      topBox.setAlignment(Pos.CENTER);
+      topBox.setPadding(new Insets(PADDING));
+
       this.diceFaces = List.of(diceFaceOne, diceFaceTwo, diceFaceThree, diceFaceFour, diceFaceFive, diceFaceSix);
       
       this.diceView1 = new ImageView(this.diceFaceOne);
@@ -182,7 +194,7 @@ public class MatchViewImpl implements MatchView{
       controlPanel.setPadding(new Insets(PADDING, PADDING, PADDING, PADDING));
       controlPanel.setAlignment(Pos.TOP_CENTER);
 
-      controlPanel.getChildren().addAll(topCard, bottomCard, btnQuit);
+      controlPanel.getChildren().addAll(topBox, topCard, bottomCard, btnQuit);
 
       rootLayout.setRight(controlPanel);
 
