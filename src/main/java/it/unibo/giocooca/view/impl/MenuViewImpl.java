@@ -21,7 +21,8 @@ public final class MenuViewImpl implements MenuView {
                     "-fx-padding: 10px 20px; " +
                     "-fx-background-color: #9cb596;" +
                     "-fx-text-fill: white;" +
-                    "-fx-background-radius: 8";
+                    "-fx-background-radius: 8;" +
+                    "-fx-cursor: hand;";
     private static final int BUTTON_WIDTH = 220;
     private final SceneManager sceneManager;
     private final MenuController controller;

@@ -23,6 +23,13 @@ public final class RulesViewImpl implements RulesView {
     private static final int CARD_ICON_SIZE = 28;
     private static final int GRID_COLUMNS = 2;
     private static final int CARD_MAX_WIDTH = 480;
+    private static final String BUTTON_STYLE =
+            "-fx-font-size: 18px; " +
+                    "-fx-padding: 10px 20px; " +
+                    "-fx-background-color: #9cb596;" +
+                    "-fx-text-fill: white;" +
+                    "-fx-background-radius: 8;" +
+                    "-fx-cursor: hand;";
     private static final Image diceIcon = new Image("/images/icons/diceIcon.png");
     private static final Image starIcon = new Image("/images/icons/starIcon.png");
     private static final Image flagIcon = new Image("/images/icons/flagIcon.png");
@@ -129,7 +136,7 @@ public final class RulesViewImpl implements RulesView {
 
     private VBox buildFooter() {
         final Button btnBack = new Button("Indietro");
-        btnBack.setStyle("-fx-font-size: 18px; -fx-padding: 10px 30px;");
+        btnBack.setStyle(BUTTON_STYLE);
         btnBack.setOnAction(e -> this.controller.onBackToMenu());
 
         final VBox bottomBox = new VBox(btnBack);

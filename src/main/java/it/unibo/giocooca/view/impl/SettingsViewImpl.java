@@ -39,7 +39,13 @@ public final class SettingsViewImpl implements SettingsView {
     private static final String SECTION_TITLE_STYLE =
             "-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #144C30;";
     private static final String ROW_LABEL_STYLE = "-fx-font-size: 15px;";
-    private static final String BUTTON_STYLE = "-fx-font-size: 15px; -fx-padding: 10px 30px;";
+    private static final String BUTTON_STYLE =
+            "-fx-font-size: 18px; " +
+                    "-fx-padding: 10px 20px; " +
+                    "-fx-background-color: #9cb596;" +
+                    "-fx-text-fill: white;" +
+                    "-fx-background-radius: 8;" +
+                    "-fx-cursor: hand;";
 
     private final SceneManager sceneManager;
     private final SettingsController controller;

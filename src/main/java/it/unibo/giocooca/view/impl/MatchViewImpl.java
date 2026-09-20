@@ -40,6 +40,14 @@ public class MatchViewImpl implements MatchView{
    private static final int LOG_AREA_HEIGHT = 200;
    private static final int LOGO_SIZE = 100;
 
+   private static final String BUTTON_STYLE =
+           "-fx-font-size: 18px; " +
+                   "-fx-padding: 10px 20px; " +
+                   "-fx-background-color: #9cb596;" +
+                   "-fx-text-fill: white;" +
+                   "-fx-background-radius: 8;" +
+                   "-fx-cursor: hand;";
+
    private final SceneManager sceneManager;
    private final MatchController controller;
    private final BoardView boardView;
@@ -149,7 +157,7 @@ public class MatchViewImpl implements MatchView{
       this.btnRollDice.setOnAction(event -> this.controller.rollDice());
 
       final Button btnQuit = new Button("Esci al Menu");
-      btnQuit.setStyle("-fx-font-size: 14px; -fx-padding: 8px 16px;");
+      btnQuit.setStyle(BUTTON_STYLE);
       btnQuit.setPrefWidth(BUTTON_WIDTH);
       btnQuit.setOnAction(event -> this.controller.quitMatch());
 
@@ -181,13 +189,13 @@ public class MatchViewImpl implements MatchView{
       bottomCard.setStyle(cardStyle);
       bottomCard.getChildren().addAll(logTitle, this.txtLogArea);
 
-      btnQuit.setStyle("-fx-background-color: white; " +
-              "-fx-border-color: #bdc3c7; " +
-              "-fx-border-radius: 5; " +
-              "-fx-background-radius: 5; " +
-              "-fx-font-size: 14px; " +
-              "-fx-padding: 8px 16px; " +
-              "-fx-cursor: hand;");
+//      btnQuit.setStyle("-fx-background-color: white; " +
+//              "-fx-border-color: #bdc3c7; " +
+//              "-fx-border-radius: 5; " +
+//              "-fx-background-radius: 5; " +
+//              "-fx-font-size: 14px; " +
+//              "-fx-padding: 8px 16px; " +
+//              "-fx-cursor: hand;");
 
       final VBox controlPanel = new VBox(SPACING);
       controlPanel.setPrefWidth(SIDEBAR_WIDTH);
