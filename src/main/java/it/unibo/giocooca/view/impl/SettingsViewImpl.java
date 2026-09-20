@@ -68,7 +68,7 @@ public final class SettingsViewImpl implements SettingsView {
     }
 
     private VBox buildHeader() {
-        final ImageView logo = new ImageView(new Image("/images/OcaLogo.png"));
+        final ImageView logo = new ImageView(new Image("/images/ocaLogo.png"));
         logo.setFitWidth(LOGO_SIZE);
         logo.setFitHeight(LOGO_SIZE);
 

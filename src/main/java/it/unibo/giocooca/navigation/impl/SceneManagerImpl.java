@@ -18,7 +18,7 @@ import javafx.stage.Stage;
 public final class SceneManagerImpl implements SceneManager {
     private static final int SCENE_WIDTH = 1280;
     private static final int SCENE_HEIGHT = 800;
-    private final Image logo = new Image("/images/OcaLogo.png");
+    private final Image logo = new Image("/images/ocaLogo.png");
 
     private final Stage stage;
     private final Settings settings;

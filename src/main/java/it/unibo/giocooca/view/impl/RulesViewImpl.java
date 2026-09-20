@@ -60,7 +60,7 @@ public final class RulesViewImpl implements RulesView {
     }
 
     private VBox buildHeader() {
-        final ImageView icon = new ImageView(new Image("/images/OcaLogo.png"));
+        final ImageView icon = new ImageView(new Image("/images/ocaLogo.png"));
         icon.setFitWidth(ICON_SIZE);
         icon.setFitHeight(ICON_SIZE);
         icon.setPreserveRatio(true);
