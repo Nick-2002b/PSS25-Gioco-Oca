@@ -18,6 +18,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -73,13 +78,21 @@ public class MatchViewImpl implements MatchView{
    @Override
    public void show(){
       final BorderPane rootLayout = new BorderPane();
-      rootLayout.setPadding(new Insets(PADDING));
       rootLayout.setStyle("-fx-background-color: #ecf0f1;");
 
       // --- Area Centrale: Tabellone  ---
       final StackPane centralBoard = new StackPane();
-      centralBoard.setStyle("-fx-background-color: #ffffff; -fx-border-color: #bdc3c7; -fx-border-width: 2px; -fx-border-radius: 5px;");
       centralBoard.getChildren().add(boardView.getBoard());
+
+      final Image boardBackground = new Image("/images/boardBackground.png");
+      centralBoard.setBackground(new Background(new BackgroundImage(
+              boardBackground,
+              BackgroundRepeat.NO_REPEAT,
+              BackgroundRepeat.NO_REPEAT,
+              BackgroundPosition.CENTER,
+              new BackgroundSize(100, 100, true, true, false, true)
+      )));
+
       rootLayout.setCenter(centralBoard);
 
       // --- Area Destra: Pannello Informazioni e Controlli ---
@@ -130,8 +143,6 @@ public class MatchViewImpl implements MatchView{
 
       rootLayout.setStyle("-fx-background-color: #f4f6f8;");
 
-      centralBoard.setStyle("-fx-background-color: transparent;");
-
       String cardStyle = "-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 15; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.08), 10, 0, 0, 2);";
 
       VBox topCard = new VBox(SPACING);
@@ -168,7 +179,7 @@ public class MatchViewImpl implements MatchView{
 
       final VBox controlPanel = new VBox(SPACING);
       controlPanel.setPrefWidth(SIDEBAR_WIDTH);
-      controlPanel.setPadding(new Insets(0, 0, 0, PADDING));
+      controlPanel.setPadding(new Insets(PADDING, PADDING, PADDING, PADDING));
       controlPanel.setAlignment(Pos.TOP_CENTER);
 
       controlPanel.getChildren().addAll(topCard, bottomCard, btnQuit);
