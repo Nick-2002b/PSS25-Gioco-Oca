@@ -50,7 +50,6 @@ public final class RulesViewImpl implements RulesView {
     @Override
     public void show() {
         final BorderPane root = new BorderPane();
-        root.setStyle("-fx-background-color:#ecf0f1;");
 
         root.setTop(buildHeader());
         root.setCenter(buildRuleCards());

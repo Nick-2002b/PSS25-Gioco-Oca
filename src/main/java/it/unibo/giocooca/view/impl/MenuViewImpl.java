@@ -60,7 +60,6 @@ public final class MenuViewImpl implements MenuView {
         menuBox.getChildren().addAll(titleLabel, btnStart, btnSettings, btnRules, btnQuit);
 
         final StackPane background = new StackPane();
-        background.setStyle("-fx-background-color:#ecf0f1;");
         background.getChildren().add(menuBox);
 
         sceneManager.render(background, "Gioco dell'OCA - Menu' principale");

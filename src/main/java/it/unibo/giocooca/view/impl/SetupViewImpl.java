@@ -138,7 +138,6 @@ public final class SetupViewImpl implements SetupView {
         }
 
         final StackPane background = new StackPane(allElements);
-        background.setStyle("-fx-background-color: #ecf0f1;");
 
         sceneManager.render(background, "Setup Gioco");
     }

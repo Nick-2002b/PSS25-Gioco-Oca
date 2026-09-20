@@ -58,7 +58,6 @@ public final class SettingsViewImpl implements SettingsView {
     @Override
     public void show() {
         final BorderPane root = new BorderPane();
-        root.setStyle("-fx-background-color: #eef1f5;");
 
         root.setTop(buildHeader());
         root.setCenter(buildContent());

@@ -9,6 +9,7 @@ import it.unibo.giocooca.navigation.SceneManager;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 /**
@@ -18,8 +19,14 @@ import javafx.stage.Stage;
 public final class SceneManagerImpl implements SceneManager {
     private static final int SCENE_WIDTH = 1280;
     private static final int SCENE_HEIGHT = 800;
+    private static final Background APP_BACKGROUND = new Background(new BackgroundImage(
+            new Image("/images/appBackground.png"),
+            BackgroundRepeat.NO_REPEAT,
+            BackgroundRepeat.NO_REPEAT,
+            BackgroundPosition.CENTER,
+            new BackgroundSize(100, 100, true, true, false, true)
+    ));
     private final Image logo = new Image("/images/ocaLogo.png");
-
     private final Stage stage;
     private final Settings settings;
 
@@ -62,6 +69,9 @@ public final class SceneManagerImpl implements SceneManager {
 
     @Override
     public void render(final Parent root, final String title) {
+        if (root instanceof Region region) {
+            region.setBackground(APP_BACKGROUND);
+        }
         stage.setTitle(title);
         stage.getIcons().add(logo);
         if (stage.getScene() == null) {
