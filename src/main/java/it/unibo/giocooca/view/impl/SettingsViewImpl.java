@@ -28,8 +28,8 @@ public final class SettingsViewImpl implements SettingsView {
     private static final int LABEL_WIDTH = 180;
     private static final int HEADER_ICON_SIZE = 32;
     private static final int LOGO_SIZE = 100;
-    private static final Image diceIcon = new Image("/images/diceIcon.png");
-    private static final Image speakerIcon = new Image("/images/speakerIcon.png");
+    private static final Image diceIcon = new Image("/images/icons/diceIcon.png");
+    private static final Image speakerIcon = new Image("/images/icons/speakerIcon.png");
 
     private static final String CARD_STYLE =
             "-fx-background-color: white;"

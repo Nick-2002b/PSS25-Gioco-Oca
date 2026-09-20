@@ -23,10 +23,10 @@ public final class RulesViewImpl implements RulesView {
     private static final int CARD_ICON_SIZE = 28;
     private static final int GRID_COLUMNS = 2;
     private static final int CARD_MAX_WIDTH = 480;
-    private static final Image diceIcon = new Image("/images/diceIcon.png");
-    private static final Image starIcon = new Image("/images/starIcon.png");
-    private static final Image flagIcon = new Image("/images/flagIcon.png");
-    private static final Image targetIcon = new Image("/images/targetIcon.png");
+    private static final Image diceIcon = new Image("/images/icons/diceIcon.png");
+    private static final Image starIcon = new Image("/images/icons/starIcon.png");
+    private static final Image flagIcon = new Image("/images/icons/flagIcon.png");
+    private static final Image targetIcon = new Image("/images/icons/targetIcon.png");
 
     private static final String CARD_STYLE =
             "-fx-background-color: white;"
