@@ -61,7 +61,7 @@ public final class MatchControllerImpl implements MatchController {
                 null,
                 null);
         this.view.showCurrentTurn(this.match.getCurrentPlayer().getNickName()
-                        + " (" + this.match.getCurrentPlayer().getPiece().getColor() + ")");
+                + " (" + this.match.getCurrentPlayer().getPiece().getColor() + ")");
         this.view.showMessage("La partita e' iniziata - Gioca: "
                 + this.match.getCurrentPlayer().getNickName()
                 + " (" + this.match.getCurrentPlayer().getPiece().getColor() + ")");

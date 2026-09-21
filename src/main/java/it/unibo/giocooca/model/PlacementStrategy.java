@@ -19,8 +19,8 @@ public interface PlacementStrategy {
      * @return lista di posizioni
      */
     List<Integer> getSpecialCellPositions(
-             int size,
-             int numSpecialCells,
-             int prisonPosition,
-             Random random);
+            int size,
+            int numSpecialCells,
+            int prisonPosition,
+            Random random);
 }

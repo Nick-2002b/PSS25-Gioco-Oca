@@ -31,7 +31,7 @@ public final class Settings {
     /**
      * Indica se il posizionamento delle celle speciale sul percorso è fisso.
      *
-     *  @return true se il posizionamento è fisso false altrimenti
+     * @return true se il posizionamento è fisso false altrimenti
      */
     public boolean isFixedPlacement() {
         return fixedPlacement;

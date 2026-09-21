@@ -147,11 +147,11 @@ public final class MatchViewImpl implements MatchView {
         this.btnRollDice = new Button(twoDice ? "Lancia Dadi" : "Lancia Dado");
         this.btnRollDice.setStyle(
                 "-fx-cursor: hand; "
-                + "-fx-background-color: transparent; "
-                + "-fx-border-color: transparent; "
-                + "-fx-font-size: 16px; "
-                + "-fx-padding: 10px 20px; "
-                + "-fx-font-weight: bold;");
+                        + "-fx-background-color: transparent; "
+                        + "-fx-border-color: transparent; "
+                        + "-fx-font-size: 16px; "
+                        + "-fx-padding: 10px 20px; "
+                        + "-fx-font-weight: bold;");
         this.btnRollDice.setPrefWidth(BUTTON_WIDTH);
         this.btnRollDice.setGraphic(diceBox);
         this.btnRollDice.setOnAction(event -> this.controller.rollDice());
