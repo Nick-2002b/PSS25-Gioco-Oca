@@ -33,7 +33,7 @@ public final class BoardControllerImpl implements BoardController {
     }
 
     @Override
-    public CellType getCellType(int position) {
+    public CellType getCellType(final int position) {
         return this.board.getCell(position).getType();
     }
 

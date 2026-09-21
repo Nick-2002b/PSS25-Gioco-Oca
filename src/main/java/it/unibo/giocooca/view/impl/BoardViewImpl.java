@@ -27,7 +27,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
 
-public class BoardViewImpl implements BoardView {
+/**
+ * Implementazione grafica del percorso di gioco.
+ */
+public final class BoardViewImpl implements BoardView {
 
     private static final int ROW_LENGTH = 10;
     private static final int GROUP_SIZE = ROW_LENGTH + 1;
@@ -55,13 +58,18 @@ public class BoardViewImpl implements BoardView {
     private final Map<String, Integer> currentPositions = new HashMap<>();
     private Animation currentAnimation;
 
+    /**
+     * Crea la vista del percorso a partire dal controller del gioco.
+     *
+     * @param controller controller che fornisce la configurazione del percorso e delle celle
+     */
     public BoardViewImpl(final BoardController controller) {
         final int boardSize = controller.getBoardSize();
         final int lastPosition = boardSize - 1;
         final int maxLogicalRow = maxLogicalRow(lastPosition);
 
-        double boardWidth = ROW_LENGTH * CELL_WIDTH + (ROW_LENGTH - 1) * HGAP;
-        double boardHeight = (maxLogicalRow + 1) * CELL_HEIGHT + maxLogicalRow * VGAP;
+        final double boardWidth = ROW_LENGTH * CELL_WIDTH + (ROW_LENGTH - 1) * HGAP;
+        final double boardHeight = (maxLogicalRow + 1) * CELL_HEIGHT + maxLogicalRow * VGAP;
 
         final GridPane cellLayer = buildCellLayer(controller, lastPosition, maxLogicalRow);
 
@@ -147,13 +155,13 @@ public class BoardViewImpl implements BoardView {
 
     @Override
     public void updatePlayerPositions(
-            Map<String, Integer> playerPositions,
-            String movingPieceColor,
-            List<Integer> intermediatePositions,
+            final Map<String, Integer> playerPositions,
+            final String movingPieceColor,
+            final List<Integer> intermediatePositions,
             final Runnable onIntermediateReached,
-            Runnable onAnimationFinished) {
-        Map<Integer, Integer> playersPerCell = new HashMap<>();
-        for (Integer pos : playerPositions.values()) {
+            final Runnable onAnimationFinished) {
+        final Map<Integer, Integer> playersPerCell = new HashMap<>();
+        for (final Integer pos : playerPositions.values()) {
             playersPerCell.put(pos, playersPerCell.getOrDefault(pos, 0) + 1);
         }
 
@@ -267,7 +275,7 @@ public class BoardViewImpl implements BoardView {
             final StackPane startCell = cellsByPosition.get(0);
             if (startCell != null) {
                 this.root.layout();
-                var bounds = startCell.getBoundsInParent();
+                final var bounds = startCell.getBoundsInParent();
                 piece.setTranslateX(bounds.getMinX() + (bounds.getWidth() / 2.0) - (PIECE_SIZE / 2.0));
                 piece.setTranslateY(bounds.getMinY() + (bounds.getHeight() / 2.0) - (PIECE_SIZE / 2.0));
             }
@@ -276,11 +284,11 @@ public class BoardViewImpl implements BoardView {
     }
 
     private void animatePiecePath(
-            String color,
-            int startPos,
-            int endPos,
-            boolean sharedDest,
-            Runnable onFinished) {
+            final String color,
+            final int startPos,
+            final int endPos,
+            final boolean sharedDest,
+            final Runnable onFinished) {
         final ImageView piece = getOrCreatePiece(color);
         final SequentialTransition sequence = new SequentialTransition();
 
@@ -297,11 +305,11 @@ public class BoardViewImpl implements BoardView {
     }
 
     private void animatePiecePathThroughSteps(
-            String color,
-            int startPos,
-            List<Integer> intermediateSteps,
-            int endPos,
-            boolean sharedDest,
+            final String color,
+            final int startPos,
+            final List<Integer> intermediateSteps,
+            final int endPos,
+            final boolean sharedDest,
             final Runnable onIntermediateReached,
             final Runnable onFinished) {
         final ImageView piece = getOrCreatePiece(color);
@@ -347,7 +355,9 @@ public class BoardViewImpl implements BoardView {
 
         for (int i = fromPos + step; i != toPos + step; i += step) {
             final StackPane cell = cellsByPosition.get(i);
-            if (cell == null) continue;
+            if (cell == null) {
+                continue;
+            }
 
             final var bounds = cell.getBoundsInParent();
             double targetX = bounds.getMinX() + (bounds.getWidth() / 2.0) - (PIECE_SIZE / 2.0);
@@ -359,7 +369,7 @@ public class BoardViewImpl implements BoardView {
                 targetY += offset[1];
             }
 
-            TranslateTransition tt = new TranslateTransition(Duration.millis(400), piece);
+            final TranslateTransition tt = new TranslateTransition(Duration.millis(400), piece);
             tt.setToX(targetX);
             tt.setToY(targetY);
             tt.setOnFinished(e -> Platform.runLater(() -> SoundManager.getInstance().playSfx(SoundEffect.PIECE_MOVE)));
@@ -367,10 +377,12 @@ public class BoardViewImpl implements BoardView {
         }
     }
 
-    private void movePieceDirectly(String color, int position, boolean sharedDest) {
+    private void movePieceDirectly(final String color, final int position, final boolean sharedDest) {
         final ImageView piece = getOrCreatePiece(color);
-        StackPane cell = cellsByPosition.get(position);
-        if (cell == null) return;
+        final StackPane cell = cellsByPosition.get(position);
+        if (cell == null) {
+            return;
+        }
 
         final var bounds = cell.getBoundsInParent();
         double targetX = bounds.getMinX() + (bounds.getWidth() / 2.0) - (PIECE_SIZE / 2.0);

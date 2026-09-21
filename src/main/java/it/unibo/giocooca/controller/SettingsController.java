@@ -5,12 +5,22 @@ package it.unibo.giocooca.controller;
  */
 public interface SettingsController {
 
+    /**
+     * Indica se il posizionamento delle pedine è fisso.
+     *
+     * @return true se il posizionamento è fisso, false se è casuale
+     */
     boolean isFixedPlacement();
 
+    /**
+     * Notifica un cambiamento della modalità di posizionamento.
+     *
+     * @param fixed true se il posizionamento è fisso, false se è casuale
+     */
     void onPlacementChanged(boolean fixed);
 
     /**
-     * Restituisce il numero di dadi da utilizzare
+     * Restituisce il numero di dadi da utilizzare.
      *
      * @return numero di dadi
      */
@@ -53,7 +63,7 @@ public interface SettingsController {
     void onMusicVolumeChanger(double volume);
 
     /**
-     * Notifica un cambiamento del numero di dadi da utilizzare
+     * Notifica un cambiamento del numero di dadi da utilizzare.
      *
      * @param num numero di dadi
      */

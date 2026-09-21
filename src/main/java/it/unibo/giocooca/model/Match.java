@@ -7,7 +7,7 @@ import java.util.List;
  */
 public interface Match {
     /**
-     * Restituisce il numero di dadi selezionati e memorizzati nel setting
+     * Restituisce il numero di dadi selezionati e memorizzati nel setting.
      *
      * @return numero di dadi
      */
@@ -16,7 +16,7 @@ public interface Match {
     /**
      * Lancia i dadi per il giocatore corrente.
      *
-     * @return una lista con i valori ottenuti da ciascun dado
+     * @return una lista con i valori ottenuti da ciascun dado.
      */
     List<Integer> rollDice();
 
@@ -75,7 +75,7 @@ public interface Match {
     Board getBoard();
 
     /**
-     * Restituisce la lista delle posizioni dei salti del giocatore quando incontra le caselle speciali
+     * Restituisce la lista delle posizioni dei salti del giocatore quando incontra le caselle speciali.
      *
      * @return lista delle posizioni dei salti
      */

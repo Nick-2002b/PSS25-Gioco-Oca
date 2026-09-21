@@ -11,7 +11,9 @@ public interface MatchController {
     void startMatch();
 
     /**
-     * Ricaviamo il numero di dadi
+     * Ricaviamo il numero di dadi.
+     *
+     * @return il numero di dadi configurato per la partita.
      */
     int getDiceNumber();
 

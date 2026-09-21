@@ -28,16 +28,26 @@ public final class Settings {
         this.numDice = DEFAULT_NUM_DICE;
     }
 
+    /**
+     * Indica se il posizionamento delle celle speciale sul percorso è fisso.
+     *
+     *  @return true se il posizionamento è fisso false altrimenti
+     */
     public boolean isFixedPlacement() {
         return fixedPlacement;
     }
 
+    /**
+     * Imposta il posizionamento delle celle speciali a fisso.
+     *
+     * @param fixedPlacement true se il posizionamento deve essere fisso
+     */
     public void setFixedPlacement(final boolean fixedPlacement) {
         this.fixedPlacement = fixedPlacement;
     }
 
     /**
-     * Restituisce il numero di dadi
+     * Restituisce il numero di dadi.
      *
      * @return il numero di dadi, tra 1 e 2
      */
@@ -78,7 +88,7 @@ public final class Settings {
     }
 
     /**
-     * Restituisce il numero di caselle speciali
+     * Restituisce il numero di caselle speciali.
      *
      * @return numero massimo di caselle speciali
      */

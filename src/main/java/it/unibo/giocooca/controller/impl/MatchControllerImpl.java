@@ -16,8 +16,11 @@ import it.unibo.giocooca.view.impl.MatchViewImpl;
 import javafx.animation.PauseTransition;
 import javafx.util.Duration;
 
-//TODO Aggiungere un delay tra il lancio del dado e lo spostamento della pedina
-public class MatchControllerImpl implements MatchController {
+/**
+ * Implementazione del controller che gestisce il flusso di una partita,
+ * coordinando vista, turno dei giocatori e aggiornamento del tabellone.
+ */
+public final class MatchControllerImpl implements MatchController {
     private final SceneManager sceneManager;
     private final Match match;
     private final MatchView view;
@@ -51,9 +54,17 @@ public class MatchControllerImpl implements MatchController {
     @Override
     public void startMatch() {
         this.view.show();
-        this.boardView.updatePlayerPositions(this.boardController.getPlayerPositions(), null, List.of(), null, null);
-        this.view.showCurrentTurn(this.match.getCurrentPlayer().getNickName() + " (" + this.match.getCurrentPlayer().getPiece().getColor() + ")");
-        this.view.showMessage("La partita e' iniziata - Gioca: " + this.match.getCurrentPlayer().getNickName() + " (" + this.match.getCurrentPlayer().getPiece().getColor() + ")");
+        this.boardView.updatePlayerPositions(
+                this.boardController.getPlayerPositions(),
+                null,
+                List.of(),
+                null,
+                null);
+        this.view.showCurrentTurn(this.match.getCurrentPlayer().getNickName()
+                        + " (" + this.match.getCurrentPlayer().getPiece().getColor() + ")");
+        this.view.showMessage("La partita e' iniziata - Gioca: "
+                + this.match.getCurrentPlayer().getNickName()
+                + " (" + this.match.getCurrentPlayer().getPiece().getColor() + ")");
 
     }
 
@@ -155,6 +166,5 @@ public class MatchControllerImpl implements MatchController {
         this.boardView.stopAnimations();
         this.sceneManager.showMenu();
     }
-
 
 }

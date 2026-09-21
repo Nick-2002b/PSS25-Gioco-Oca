@@ -39,7 +39,7 @@ public final class SettingsControllerImpl implements SettingsController {
     }
 
     @Override
-    public void onPlacementChanged(boolean fixed) {
+    public void onPlacementChanged(final boolean fixed) {
         settings.setFixedPlacement(fixed);
     }
 

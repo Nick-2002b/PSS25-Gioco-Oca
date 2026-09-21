@@ -7,6 +7,9 @@ import it.unibo.giocooca.model.impl.SpecialCellImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+/**
+ * Test della casella speciale
+ */
 public class SpecialCellImplTest {
 
     @Test

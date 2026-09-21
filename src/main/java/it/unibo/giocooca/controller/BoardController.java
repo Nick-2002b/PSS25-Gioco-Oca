@@ -1,12 +1,11 @@
 package it.unibo.giocooca.controller;
 
-
 import it.unibo.giocooca.model.CellType;
 
 import java.util.Map;
 
 /**
- * Contratto del tabellone
+ * Contratto del tabellone.
  */
 public interface BoardController {
 
@@ -20,7 +19,7 @@ public interface BoardController {
      * Restituisce "NORMAL", "SPECIAL" o "PRISON".
      *
      * @param position posizione 1-based
-     * @return il tipo come stringa
+     * @return la tipologia di cella
      */
     CellType getCellType(int position);
 

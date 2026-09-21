@@ -7,7 +7,7 @@ import java.util.List;
  */
 public interface MatchView {
     /**
-     * Mostra la schermata principale della partita
+     * Mostra la schermata principale della partita.
      */
     void show();
 

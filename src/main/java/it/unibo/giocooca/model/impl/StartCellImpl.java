@@ -5,7 +5,7 @@ import it.unibo.giocooca.model.CellType;
 import it.unibo.giocooca.model.Player;
 
 /**
- * Casella di partenza (posizione 0): non applica alcun effetto,
+ * Casella di partenza (posizione 0): non applica alcun effetto.
  */
 public final class StartCellImpl implements Cell {
 

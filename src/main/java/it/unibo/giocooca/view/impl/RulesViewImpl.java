@@ -24,16 +24,16 @@ public final class RulesViewImpl implements RulesView {
     private static final int GRID_COLUMNS = 2;
     private static final int CARD_MAX_WIDTH = 480;
     private static final String BUTTON_STYLE =
-            "-fx-font-size: 18px; " +
-                    "-fx-padding: 10px 20px; " +
-                    "-fx-background-color: #9cb596;" +
-                    "-fx-text-fill: white;" +
-                    "-fx-background-radius: 8;" +
-                    "-fx-cursor: hand;";
-    private static final Image diceIcon = new Image("/images/icons/diceIcon.png");
-    private static final Image starIcon = new Image("/images/icons/starIcon.png");
-    private static final Image flagIcon = new Image("/images/icons/flagIcon.png");
-    private static final Image targetIcon = new Image("/images/icons/targetIcon.png");
+            "-fx-font-size: 18px; "
+                    + "-fx-padding: 10px 20px; "
+                    + "-fx-background-color: #9cb596;"
+                    + "-fx-text-fill: white;"
+                    + "-fx-background-radius: 8;"
+                    + "-fx-cursor: hand;";
+    private static final Image DICE_ICON = new Image("/images/icons/diceIcon.png");
+    private static final Image STAR_ICON = new Image("/images/icons/starIcon.png");
+    private static final Image FLAG_ICON = new Image("/images/icons/flagIcon.png");
+    private static final Image TARGET_ICON = new Image("/images/icons/targetIcon.png");
 
     private static final String CARD_STYLE =
             "-fx-background-color: white;"
@@ -92,16 +92,16 @@ public final class RulesViewImpl implements RulesView {
             grid.getColumnConstraints().add(column);
         }
 
-        final VBox goalCard = createRuleCard(targetIcon, "Scopo del gioco",
+        final VBox goalCard = createRuleCard(TARGET_ICON, "Scopo del gioco",
                 "Arrivare per primi all'ultima casella del tabellone.");
-        final VBox turnsCard = createRuleCard(diceIcon, "Svolgimento",
+        final VBox turnsCard = createRuleCard(DICE_ICON, "Svolgimento",
                 "A turno, i giocatori lanciano il dado e muovono la propria pedina "
                         + "di un numero di caselle pari al risultato del lancio.");
-        final VBox specialCard = createRuleCard(starIcon, "Caselle Speciali e Prigione",
+        final VBox specialCard = createRuleCard(STAR_ICON, "Caselle Speciali e Prigione",
                 "Chi finisce su una casella 'Speciale' ottiene un bonus (o un malus) "
                         + "e avanza (o retrocede) di ulteriori caselle. Chi finisce nella casella "
                         + "'Prigione' salta un turno.");
-        final VBox bounceCard = createRuleCard(flagIcon, "Rimbalzo finale",
+        final VBox bounceCard = createRuleCard(FLAG_ICON, "Rimbalzo finale",
                 "Per vincere bisogna arrivare esattamente sull'ultima casella. "
                         + "Se il numero ottenuto col dado e' maggiore di quello necessario, "
                         + "la pedina rimbalza all'indietro per i punti in eccesso.");

@@ -31,7 +31,12 @@ public final class BoardImpl implements Board {
 
         board[GameConfig.PRISON_POSITION] = new PrisonCellImpl(GameConfig.PRISON_POSITION);
 
-        final List<Integer> specialPositions = config.strategy().getSpecialCellPositions(size, config.numSpecialCells(), GameConfig.PRISON_POSITION, random);
+        final List<Integer> specialPositions = config.strategy()
+                .getSpecialCellPositions(
+                        size,
+                        config.numSpecialCells(),
+                        GameConfig.PRISON_POSITION,
+                        random);
 
         for (final int pos : specialPositions) {
             final int offset = generateOffset(random);

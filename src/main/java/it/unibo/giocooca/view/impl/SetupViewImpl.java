@@ -43,7 +43,7 @@ public final class SetupViewImpl implements SetupView {
 
     }
 
-    private String getFirstCapital(String s) {
+    private String getFirstCapital(final String s) {
         if (s == null || s.isBlank()) {
             return s;
         }

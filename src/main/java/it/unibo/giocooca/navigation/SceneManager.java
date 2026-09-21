@@ -30,12 +30,14 @@ public interface SceneManager {
     void showRules();
 
     /**
-     * Naviga verso la schermata del gioco
+     * Naviga verso la schermata del gioco.
+     *
+     * @param match la partita da visualizzare
      */
     void showMatch(Match match);
 
     /**
-     * Disegna la radice della scena corrente sullo stage
+     * Disegna la radice della scena corrente sullo stage.
      *
      * @param root  la radice grafica della schermata da mostrare
      * @param title il titolo da assegnare alla finestra

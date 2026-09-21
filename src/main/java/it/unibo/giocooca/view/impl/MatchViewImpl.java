@@ -32,7 +32,7 @@ import javafx.util.Duration;
 /**
  * Implementazione grafica della partita.
  */
-public class MatchViewImpl implements MatchView {
+public final class MatchViewImpl implements MatchView {
     private static final int PADDING = 20;
     private static final int SPACING = 15;
     private static final int SIDEBAR_WIDTH = 280;
@@ -41,12 +41,12 @@ public class MatchViewImpl implements MatchView {
     private static final int LOGO_SIZE = 100;
 
     private static final String BUTTON_STYLE =
-            "-fx-font-size: 18px; " +
-                    "-fx-padding: 10px 20px; " +
-                    "-fx-background-color: #9cb596;" +
-                    "-fx-text-fill: white;" +
-                    "-fx-background-radius: 8;" +
-                    "-fx-cursor: hand;";
+            "-fx-font-size: 18px; "
+                    + "-fx-padding: 10px 20px; "
+                    + "-fx-background-color: #9cb596;"
+                    + "-fx-text-fill: white;"
+                    + "-fx-background-radius: 8;"
+                    + "-fx-cursor: hand;";
 
     private final SceneManager sceneManager;
     private final MatchController controller;
@@ -56,15 +56,8 @@ public class MatchViewImpl implements MatchView {
     private Label lblDiceResult;
     private TextArea txtLogArea;
     private Button btnRollDice;
-    private Image diceFaceOne;
-    private Image diceFaceTwo;
-    private Image diceFaceThree;
-    private Image diceFaceFour;
-    private Image diceFaceFive;
-    private Image diceFaceSix;
     private ImageView diceView1;
     private ImageView diceView2;
-    private HBox diceBox;
     private List<Image> diceFaces;
 
     /**
@@ -120,12 +113,12 @@ public class MatchViewImpl implements MatchView {
         this.txtLogArea.setWrapText(true);
         this.txtLogArea.setPrefHeight(LOG_AREA_HEIGHT);
 
-        this.diceFaceOne = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/dice/diceOne.png")));
-        this.diceFaceTwo = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/dice/diceTwo.png")));
-        this.diceFaceThree = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/dice/diceThree.png")));
-        this.diceFaceFour = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/dice/diceFour.png")));
-        this.diceFaceFive = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/dice/diceFive.png")));
-        this.diceFaceSix = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/dice/diceSix.png")));
+        final Image diceFaceOne = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/dice/diceOne.png")));
+        final Image diceFaceTwo = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/dice/diceTwo.png")));
+        final Image diceFaceThree = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/dice/diceThree.png")));
+        final Image diceFaceFour = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/dice/diceFour.png")));
+        final Image diceFaceFive = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/dice/diceFive.png")));
+        final Image diceFaceSix = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/dice/diceSix.png")));
 
         final ImageView logo = new ImageView(new Image("/images/ocalogo.png"));
         logo.setFitWidth(LOGO_SIZE);
@@ -137,24 +130,30 @@ public class MatchViewImpl implements MatchView {
 
         this.diceFaces = List.of(diceFaceOne, diceFaceTwo, diceFaceThree, diceFaceFour, diceFaceFive, diceFaceSix);
 
-        this.diceView1 = new ImageView(this.diceFaceOne);
+        this.diceView1 = new ImageView(diceFaceOne);
         this.diceView1.setFitWidth(45);
         this.diceView1.setPreserveRatio(true);
 
-        this.diceView2 = new ImageView(this.diceFaceOne);
+        this.diceView2 = new ImageView(diceFaceOne);
         this.diceView2.setFitWidth(45);
         this.diceView2.setPreserveRatio(true);
         final boolean twoDice = this.controller.getDiceNumber() > 1;
         this.diceView2.setVisible(twoDice);
         this.diceView2.setManaged(twoDice);
 
-        this.diceBox = new HBox(8, this.diceView1, this.diceView2);
-        this.diceBox.setAlignment(Pos.CENTER);
+        final HBox diceBox = new HBox(8, this.diceView1, this.diceView2);
+        diceBox.setAlignment(Pos.CENTER);
 
         this.btnRollDice = new Button(twoDice ? "Lancia Dadi" : "Lancia Dado");
-        this.btnRollDice.setStyle("-fx-cursor: hand; -fx-background-color: transparent; -fx-border-color: transparent; -fx-font-size: 16px; -fx-padding: 10px 20px; -fx-font-weight: bold;");
+        this.btnRollDice.setStyle(
+                "-fx-cursor: hand; "
+                + "-fx-background-color: transparent; "
+                + "-fx-border-color: transparent; "
+                + "-fx-font-size: 16px; "
+                + "-fx-padding: 10px 20px; "
+                + "-fx-font-weight: bold;");
         this.btnRollDice.setPrefWidth(BUTTON_WIDTH);
-        this.btnRollDice.setGraphic(this.diceBox);
+        this.btnRollDice.setGraphic(diceBox);
         this.btnRollDice.setOnAction(event -> this.controller.rollDice());
 
         final Button btnQuit = new Button("Esci al Menu");
@@ -164,9 +163,12 @@ public class MatchViewImpl implements MatchView {
 
         rootLayout.setStyle("-fx-background-color: #f4f6f8;");
 
-        String cardStyle = "-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 15; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.08), 10, 0, 0, 2);";
+        final String cardStyle = "-fx-background-color: white; "
+                + "-fx-background-radius: 12; "
+                + "-fx-padding: 15; "
+                + "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.08), 10, 0, 0, 2);";
 
-        VBox topCard = new VBox(SPACING);
+        final VBox topCard = new VBox(SPACING);
         topCard.setAlignment(Pos.CENTER);
         topCard.setStyle(cardStyle);
         topCard.getChildren().addAll(
@@ -179,24 +181,16 @@ public class MatchViewImpl implements MatchView {
         logTitle.setStyle("-fx-font-weight: bold; -fx-font-size: 14px; -fx-text-fill: #2c3e50;");
 
         this.txtLogArea.setStyle(
-                "-fx-focus-color: transparent; " +
-                        "-fx-faint-focus-color: transparent; " +
-                        "-fx-text-box-border: transparent;"
+                "-fx-focus-color: transparent; "
+                        + "-fx-faint-focus-color: transparent; "
+                        + "-fx-text-box-border: transparent;"
         );
         this.txtLogArea.setFocusTraversable(false);
 
-        VBox bottomCard = new VBox(10);
+        final VBox bottomCard = new VBox(10);
         bottomCard.setAlignment(Pos.TOP_LEFT);
         bottomCard.setStyle(cardStyle);
         bottomCard.getChildren().addAll(logTitle, this.txtLogArea);
-
-//      btnQuit.setStyle("-fx-background-color: white; " +
-//              "-fx-border-color: #bdc3c7; " +
-//              "-fx-border-radius: 5; " +
-//              "-fx-background-radius: 5; " +
-//              "-fx-font-size: 14px; " +
-//              "-fx-padding: 8px 16px; " +
-//              "-fx-cursor: hand;");
 
         final VBox controlPanel = new VBox(SPACING);
         controlPanel.setPrefWidth(SIDEBAR_WIDTH);
@@ -248,7 +242,10 @@ public class MatchViewImpl implements MatchView {
                 }
                 final int totalResult = firstDiceResult + secondDiceResult;
                 if (this.lblDiceResult != null) {
-                    this.lblDiceResult.setText("Ultimo lancio: " + firstDiceResult + " + " + secondDiceResult + " = " + totalResult);
+                    this.lblDiceResult.setText("Ultimo lancio: "
+                            + firstDiceResult + " + "
+                            + secondDiceResult + " = "
+                            + totalResult);
                 }
             } else {
                 if (this.lblDiceResult != null) {

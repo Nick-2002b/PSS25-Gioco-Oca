@@ -60,7 +60,11 @@ public final class MatchImpl implements Match {
     }
 
     /**
-     * Costruttore con un solo dado utilizzato nei test (lo teniamo per non rompere il test)
+     * Costruttore con un solo dado utilizzato nei test (lo teniamo per non rompere il test).
+     *
+     * @param players lista dei giocatori partecipanti alla partita
+     * @param board   tabellone da gioco su cui si svolge la partita
+     * @param singleDice dado singolo da utilizzare nella partita
      */
     public MatchImpl(final List<Player> players, final Board board, final Dice singleDice) {
         this(players, board, List.of(singleDice));
