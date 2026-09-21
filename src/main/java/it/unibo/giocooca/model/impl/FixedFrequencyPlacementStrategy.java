@@ -6,9 +6,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class FixedFrequencyPlacementStrategy implements PlacementStrategy {
+/**
+ * Strategia che colloca celle speciali a intervalli fissi.
+ */
+public final class FixedFrequencyPlacementStrategy implements PlacementStrategy {
     @Override
-    public List<Integer> getSpecialCellPositions(int size, int numSpecialCells, int prisonPosition, Random random) {
+    public List<Integer> getSpecialCellPositions(
+            final int size,
+            final int numSpecialCells,
+            final int prisonPosition,
+            final Random random) {
 
         final List<Integer> validPositions = new ArrayList<>();
 
@@ -18,7 +25,7 @@ public class FixedFrequencyPlacementStrategy implements PlacementStrategy {
             }
         }
 
-        final double step = (double)validPositions.size() / numSpecialCells;
+        final double step = (double) validPositions.size() / numSpecialCells;
 
         final List<Integer> positions = new ArrayList<>();
         for (int i = 0; i < numSpecialCells; i++) {

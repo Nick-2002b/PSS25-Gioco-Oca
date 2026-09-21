@@ -9,7 +9,15 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-import it.unibo.giocooca.model.impl.*;
+import it.unibo.giocooca.model.impl.BoardImpl;
+import it.unibo.giocooca.model.impl.DiceImpl;
+import it.unibo.giocooca.model.impl.PieceImpl;
+import it.unibo.giocooca.model.impl.PlayerImpl;
+import it.unibo.giocooca.model.impl.MatchImpl;
+import it.unibo.giocooca.model.impl.RandomPlacementStrategy;
+import it.unibo.giocooca.model.impl.StartCellImpl;
+import it.unibo.giocooca.model.impl.SpecialCellImpl;
+import it.unibo.giocooca.model.impl.NormalCellImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -97,11 +105,19 @@ final class MatchImplTest {
         cells[14] = new SpecialCellImpl(14, 3, 63);
         final Board customBoard = new Board() {
             @Override
-            public int getSize() { return 64; }
+            public int getSize() {
+                return 64;
+            }
+
             @Override
-            public Cell getCell(int pos) { return cells[pos]; }
+            public Cell getCell(final int pos) {
+                return cells[pos];
+            }
+
             @Override
-            public List<Cell> getAllCells() { return List.of(cells); }
+            public List<Cell> getAllCells() {
+                return List.of(cells);
+            }
         };
         final Match customMatch = new MatchImpl(List.of(player1, player2), customBoard, new DiceImpl());
         customMatch.moveCurrentPlayer(10);

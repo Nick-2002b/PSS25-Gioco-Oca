@@ -17,6 +17,7 @@ public final class Settings {
     private double sfxVolume;
     private int numSpecialCells;
     private int numDice;
+
     /**
      * Crea le impostazioni con i valori di default.
      */
@@ -27,15 +28,29 @@ public final class Settings {
         this.numDice = DEFAULT_NUM_DICE;
     }
 
-    public boolean isFixedPlacement() { return fixedPlacement; }
-
-    public void setFixedPlacement(final boolean fixedPlacement) { this.fixedPlacement = fixedPlacement; }
+    /**
+     * Indica se il posizionamento delle celle speciale sul percorso è fisso.
+     *
+     *  @return true se il posizionamento è fisso false altrimenti
+     */
+    public boolean isFixedPlacement() {
+        return fixedPlacement;
+    }
 
     /**
-     * Restituisce il numero di dadi
-     * 
+     * Imposta il posizionamento delle celle speciali a fisso.
+     *
+     * @param fixedPlacement true se il posizionamento deve essere fisso
+     */
+    public void setFixedPlacement(final boolean fixedPlacement) {
+        this.fixedPlacement = fixedPlacement;
+    }
+
+    /**
+     * Restituisce il numero di dadi.
+     *
      * @return il numero di dadi, tra 1 e 2
-    */
+     */
     public int getNumDice() {
         return numDice;
     }
@@ -53,6 +68,7 @@ public final class Settings {
         }
         this.numDice = numDice;
     }
+
     /**
      * Restituisce il volume della musica.
      *
@@ -72,7 +88,7 @@ public final class Settings {
     }
 
     /**
-     * Restituisce il numero di caselle speciali
+     * Restituisce il numero di caselle speciali.
      *
      * @return numero massimo di caselle speciali
      */

@@ -3,10 +3,10 @@ package it.unibo.giocooca.model;
 import java.util.List;
 import java.util.Random;
 
-
 /**
  * Strategia per determinare le posizioni delle caselle speciali sul tabellone.
  */
+@SuppressWarnings("PMD.ImplicitFunctionalInterface")
 public interface PlacementStrategy {
 
     /**
@@ -18,5 +18,9 @@ public interface PlacementStrategy {
      * @param random          generatore di numeri casuali
      * @return lista di posizioni
      */
-    List<Integer> getSpecialCellPositions(int size, int numSpecialCells, int prisonPosition, Random random);
+    List<Integer> getSpecialCellPositions(
+             int size,
+             int numSpecialCells,
+             int prisonPosition,
+             Random random);
 }

@@ -22,7 +22,7 @@ public final class BoardControllerImpl implements BoardController {
      * @param board   il tabellone di gioco
      * @param players la lista dei giocatori della partita
      */
-    public BoardControllerImpl(final Board board, final List<Player> players){
+    public BoardControllerImpl(final Board board, final List<Player> players) {
         this.board = board;
         this.players = players;
     }
@@ -33,7 +33,7 @@ public final class BoardControllerImpl implements BoardController {
     }
 
     @Override
-    public CellType getCellType(int position) {
+    public CellType getCellType(final int position) {
         return this.board.getCell(position).getType();
     }
 

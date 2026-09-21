@@ -1,7 +1,11 @@
 package it.unibo.giocooca.navigation.impl;
 
 import it.unibo.giocooca.audio.SoundManager;
-import it.unibo.giocooca.controller.impl.*;
+import it.unibo.giocooca.controller.impl.MenuControllerImpl;
+import it.unibo.giocooca.controller.impl.RulesControllerImpl;
+import it.unibo.giocooca.controller.impl.SettingsControllerImpl;
+import it.unibo.giocooca.controller.impl.SetupControllerImpl;
+import it.unibo.giocooca.controller.impl.MatchControllerImpl;
 import it.unibo.giocooca.model.Match;
 import it.unibo.giocooca.model.Settings;
 import it.unibo.giocooca.model.impl.SettingsManager;
@@ -9,7 +13,12 @@ import it.unibo.giocooca.navigation.SceneManager;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
-import javafx.scene.layout.*;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundSize;
 import javafx.stage.Stage;
 
 /**
@@ -63,7 +72,7 @@ public final class SceneManagerImpl implements SceneManager {
     }
 
     @Override
-    public void showMatch(final Match match){
+    public void showMatch(final Match match) {
         new MatchControllerImpl(this, match).startMatch();
     }
 

@@ -8,9 +8,16 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-public class RandomPlacementStrategy implements PlacementStrategy {
+/**
+ * Strategia che colloca celle speciali in modo randomico.
+ */
+public final class RandomPlacementStrategy implements PlacementStrategy {
     @Override
-    public List<Integer> getSpecialCellPositions(int size, int numSpecialCells, int prisonPosition, Random random) {
+    public List<Integer> getSpecialCellPositions(
+            final int size,
+            final int numSpecialCells,
+            final int prisonPosition,
+            final Random random) {
         final List<Integer> freePos = new ArrayList<>();
         for (int pos = 2; pos < size; pos++) {
             if (pos != GameConfig.PRISON_POSITION) {

@@ -28,24 +28,24 @@ public final class SettingsViewImpl implements SettingsView {
     private static final int LABEL_WIDTH = 180;
     private static final int HEADER_ICON_SIZE = 32;
     private static final int LOGO_SIZE = 100;
-    private static final Image diceIcon = new Image("/images/icons/diceIcon.png");
-    private static final Image speakerIcon = new Image("/images/icons/speakerIcon.png");
+    private static final Image DICE_ICON = new Image("/images/icons/diceIcon.png");
+    private static final Image SPEAKER_ICON = new Image("/images/icons/speakerIcon.png");
 
     private static final String CARD_STYLE =
             "-fx-background-color: white;"
-            + "-fx-background-radius: 14;"
-            + "-fx-padding: 25;"
-            + "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 15, 0, 0, 3);";
+                    + "-fx-background-radius: 14;"
+                    + "-fx-padding: 25;"
+                    + "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 15, 0, 0, 3);";
     private static final String SECTION_TITLE_STYLE =
             "-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #144C30;";
     private static final String ROW_LABEL_STYLE = "-fx-font-size: 15px;";
     private static final String BUTTON_STYLE =
-            "-fx-font-size: 18px; " +
-                    "-fx-padding: 10px 20px; " +
-                    "-fx-background-color: #9cb596;" +
-                    "-fx-text-fill: white;" +
-                    "-fx-background-radius: 8;" +
-                    "-fx-cursor: hand;";
+            "-fx-font-size: 18px; "
+                    + "-fx-padding: 10px 20px; "
+                    + "-fx-background-color: #9cb596;"
+                    + "-fx-text-fill: white;"
+                    + "-fx-background-radius: 8;"
+                    + "-fx-cursor: hand;";
 
     private final SceneManager sceneManager;
     private final SettingsController controller;
@@ -109,7 +109,7 @@ public final class SettingsViewImpl implements SettingsView {
         });
         final HBox sfxRow = buildRow("Volume Effetti", sfxSlider, sfxValueLabel);
 
-        final ImageView speaker = new ImageView(speakerIcon);
+        final ImageView speaker = new ImageView(SPEAKER_ICON);
         speaker.setFitWidth(HEADER_ICON_SIZE);
         speaker.setFitHeight(HEADER_ICON_SIZE);
         final VBox audioCard = buildCard(speaker, "Impostazioni Audio", musicRow, sfxRow);
@@ -146,12 +146,12 @@ public final class SettingsViewImpl implements SettingsView {
         }
 
         placementGroup.selectedToggleProperty().addListener((obs, oldT, newT) -> {
-            controller.onPlacementChanged(newT == fixedBtn);
+            controller.onPlacementChanged(newT.equals(fixedBtn));
         });
 
         final HBox placementRow = buildRow("Tipo Piazzamento", randomBtn, fixedBtn);
 
-        final ImageView gameIcon = new ImageView(diceIcon);
+        final ImageView gameIcon = new ImageView(DICE_ICON);
         gameIcon.setFitWidth(HEADER_ICON_SIZE);
         gameIcon.setFitHeight(HEADER_ICON_SIZE);
 

@@ -30,7 +30,8 @@ public final class SoundManager {
      * Restituisce l'istanza singleton del gestore audio.
      *
      * @return l'istanza singleton di {@code SoundManager}
-     * */
+     *
+     */
     public static SoundManager getInstance() {
         return INSTANCE;
     }

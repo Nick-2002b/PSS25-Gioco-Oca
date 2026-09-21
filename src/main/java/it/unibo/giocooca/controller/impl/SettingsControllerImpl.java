@@ -27,18 +27,19 @@ public final class SettingsControllerImpl implements SettingsController {
         this.settings = settings;
         this.settingsManager = new SettingsManager();
     }
+
     @Override
     public int getNumDice() {
         return settings.getNumDice();
     }
-   
+
     @Override
     public boolean isFixedPlacement() {
         return settings.isFixedPlacement();
     }
 
     @Override
-    public void onPlacementChanged(boolean fixed) {
+    public void onPlacementChanged(final boolean fixed) {
         settings.setFixedPlacement(fixed);
     }
 
@@ -66,7 +67,7 @@ public final class SettingsControllerImpl implements SettingsController {
     public void onNumDiceChanged(final int num) {
         settings.setNumDice(num);
     }
-    
+
     @Override
     public void onMusicVolumeChanger(final double volume) {
         settings.setMusicVolume(volume);
