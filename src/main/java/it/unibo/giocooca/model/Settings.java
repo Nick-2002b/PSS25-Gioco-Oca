@@ -17,6 +17,7 @@ public final class Settings {
     private double sfxVolume;
     private int numSpecialCells;
     private int numDice;
+
     /**
      * Crea le impostazioni con i valori di default.
      */
@@ -27,15 +28,19 @@ public final class Settings {
         this.numDice = DEFAULT_NUM_DICE;
     }
 
-    public boolean isFixedPlacement() { return fixedPlacement; }
+    public boolean isFixedPlacement() {
+        return fixedPlacement;
+    }
 
-    public void setFixedPlacement(final boolean fixedPlacement) { this.fixedPlacement = fixedPlacement; }
+    public void setFixedPlacement(final boolean fixedPlacement) {
+        this.fixedPlacement = fixedPlacement;
+    }
 
     /**
      * Restituisce il numero di dadi
-     * 
+     *
      * @return il numero di dadi, tra 1 e 2
-    */
+     */
     public int getNumDice() {
         return numDice;
     }
@@ -53,6 +58,7 @@ public final class Settings {
         }
         this.numDice = numDice;
     }
+
     /**
      * Restituisce il volume della musica.
      *

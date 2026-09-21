@@ -63,7 +63,7 @@ public final class SceneManagerImpl implements SceneManager {
     }
 
     @Override
-    public void showMatch(final Match match){
+    public void showMatch(final Match match) {
         new MatchControllerImpl(this, match).startMatch();
     }
 

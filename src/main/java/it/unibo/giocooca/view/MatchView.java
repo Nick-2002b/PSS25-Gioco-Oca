@@ -1,4 +1,5 @@
 package it.unibo.giocooca.view;
+
 import java.util.List;
 
 /**
@@ -9,7 +10,7 @@ public interface MatchView {
      * Mostra la schermata principale della partita
      */
     void show();
-    
+
     /**
      * Mostra un messaggio generico all'utente.
      *

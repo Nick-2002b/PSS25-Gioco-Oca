@@ -42,12 +42,14 @@ public final class SetupViewImpl implements SetupView {
         this.controller = controller;
 
     }
-    private String getFirstCapital(String s){
-        if(s == null || s.isBlank()){
+
+    private String getFirstCapital(String s) {
+        if (s == null || s.isBlank()) {
             return s;
         }
         return s.substring(0, 1).toUpperCase() + s.substring(1).toLowerCase();
     }
+
     @Override
     public void show() {
         final boolean debug = false;
@@ -120,7 +122,7 @@ public final class SetupViewImpl implements SetupView {
                 if (players.size() == cmbNumPlayers.getValue()) {
                     btnAddPlayer.setDisable(true);
                     txtPlayerName.setEditable(false);
-                    
+
                     btnStartGame.setDisable(false);
                 }
             }

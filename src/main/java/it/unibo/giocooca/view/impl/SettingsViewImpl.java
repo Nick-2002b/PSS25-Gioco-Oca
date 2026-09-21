@@ -33,9 +33,9 @@ public final class SettingsViewImpl implements SettingsView {
 
     private static final String CARD_STYLE =
             "-fx-background-color: white;"
-            + "-fx-background-radius: 14;"
-            + "-fx-padding: 25;"
-            + "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 15, 0, 0, 3);";
+                    + "-fx-background-radius: 14;"
+                    + "-fx-padding: 25;"
+                    + "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 15, 0, 0, 3);";
     private static final String SECTION_TITLE_STYLE =
             "-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #144C30;";
     private static final String ROW_LABEL_STYLE = "-fx-font-size: 15px;";

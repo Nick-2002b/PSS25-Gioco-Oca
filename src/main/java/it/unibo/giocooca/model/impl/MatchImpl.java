@@ -33,21 +33,21 @@ public final class MatchImpl implements Match {
     private Player winner;
     private List<Integer> lastMovePositions;
 
-  /**
-   * Costruttore.
-   *
-   * @param players lista dei giocatori
-   * @param board   tabellone da gioco
-   * @param dice    dado
-   */
-  public MatchImpl(final List<Player> players, final Board board, final List<Dice> dice) {
+    /**
+     * Costruttore.
+     *
+     * @param players lista dei giocatori
+     * @param board   tabellone da gioco
+     * @param dice    dado
+     */
+    public MatchImpl(final List<Player> players, final Board board, final List<Dice> dice) {
         if (players == null || players.isEmpty()) {
             throw new IllegalArgumentException("Almeno un giocatore");
         }
         if (board == null) {
             throw new IllegalArgumentException("Board non può essere null");
         }
-        if (dice == null || dice.isEmpty()){
+        if (dice == null || dice.isEmpty()) {
             throw new IllegalArgumentException("Dice non può essere null");
         }
         this.players = List.copyOf(players);
@@ -59,28 +59,32 @@ public final class MatchImpl implements Match {
         this.lastMovePositions = new ArrayList<>();
     }
 
-    /** 
+    /**
      * Costruttore con un solo dado utilizzato nei test (lo teniamo per non rompere il test)
      */
-    public MatchImpl(final List<Player> players, final Board board, final Dice singleDice){
+    public MatchImpl(final List<Player> players, final Board board, final Dice singleDice) {
         this(players, board, List.of(singleDice));
     }
+
     @Override
     public int getDiceNumber() {
         return this.dice.size();
     }
+
     @Override
     public List<Integer> rollDice() {
         final List<Integer> results = new ArrayList<>();
-        for (final Dice d : this.dice){
+        for (final Dice d : this.dice) {
             results.add(d.roll());
         }
         return results;
     }
+
     @Override
     public List<Integer> getLastMovePositions() {
         return Collections.unmodifiableList(this.lastMovePositions);
     }
+
     @Override
     public void moveCurrentPlayer(final int steps) {
         if (this.gameOver) {
@@ -105,24 +109,24 @@ public final class MatchImpl implements Match {
 
     @Override
     public void applyCurrentCellEffect(final Player player) {
-        if (this.gameOver){
+        if (this.gameOver) {
             return;
         }
-        final Set<Integer>visitedPositions = new HashSet<>();
-        final int endPosition = this.board.getSize() -1;
-        if (this.lastMovePositions == null){
+        final Set<Integer> visitedPositions = new HashSet<>();
+        final int endPosition = this.board.getSize() - 1;
+        if (this.lastMovePositions == null) {
             this.lastMovePositions = new ArrayList<>();
         }
-        while (!this.gameOver){
+        while (!this.gameOver) {
             final int playerPos = player.getPosition();
-            if (visitedPositions.contains(playerPos)){
+            if (visitedPositions.contains(playerPos)) {
                 break;
             }
             visitedPositions.add(playerPos);
             final Cell cell = this.board.getCell(playerPos);
             cell.applyEffect(player);
             final int newPos = player.getPosition();
-            if (newPos >= endPosition){
+            if (newPos >= endPosition) {
                 player.setPosition(endPosition);
                 this.gameOver = true;
                 this.winner = player;
@@ -134,7 +138,7 @@ public final class MatchImpl implements Match {
             }
             this.lastMovePositions.add(newPos);
         }
-     }
+    }
 
     @Override
     public void nextTurn() {

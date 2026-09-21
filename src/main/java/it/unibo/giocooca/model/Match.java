@@ -8,9 +8,11 @@ import java.util.List;
 public interface Match {
     /**
      * Restituisce il numero di dadi selezionati e memorizzati nel setting
+     *
      * @return numero di dadi
      */
     int getDiceNumber();
+
     /**
      * Lancia i dadi per il giocatore corrente.
      *
@@ -71,8 +73,10 @@ public interface Match {
      * @return il tabellone
      */
     Board getBoard();
+
     /**
      * Restituisce la lista delle posizioni dei salti del giocatore quando incontra le caselle speciali
+     *
      * @return lista delle posizioni dei salti
      */
     List<Integer> getLastMovePositions();

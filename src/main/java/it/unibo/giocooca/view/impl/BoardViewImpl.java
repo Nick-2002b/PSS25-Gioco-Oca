@@ -120,11 +120,11 @@ public class BoardViewImpl implements BoardView {
         final double quarterCellX = CELL_WIDTH / 4.0;
         final double quarterCellY = CELL_HEIGHT / 4.0;
         return switch (color) {
-            case "Rosso"  -> new double[]{-quarterCellX, -quarterCellY};
-            case "Verde"  -> new double[]{ quarterCellX, -quarterCellY};
-            case "Blu"    -> new double[]{-quarterCellX,  quarterCellY};
-            case "Giallo" -> new double[]{ quarterCellX,  quarterCellY};
-            default       -> new double[]{0, 0};
+            case "Rosso" -> new double[]{-quarterCellX, -quarterCellY};
+            case "Verde" -> new double[]{quarterCellX, -quarterCellY};
+            case "Blu" -> new double[]{-quarterCellX, quarterCellY};
+            case "Giallo" -> new double[]{quarterCellX, quarterCellY};
+            default -> new double[]{0, 0};
         };
     }
 
@@ -263,7 +263,7 @@ public class BoardViewImpl implements BoardView {
 
             pieces.put(color, piece);
             pieceLayer.getChildren().add(piece);
-            
+
             final StackPane startCell = cellsByPosition.get(0);
             if (startCell != null) {
                 this.root.layout();
@@ -333,13 +333,13 @@ public class BoardViewImpl implements BoardView {
                 Platform.runLater(onFinished);
             }
         });
-        
+
         this.currentAnimation = full;
         full.play();
     }
 
     private void addPathSegment(final SequentialTransition sequence, final ImageView piece, final String color,
-            final int fromPos, final int toPos, final int destinationPos, final boolean sharedDest) {
+                                final int fromPos, final int toPos, final int destinationPos, final boolean sharedDest) {
         if (fromPos == toPos) {
             return;
         }
@@ -388,7 +388,9 @@ public class BoardViewImpl implements BoardView {
         tt.play();
     }
 
-    private record LogicalCoords(int row, int col) { }
+    private record LogicalCoords(int row, int col) {
+    }
 
-    private record GridCoords(int row, int col) { }
+    private record GridCoords(int row, int col) {
+    }
 }

@@ -27,22 +27,22 @@ public final class MenuViewImpl implements MenuView {
     private final SceneManager sceneManager;
     private final MenuController controller;
 
-   /**
-    * Costruttore della grafica del menu.
-    *
-    * @param sceneManager il navigator usato per disegnare la schermata sullo stage
-    * @param controller gestione delle azioni dell'utente
-    */
-   public MenuViewImpl(final SceneManager sceneManager, final MenuController controller) {
+    /**
+     * Costruttore della grafica del menu.
+     *
+     * @param sceneManager il navigator usato per disegnare la schermata sullo stage
+     * @param controller   gestione delle azioni dell'utente
+     */
+    public MenuViewImpl(final SceneManager sceneManager, final MenuController controller) {
         this.sceneManager = sceneManager;
         this.controller = controller;
     }
 
     @Override
     public void show() {
-       final ImageView logo = new ImageView(new Image("/images/ocaLogo.png"));
-       logo.setFitHeight(128);
-       logo.setPreserveRatio(true);
+        final ImageView logo = new ImageView(new Image("/images/ocaLogo.png"));
+        logo.setFitHeight(128);
+        logo.setPreserveRatio(true);
         final Label titleLabel = new Label("Gioco dell'OCA");
         titleLabel.setStyle("-fx-font-size: 42px; -fx-font-weight: bold; -fx-text-fill: #5b4b3e;");
 
@@ -82,8 +82,8 @@ public final class MenuViewImpl implements MenuView {
         sceneManager.render(background, "Gioco dell'OCA - Menu' principale");
     }
 
-    private Button createButton(final String text, final String iconPath, Runnable action){
-       final Button button = new Button(text);
+    private Button createButton(final String text, final String iconPath, Runnable action) {
+        final Button button = new Button(text);
         button.setStyle(BUTTON_STYLE);
         button.setPrefWidth(BUTTON_WIDTH);
         button.setAlignment(Pos.CENTER_LEFT);

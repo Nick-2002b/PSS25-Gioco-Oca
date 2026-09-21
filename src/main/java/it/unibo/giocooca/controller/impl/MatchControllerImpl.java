@@ -28,15 +28,16 @@ public class MatchControllerImpl implements MatchController {
 
     /**
      * Controller della partita
+     *
      * @param sceneManager per gestire le schermate
-     * @param match la partita in corso
+     * @param match        la partita in corso
      */
 
     public MatchControllerImpl(final SceneManager sceneManager, final Match match) {
-        if(sceneManager == null){
+        if (sceneManager == null) {
             throw new IllegalArgumentException("SceneManager cannot be null");
         }
-        if(match == null){
+        if (match == null) {
             throw new IllegalArgumentException("Match cannot be null");
         }
         this.boardController = new BoardControllerImpl(match.getBoard(), match.getPlayers());
@@ -46,26 +47,29 @@ public class MatchControllerImpl implements MatchController {
         this.match = match;
         this.view = new MatchViewImpl(sceneManager, this, boardView);
     }
+
     @Override
-    public void startMatch(){
+    public void startMatch() {
         this.view.show();
         this.boardView.updatePlayerPositions(this.boardController.getPlayerPositions(), null, List.of(), null, null);
-        this.view.showCurrentTurn(this.match.getCurrentPlayer().getNickName()+ " (" + this.match.getCurrentPlayer().getPiece().getColor() + ")");
+        this.view.showCurrentTurn(this.match.getCurrentPlayer().getNickName() + " (" + this.match.getCurrentPlayer().getPiece().getColor() + ")");
         this.view.showMessage("La partita e' iniziata - Gioca: " + this.match.getCurrentPlayer().getNickName() + " (" + this.match.getCurrentPlayer().getPiece().getColor() + ")");
 
     }
+
     @Override
-    public int getDiceNumber(){
+    public int getDiceNumber() {
         return this.match.getDiceNumber();
     }
+
     @Override
     public void rollDice() {
-        if(this.match.isGameOver()){
+        if (this.match.isGameOver()) {
             return;
         }
         final Player currentPlayer = this.match.getCurrentPlayer();
-        
-        if(currentPlayer.isInPrison()){
+
+        if (currentPlayer.isInPrison()) {
             currentPlayer.setInPrison(false);
             SoundManager.getInstance().playSfx(SoundEffect.PRISON_DOOR);
             this.view.showMessage(currentPlayer.getNickName() + " (" + currentPlayer.getPiece().getColor() + ") e' uscito di prigione");
@@ -75,14 +79,16 @@ public class MatchControllerImpl implements MatchController {
             return;
         }
         final List<Integer> diceResult = this.match.rollDice();
-        
+
         SoundManager.getInstance().playSfx(SoundEffect.DICE_ROLL);
         this.view.showDiceResult(diceResult);
 
         final PauseTransition pause = new PauseTransition(Duration.millis(1000));
         this.currentPause = pause;
         pause.setOnFinished(event -> {
-            if (!this.isMatchActive) { return; }
+            if (!this.isMatchActive) {
+                return;
+            }
             int totalSteps = 0;
             for (final int roll : diceResult) {
                 totalSteps += roll;
@@ -94,12 +100,16 @@ public class MatchControllerImpl implements MatchController {
                     : List.of();
 
             final Runnable onIntermediate = () -> {
-                if (!this.isMatchActive) { return; }
+                if (!this.isMatchActive) {
+                    return;
+                }
                 SoundManager.getInstance().playSfx(SoundEffect.SPECIAL_CELL);
             };
 
             final Runnable onFinal = () -> {
-                if (!this.isMatchActive) { return; }
+                if (!this.isMatchActive) {
+                    return;
+                }
                 for (final int pos : intermediatePositions) {
                     final int offset = this.boardController.getCellOffset(pos);
                     if (offset != 0) {
@@ -135,7 +145,7 @@ public class MatchControllerImpl implements MatchController {
         });
         pause.play();
     }
-    
+
     @Override
     public void quitMatch() {
         this.isMatchActive = false;

@@ -18,7 +18,7 @@ public class FixedFrequencyPlacementStrategy implements PlacementStrategy {
             }
         }
 
-        final double step = (double)validPositions.size() / numSpecialCells;
+        final double step = (double) validPositions.size() / numSpecialCells;
 
         final List<Integer> positions = new ArrayList<>();
         for (int i = 0; i < numSpecialCells; i++) {

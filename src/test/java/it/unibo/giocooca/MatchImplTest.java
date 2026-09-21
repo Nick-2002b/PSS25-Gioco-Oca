@@ -97,11 +97,19 @@ final class MatchImplTest {
         cells[14] = new SpecialCellImpl(14, 3, 63);
         final Board customBoard = new Board() {
             @Override
-            public int getSize() { return 64; }
+            public int getSize() {
+                return 64;
+            }
+
             @Override
-            public Cell getCell(int pos) { return cells[pos]; }
+            public Cell getCell(int pos) {
+                return cells[pos];
+            }
+
             @Override
-            public List<Cell> getAllCells() { return List.of(cells); }
+            public List<Cell> getAllCells() {
+                return List.of(cells);
+            }
         };
         final Match customMatch = new MatchImpl(List.of(player1, player2), customBoard, new DiceImpl());
         customMatch.moveCurrentPlayer(10);

@@ -37,17 +37,17 @@ public final class RulesViewImpl implements RulesView {
 
     private static final String CARD_STYLE =
             "-fx-background-color: white;"
-            + "-fx-background-radius: 12;"
-            + "-fx-padding: 20;"
-            + "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 10, 0, 0, 2);";
+                    + "-fx-background-radius: 12;"
+                    + "-fx-padding: 20;"
+                    + "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 10, 0, 0, 2);";
     private final SceneManager sceneManager;
     private final RulesController controller;
 
     /**
      * Costruttore della view delle regole.
-     * 
+     *
      * @param sceneManager manager per disegnare su stage
-     * @param controller il controller associato
+     * @param controller   il controller associato
      */
     public RulesViewImpl(final SceneManager sceneManager, final RulesController controller) {
         this.sceneManager = sceneManager;
@@ -96,15 +96,15 @@ public final class RulesViewImpl implements RulesView {
                 "Arrivare per primi all'ultima casella del tabellone.");
         final VBox turnsCard = createRuleCard(diceIcon, "Svolgimento",
                 "A turno, i giocatori lanciano il dado e muovono la propria pedina "
-                + "di un numero di caselle pari al risultato del lancio.");
+                        + "di un numero di caselle pari al risultato del lancio.");
         final VBox specialCard = createRuleCard(starIcon, "Caselle Speciali e Prigione",
                 "Chi finisce su una casella 'Speciale' ottiene un bonus (o un malus) "
-                + "e avanza (o retrocede) di ulteriori caselle. Chi finisce nella casella "
-                + "'Prigione' salta un turno.");
+                        + "e avanza (o retrocede) di ulteriori caselle. Chi finisce nella casella "
+                        + "'Prigione' salta un turno.");
         final VBox bounceCard = createRuleCard(flagIcon, "Rimbalzo finale",
                 "Per vincere bisogna arrivare esattamente sull'ultima casella. "
-                + "Se il numero ottenuto col dado e' maggiore di quello necessario, "
-                + "la pedina rimbalza all'indietro per i punti in eccesso.");
+                        + "Se il numero ottenuto col dado e' maggiore di quello necessario, "
+                        + "la pedina rimbalza all'indietro per i punti in eccesso.");
 
         grid.add(goalCard, 0, 0);
         grid.add(turnsCard, 1, 0);

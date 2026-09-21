@@ -10,7 +10,8 @@ public interface SettingsController {
     void onPlacementChanged(boolean fixed);
 
     /**
-     * Restituisce il numero di dadi da utilizzare 
+     * Restituisce il numero di dadi da utilizzare
+     *
      * @return numero di dadi
      */
     int getNumDice();
@@ -53,6 +54,7 @@ public interface SettingsController {
 
     /**
      * Notifica un cambiamento del numero di dadi da utilizzare
+     *
      * @param num numero di dadi
      */
     void onNumDiceChanged(int num);

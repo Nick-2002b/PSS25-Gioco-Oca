@@ -1,4 +1,5 @@
 package it.unibo.giocooca.navigation;
+
 import it.unibo.giocooca.model.Match;
 import javafx.scene.Parent;
 
