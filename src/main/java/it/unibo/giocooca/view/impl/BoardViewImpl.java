@@ -38,6 +38,7 @@ public class BoardViewImpl implements BoardView {
     private static final int HGAP = 6;
     private static final int VGAP = 8;
     private static final int PIECE_SIZE = 30;
+    private static final int CELL_ICONS_SIZE = 15;
 
     private static final double CELL_OPACITY = 0.80;
     private static final Color COLOR_NORMAL = Color.web("#dfe6e9", CELL_OPACITY);
@@ -225,15 +226,18 @@ public class BoardViewImpl implements BoardView {
 
         final StackPane cell = new StackPane(background, numberLabel);
         StackPane.setAlignment(numberLabel, Pos.TOP_LEFT);
+        final ImageView starIcon = new ImageView(new Image("/images/icons/starBoardIcon.png"));
+        final ImageView prisonIcon = new ImageView(new Image("/images/icons/prisonIcon.png"));
+        starIcon.setFitHeight(CELL_ICONS_SIZE);
+        starIcon.setFitWidth(CELL_ICONS_SIZE);
+
+        prisonIcon.setFitHeight(CELL_ICONS_SIZE);
+        prisonIcon.setFitWidth(CELL_ICONS_SIZE);
 
         if (cellType == CellType.PRISON) {
-            Label icon = new Label("🔒");
-            icon.setStyle("-fx-font-size: 20px;");
-            cell.getChildren().add(icon);
+            cell.getChildren().add(prisonIcon);
         } else if (cellType == CellType.SPECIAL) {
-            Label icon = new Label("⭐");
-            icon.setStyle("-fx-font-size: 30px;");
-            cell.getChildren().add(icon);
+            cell.getChildren().add(starIcon);
 
             final Label offsetLabel = new Label(formatOffset(cellOffset));
             if (cellOffset < 0) {
