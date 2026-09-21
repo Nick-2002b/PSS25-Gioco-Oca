@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 /**
- * Test della casella speciale
+ * Test della casella speciale.
  */
 public class SpecialCellImplTest {
 

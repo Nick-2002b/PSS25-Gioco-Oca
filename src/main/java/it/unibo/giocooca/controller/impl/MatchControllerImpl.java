@@ -30,7 +30,7 @@ public final class MatchControllerImpl implements MatchController {
     private PauseTransition currentPause;
 
     /**
-     * Controller della partita
+     * Controller della partita.
      *
      * @param sceneManager per gestire le schermate
      * @param match        la partita in corso
