@@ -43,12 +43,16 @@ public final class BoardViewImpl implements BoardView {
     private static final int PIECE_SIZE = 30;
     private static final int CELL_ICONS_SIZE = 15;
 
+    private static final int FINISH_ICON_WIDTH = 32;
+    private static final int FINISH_ICON_HEIGHT = 60;
+    private static final int FINISH_CELL_POSITION = 63;
+
     private static final double CELL_OPACITY = 0.80;
     private static final Color COLOR_NORMAL = Color.web("#dfe6e9", CELL_OPACITY);
     private static final Color COLOR_SPECIAL = Color.web("#fff9c4", CELL_OPACITY);
     private static final Color COLOR_PRISON = Color.web("#ffcdd2", CELL_OPACITY);
     private static final Color COLOR_START = Color.web("#bbdefb", CELL_OPACITY);
-    private static final Color COLOR_BORDER = Color.web("#e0e0e0");
+    private static final Color COLOR_FINISH = Color.web("#c8e6c9", CELL_OPACITY);
     private static final String PIECE_IMAGE_PATH = "/images/pieces/";
 
     private final Pane root;
@@ -222,8 +226,11 @@ public final class BoardViewImpl implements BoardView {
 
     private StackPane buildCellPane(final int position, final CellType cellType, final int cellOffset) {
         final Rectangle background = new Rectangle(CELL_WIDTH, CELL_HEIGHT);
-        background.setFill(cellTypeToColor(cellType));
-        background.setStroke(COLOR_BORDER);
+        if (position == FINISH_CELL_POSITION) {
+            background.setFill(COLOR_FINISH);
+        } else {
+            background.setFill(cellTypeToColor(cellType));
+        }
         background.setStrokeWidth(2);
         background.setArcWidth(15);
         background.setArcHeight(15);
@@ -256,8 +263,22 @@ public final class BoardViewImpl implements BoardView {
             offsetLabel.setPadding(new Insets(0, 5, 3, 0));
             StackPane.setAlignment(offsetLabel, Pos.BOTTOM_RIGHT);
             cell.getChildren().add(offsetLabel);
-        }
+        } else if (position == FINISH_CELL_POSITION) {
+            final ImageView finishIcon = new ImageView(new Image("/images/icons/finishIcon.png"));
+            finishIcon.setFitHeight(FINISH_ICON_HEIGHT);
+            finishIcon.setFitWidth(FINISH_ICON_WIDTH);
+            finishIcon.setPreserveRatio(true);
 
+            StackPane.setAlignment(finishIcon, Pos.CENTER_RIGHT);
+            StackPane.setMargin(finishIcon, new Insets(0, 2, 0, 0));
+            cell.getChildren().add(finishIcon);
+        }
+        Rectangle clip = new Rectangle(CELL_WIDTH, CELL_HEIGHT);
+
+        clip.setArcWidth(15);
+        clip.setArcHeight(15);
+
+        cell.setClip(clip);
         cell.setPrefSize(CELL_WIDTH, CELL_HEIGHT);
         return cell;
     }

@@ -238,7 +238,7 @@ public final class SetupViewImpl implements SetupView {
         btnBack.setStyle(BUTTON_STYLE);
         btnBack.setOnAction(event -> this.controller.onBackToMenu());
 
-        final HBox buttonsBox = new HBox(SPACING_DEFAULT, btnStartGame, btnBack);
+        final HBox buttonsBox = new HBox(SPACING_DEFAULT, btnBack, btnStartGame);
         buttonsBox.setAlignment(Pos.CENTER);
 
         final VBox footer = new VBox(buttonsBox);
