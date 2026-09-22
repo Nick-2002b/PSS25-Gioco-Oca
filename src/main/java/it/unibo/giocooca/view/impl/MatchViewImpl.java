@@ -113,12 +113,18 @@ public final class MatchViewImpl implements MatchView {
         this.txtLogArea.setWrapText(true);
         this.txtLogArea.setPrefHeight(LOG_AREA_HEIGHT);
 
-        final Image diceFaceOne = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/dice/diceOne.png")));
-        final Image diceFaceTwo = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/dice/diceTwo.png")));
-        final Image diceFaceThree = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/dice/diceThree.png")));
-        final Image diceFaceFour = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/dice/diceFour.png")));
-        final Image diceFaceFive = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/dice/diceFive.png")));
-        final Image diceFaceSix = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/dice/diceSix.png")));
+        final Image diceFaceOne = new Image(
+                Objects.requireNonNull(getClass().getResourceAsStream("/images/dice/diceOne.png")));
+        final Image diceFaceTwo = new Image(
+                Objects.requireNonNull(getClass().getResourceAsStream("/images/dice/diceTwo.png")));
+        final Image diceFaceThree = new Image(
+                Objects.requireNonNull(getClass().getResourceAsStream("/images/dice/diceThree.png")));
+        final Image diceFaceFour = new Image(
+                Objects.requireNonNull(getClass().getResourceAsStream("/images/dice/diceFour.png")));
+        final Image diceFaceFive = new Image(
+                Objects.requireNonNull(getClass().getResourceAsStream("/images/dice/diceFive.png")));
+        final Image diceFaceSix = new Image(
+                Objects.requireNonNull(getClass().getResourceAsStream("/images/dice/diceSix.png")));
 
         final ImageView logo = new ImageView(new Image("/images/ocalogo.png"));
         logo.setFitWidth(LOGO_SIZE);

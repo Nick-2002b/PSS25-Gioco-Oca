@@ -273,7 +273,7 @@ public final class BoardViewImpl implements BoardView {
             StackPane.setMargin(finishIcon, new Insets(0, 2, 0, 0));
             cell.getChildren().add(finishIcon);
         }
-        Rectangle clip = new Rectangle(CELL_WIDTH, CELL_HEIGHT);
+        final Rectangle clip = new Rectangle(CELL_WIDTH, CELL_HEIGHT);
 
         clip.setArcWidth(15);
         clip.setArcHeight(15);

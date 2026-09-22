@@ -11,6 +11,8 @@ public interface BoardController {
 
     /**
      * Dimensione del tabellone (63).
+     *
+     * @return la dimensione del tabellone
      */
     int getBoardSize();
 

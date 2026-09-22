@@ -83,7 +83,9 @@ public final class MatchControllerImpl implements MatchController {
         if (currentPlayer.isInPrison()) {
             currentPlayer.setInPrison(false);
             SoundManager.getInstance().playSfx(SoundEffect.PRISON_DOOR);
-            this.view.showMessage(currentPlayer.getNickName() + " (" + currentPlayer.getPiece().getColor() + ") e' uscito di prigione");
+            this.view.showMessage(
+                    currentPlayer.getNickName()
+                            + " (" + currentPlayer.getPiece().getColor() + ") e' uscito di prigione");
             this.match.nextTurn();
             final Player nextPlayer = this.match.getCurrentPlayer();
             this.view.showCurrentTurn(nextPlayer.getNickName() + " (" + nextPlayer.getPiece().getColor() + ")");
