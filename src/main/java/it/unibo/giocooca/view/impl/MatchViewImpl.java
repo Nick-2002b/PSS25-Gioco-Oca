@@ -145,15 +145,8 @@ public final class MatchViewImpl implements MatchView {
         diceBox.setAlignment(Pos.CENTER);
 
         this.btnRollDice = new Button(twoDice ? "Lancia Dadi" : "Lancia Dado");
-        this.btnRollDice.setStyle(
-                "-fx-cursor: hand; "
-                        + "-fx-background-color: transparent; "
-                        + "-fx-border-color: transparent; "
-                        + "-fx-font-size: 16px; "
-                        + "-fx-padding: 10px 20px; "
-                        + "-fx-font-weight: bold;");
+        this.btnRollDice.setStyle(BUTTON_STYLE);
         this.btnRollDice.setPrefWidth(BUTTON_WIDTH);
-        this.btnRollDice.setGraphic(diceBox);
         this.btnRollDice.setOnAction(event -> this.controller.rollDice());
 
         final Button btnQuit = new Button("Esci al Menu");
@@ -172,6 +165,7 @@ public final class MatchViewImpl implements MatchView {
         topCard.setAlignment(Pos.CENTER);
         topCard.setStyle(cardStyle);
         topCard.getChildren().addAll(
+                diceBox,
                 this.btnRollDice,
                 this.lblCurrentTurn,
                 this.lblDiceResult
