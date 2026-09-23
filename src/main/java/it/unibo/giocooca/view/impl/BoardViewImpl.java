@@ -193,7 +193,7 @@ public final class BoardViewImpl implements BoardView {
             final int newPos = playerPositions.get(movingPieceColor);
             final boolean sharedDest = playersPerCell.get(newPos) > 1;
             final boolean hasIntermediateSteps = intermediatePositions != null && !intermediatePositions.isEmpty();
-            if (oldPos != newPos) {
+            if (oldPos != newPos || hasIntermediateSteps) {
                 if (hasIntermediateSteps) {
                     animatePiecePathThroughSteps(movingPieceColor, oldPos,
                             intermediatePositions, newPos, sharedDest, onIntermediateReached, onFinished);

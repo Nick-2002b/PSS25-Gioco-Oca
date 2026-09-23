@@ -98,13 +98,13 @@ public final class MatchImpl implements Match {
         int newPosition = currentPlayer.getPosition() + steps;
         final int endPosition = this.board.getSize() - 1;
         this.lastMovePositions = new ArrayList<>();
-        if (newPosition >= endPosition) {
-            newPosition = endPosition;
+        if (newPosition > endPosition) {
+            final int overLast = newPosition - endPosition;
+            newPosition = endPosition - overLast;
+            this.lastMovePositions.add(endPosition);
+        } else if (newPosition == endPosition) {
             this.gameOver = true;
             this.winner = currentPlayer;
-            currentPlayer.setPosition(newPosition);
-            this.lastMovePositions.add(newPosition);
-            return;
         }
         currentPlayer.setPosition(newPosition);
         this.lastMovePositions.add(newPosition);
