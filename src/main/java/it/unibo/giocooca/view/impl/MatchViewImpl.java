@@ -39,6 +39,7 @@ public final class MatchViewImpl implements MatchView {
     private static final int BUTTON_WIDTH = 220;
     private static final int LOG_AREA_HEIGHT = 200;
     private static final int LOGO_SIZE = 100;
+    private static final int DICE_VIEW_WIDTH = 45;
 
     private static final String BUTTON_STYLE =
             "-fx-font-size: 18px; "
@@ -137,11 +138,11 @@ public final class MatchViewImpl implements MatchView {
         this.diceFaces = List.of(diceFaceOne, diceFaceTwo, diceFaceThree, diceFaceFour, diceFaceFive, diceFaceSix);
 
         this.diceView1 = new ImageView(diceFaceOne);
-        this.diceView1.setFitWidth(45);
+        this.diceView1.setFitWidth(DICE_VIEW_WIDTH);
         this.diceView1.setPreserveRatio(true);
 
         this.diceView2 = new ImageView(diceFaceOne);
-        this.diceView2.setFitWidth(45);
+        this.diceView2.setFitWidth(DICE_VIEW_WIDTH);
         this.diceView2.setPreserveRatio(true);
         final boolean twoDice = this.controller.getDiceNumber() > 1;
         this.diceView2.setVisible(twoDice);

@@ -23,6 +23,7 @@ public final class RulesViewImpl implements RulesView {
     private static final int CARD_ICON_SIZE = 28;
     private static final int GRID_COLUMNS = 2;
     private static final int CARD_MAX_WIDTH = 480;
+    private static final int SPACING = 20;
     private static final String BUTTON_STYLE =
             "-fx-font-size: 18px; "
                     + "-fx-padding: 10px 20px; "
@@ -76,15 +77,15 @@ public final class RulesViewImpl implements RulesView {
 
         final VBox topBox = new VBox(10, icon, titleLabel);
         topBox.setAlignment(Pos.CENTER);
-        topBox.setPadding(new Insets(20));
+        topBox.setPadding(new Insets(SPACING));
         return topBox;
     }
 
     private GridPane buildRuleCards() {
         final GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
-        grid.setHgap(20);
-        grid.setVgap(20);
+        grid.setHgap(SPACING);
+        grid.setVgap(SPACING);
 
         for (int i = 0; i < GRID_COLUMNS; i++) {
             final ColumnConstraints column = new ColumnConstraints();
@@ -141,7 +142,7 @@ public final class RulesViewImpl implements RulesView {
 
         final VBox bottomBox = new VBox(btnBack);
         bottomBox.setAlignment(Pos.CENTER);
-        bottomBox.setPadding(new Insets(20));
+        bottomBox.setPadding(new Insets(SPACING));
         return bottomBox;
     }
 }

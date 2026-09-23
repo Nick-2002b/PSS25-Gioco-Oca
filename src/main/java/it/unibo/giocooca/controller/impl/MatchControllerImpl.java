@@ -21,6 +21,8 @@ import javafx.util.Duration;
  * coordinando vista, turno dei giocatori e aggiornamento del tabellone.
  */
 public final class MatchControllerImpl implements MatchController {
+    private static final String COLOR_OPEN = " (";
+    private static final String COLOR_CLOSE = ")";
     private final SceneManager sceneManager;
     private final Match match;
     private final MatchView view;
@@ -61,10 +63,10 @@ public final class MatchControllerImpl implements MatchController {
                 null,
                 null);
         this.view.showCurrentTurn(this.match.getCurrentPlayer().getNickName()
-                + " (" + this.match.getCurrentPlayer().getPiece().getColor() + ")");
+                + COLOR_OPEN + this.match.getCurrentPlayer().getPiece().getColor() + COLOR_CLOSE);
         this.view.showMessage("La partita e' iniziata - Gioca: "
                 + this.match.getCurrentPlayer().getNickName()
-                + " (" + this.match.getCurrentPlayer().getPiece().getColor() + ")");
+                + COLOR_OPEN + this.match.getCurrentPlayer().getPiece().getColor() + COLOR_CLOSE);
 
     }
 
@@ -85,10 +87,11 @@ public final class MatchControllerImpl implements MatchController {
             SoundManager.getInstance().playSfx(SoundEffect.PRISON_DOOR);
             this.view.showMessage(
                     currentPlayer.getNickName()
-                            + " (" + currentPlayer.getPiece().getColor() + ") e' uscito di prigione");
+                            + COLOR_OPEN + currentPlayer.getPiece().getColor() + ") e' uscito di prigione");
             this.match.nextTurn();
             final Player nextPlayer = this.match.getCurrentPlayer();
-            this.view.showCurrentTurn(nextPlayer.getNickName() + " (" + nextPlayer.getPiece().getColor() + ")");
+            this.view.showCurrentTurn(nextPlayer.getNickName()
+                    + COLOR_OPEN + nextPlayer.getPiece().getColor() + COLOR_CLOSE);
             return;
         }
         final List<Integer> diceResult = this.match.rollDice();
@@ -128,7 +131,7 @@ public final class MatchControllerImpl implements MatchController {
                     if (offset != 0) {
                         final String direzione = offset > 0 ? "avanti" : "indietro";
                         this.view.showMessage("Wow!!! " + currentPlayer.getNickName()
-                                + " (" + currentPlayer.getPiece().getColor()
+                                + COLOR_OPEN + currentPlayer.getPiece().getColor()
                                 + ") e' finito nella cella speciale " + pos + "! "
                                 + direzione + " di " + Math.abs(offset) + " caselle");
                     }
@@ -136,17 +139,17 @@ public final class MatchControllerImpl implements MatchController {
                 if (currentPlayer.isInPrison()) {
                     SoundManager.getInstance().playSfx(SoundEffect.PRISON_DOOR);
                     this.view.showMessage("Ops!!! " + currentPlayer.getNickName()
-                            + " (" + currentPlayer.getPiece().getColor() + ") e' finito in prigione!");
+                            + COLOR_OPEN + currentPlayer.getPiece().getColor() + ") e' finito in prigione!");
                 }
                 if (this.match.isGameOver()) {
                     SoundManager.getInstance().playSfx(SoundEffect.WIN);
                     this.view.showWinner(this.match.getWinner().getNickName()
-                            + " (" + this.match.getWinner().getPiece().getColor() + ")");
+                            + COLOR_OPEN + this.match.getWinner().getPiece().getColor() + COLOR_CLOSE);
                 } else {
                     this.match.nextTurn();
                     final Player nextPlayer = this.match.getCurrentPlayer();
                     this.view.showCurrentTurn(nextPlayer.getNickName()
-                            + " (" + nextPlayer.getPiece().getColor() + ")");
+                            + COLOR_OPEN + nextPlayer.getPiece().getColor() + COLOR_CLOSE);
                 }
             };
             this.boardView.updatePlayerPositions(
