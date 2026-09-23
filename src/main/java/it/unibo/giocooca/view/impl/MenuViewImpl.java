@@ -24,6 +24,10 @@ public final class MenuViewImpl implements MenuView {
                     + "-fx-background-radius: 8;"
                     + "-fx-cursor: hand;";
     private static final int BUTTON_WIDTH = 220;
+    private static final int LOGO_HEIGHT = 128;
+    private static final int BUTTONS_BOX_MAX_WIDTH = 300;
+    private static final int ICON_SIZE = 30;
+    private static final int GRAPHIC_TEXT_GAP = 15;
     private final SceneManager sceneManager;
     private final MenuController controller;
 
@@ -41,7 +45,7 @@ public final class MenuViewImpl implements MenuView {
     @Override
     public void show() {
         final ImageView logo = new ImageView(new Image("/images/ocaLogo.png"));
-        logo.setFitHeight(128);
+        logo.setFitHeight(LOGO_HEIGHT);
         logo.setPreserveRatio(true);
         final Label titleLabel = new Label("Gioco dell'OCA");
         titleLabel.setStyle("-fx-font-size: 42px; -fx-font-weight: bold; -fx-text-fill: #5b4b3e;");
@@ -73,7 +77,7 @@ public final class MenuViewImpl implements MenuView {
                         + "-fx-padding: 30;"
         );
 
-        buttonsBox.setMaxWidth(300);
+        buttonsBox.setMaxWidth(BUTTONS_BOX_MAX_WIDTH);
 
         final VBox menuBox = new VBox(20);
         menuBox.setAlignment(Pos.CENTER);
@@ -91,10 +95,10 @@ public final class MenuViewImpl implements MenuView {
         button.setPrefWidth(BUTTON_WIDTH);
         button.setAlignment(Pos.CENTER_LEFT);
         final ImageView icon = new ImageView(new Image(iconPath));
-        icon.setFitWidth(30);
-        icon.setFitHeight(30);
+        icon.setFitWidth(ICON_SIZE);
+        icon.setFitHeight(ICON_SIZE);
         button.setGraphic(icon);
-        button.setGraphicTextGap(15);
+        button.setGraphicTextGap(GRAPHIC_TEXT_GAP);
 
         button.setOnAction(event -> action.run());
         return button;

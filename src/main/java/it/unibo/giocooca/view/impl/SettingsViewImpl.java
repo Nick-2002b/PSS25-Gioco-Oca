@@ -28,6 +28,8 @@ public final class SettingsViewImpl implements SettingsView {
     private static final int LABEL_WIDTH = 180;
     private static final int HEADER_ICON_SIZE = 32;
     private static final int LOGO_SIZE = 100;
+    private static final int VERTICAL_PADDING = 25;
+    private static final int CONTENT_PADDING = 20;
     private static final Image DICE_ICON = new Image("/images/icons/diceIcon.png");
     private static final Image SPEAKER_ICON = new Image("/images/icons/speakerIcon.png");
 
@@ -82,7 +84,7 @@ public final class SettingsViewImpl implements SettingsView {
 
         final VBox header = new VBox(10, logo, title);
         header.setAlignment(Pos.CENTER);
-        header.setPadding(new Insets(25, 0, 0, 0));
+        header.setPadding(new Insets(VERTICAL_PADDING, 0, 0, 0));
         return header;
     }
 
@@ -160,7 +162,7 @@ public final class SettingsViewImpl implements SettingsView {
         final VBox content = new VBox(25, audioCard, gameCard);
         content.setMaxWidth(CONTENT_MAX_WIDTH);
         content.setAlignment(Pos.TOP_CENTER);
-        content.setPadding(new Insets(0, 20, 20, 20));
+        content.setPadding(new Insets(0, CONTENT_PADDING, CONTENT_PADDING, CONTENT_PADDING));
 
         final VBox centerWrapper = new VBox(content);
         centerWrapper.setAlignment(Pos.CENTER);
@@ -195,7 +197,7 @@ public final class SettingsViewImpl implements SettingsView {
 
         final VBox footer = new VBox(buttons);
         footer.setAlignment(Pos.CENTER);
-        footer.setPadding(new Insets(0, 0, 25, 0));
+        footer.setPadding(new Insets(0, 0, VERTICAL_PADDING, 0));
         return footer;
     }
 

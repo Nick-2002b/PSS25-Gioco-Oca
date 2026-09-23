@@ -42,6 +42,9 @@ public final class BoardViewImpl implements BoardView {
     private static final int VGAP = 8;
     private static final int PIECE_SIZE = 30;
     private static final int CELL_ICONS_SIZE = 15;
+    private static final int CELL_CORNER_RADIUS = 15;
+    private static final int LABEL_PADDING = 5;
+    private static final int PAUSE_BETWEEN_STEPS_MS = 700;
 
     private static final int FINISH_ICON_WIDTH = 32;
     private static final int FINISH_ICON_HEIGHT = 60;
@@ -232,12 +235,12 @@ public final class BoardViewImpl implements BoardView {
             background.setFill(cellTypeToColor(cellType));
         }
         background.setStrokeWidth(2);
-        background.setArcWidth(15);
-        background.setArcHeight(15);
+        background.setArcWidth(CELL_CORNER_RADIUS);
+        background.setArcHeight(CELL_CORNER_RADIUS);
 
         final Label numberLabel = new Label(cellType == CellType.START ? "START" : String.valueOf(position));
         numberLabel.setStyle("-fx-font-size: 10px; -fx-font-weight: bold; -fx-text-fill: #144C30;");
-        numberLabel.setPadding(new Insets(3, 0, 0, 5));
+        numberLabel.setPadding(new Insets(3, 0, 0, LABEL_PADDING));
 
         final StackPane cell = new StackPane(background, numberLabel);
         StackPane.setAlignment(numberLabel, Pos.TOP_LEFT);
@@ -260,7 +263,7 @@ public final class BoardViewImpl implements BoardView {
             } else {
                 offsetLabel.setStyle("-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #27ae60;");
             }
-            offsetLabel.setPadding(new Insets(0, 5, 3, 0));
+            offsetLabel.setPadding(new Insets(0, LABEL_PADDING, 3, 0));
             StackPane.setAlignment(offsetLabel, Pos.BOTTOM_RIGHT);
             cell.getChildren().add(offsetLabel);
         } else if (position == FINISH_CELL_POSITION) {
@@ -275,8 +278,8 @@ public final class BoardViewImpl implements BoardView {
         }
         final Rectangle clip = new Rectangle(CELL_WIDTH, CELL_HEIGHT);
 
-        clip.setArcWidth(15);
-        clip.setArcHeight(15);
+        clip.setArcWidth(CELL_CORNER_RADIUS);
+        clip.setArcHeight(CELL_CORNER_RADIUS);
 
         cell.setClip(clip);
         cell.setPrefSize(CELL_WIDTH, CELL_HEIGHT);
@@ -349,7 +352,7 @@ public final class BoardViewImpl implements BoardView {
                 }
             });
             full.getChildren().add(seg);
-            full.getChildren().add(new PauseTransition(Duration.millis(700)));
+            full.getChildren().add(new PauseTransition(Duration.millis(PAUSE_BETWEEN_STEPS_MS)));
             fromPos = interPos;
         }
 

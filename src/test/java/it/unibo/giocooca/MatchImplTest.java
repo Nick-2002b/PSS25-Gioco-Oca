@@ -36,6 +36,8 @@ final class MatchImplTest {
     private static final int BOARD_SIZE = 63;
     private static final int SPECIAL_CELLS_COUNT = 6;
     private static final long SEED = 42L;
+    private static final int SECOND_SPECIAL_CELL_POSITION = 14;
+    private static final int EXPECTED_POSITION_AFTER_CHAIN = 17;
 
     private Player player1;
     private Player player2;
@@ -101,8 +103,8 @@ final class MatchImplTest {
         for (int i = 1; i < 64; i++) {
             cells[i] = new NormalCellImpl(i);
         }
-        cells[10] = new SpecialCellImpl(10, 4, 63);
-        cells[14] = new SpecialCellImpl(14, 3, 63);
+        cells[10] = new SpecialCellImpl(10, 4, BOARD_SIZE);
+        cells[SECOND_SPECIAL_CELL_POSITION] = new SpecialCellImpl(SECOND_SPECIAL_CELL_POSITION, 3, BOARD_SIZE);
         final Board customBoard = new Board() {
             @Override
             public int getSize() {
@@ -121,7 +123,8 @@ final class MatchImplTest {
         };
         final Match customMatch = new MatchImpl(List.of(player1, player2), customBoard, new DiceImpl());
         customMatch.moveCurrentPlayer(10);
-        assertEquals(17, player1.getPosition());
-        assertEquals(List.of(10, 14, 17), customMatch.getLastMovePositions());
+        assertEquals(EXPECTED_POSITION_AFTER_CHAIN, player1.getPosition());
+        assertEquals(List.of(10, SECOND_SPECIAL_CELL_POSITION, EXPECTED_POSITION_AFTER_CHAIN),
+                customMatch.getLastMovePositions());
     }
 }
