@@ -8,6 +8,7 @@ import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.LineEvent;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -51,7 +52,7 @@ public final class SoundManager {
                 return;
             }
             final Clip clip = AudioSystem.getClip();
-            clip.open(AudioSystem.getAudioInputStream(is));
+            clip.open(AudioSystem.getAudioInputStream(new BufferedInputStream(is)));
             applyVolume(clip, musicVolume);
             clip.loop(Clip.LOOP_CONTINUOUSLY);
             this.musicClip = clip;
@@ -65,6 +66,7 @@ public final class SoundManager {
      */
     public void stopMusic() {
         if (musicClip != null) {
+            musicClip.stop();
             musicClip.close();
             musicClip = null;
         }
@@ -82,7 +84,7 @@ public final class SoundManager {
                 return;
             }
             final Clip clip = AudioSystem.getClip();
-            clip.open(AudioSystem.getAudioInputStream(is));
+            clip.open(AudioSystem.getAudioInputStream(new BufferedInputStream(is)));
             applyVolume(clip, sfxVolume);
             clip.addLineListener(event -> {
                 if (event.getType() == LineEvent.Type.STOP) {
