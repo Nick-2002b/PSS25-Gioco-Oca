@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.ArrayList;
-
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import it.unibo.giocooca.controller.SetupController;
 import it.unibo.giocooca.model.Board;
 import it.unibo.giocooca.model.Dice;
@@ -38,6 +38,8 @@ public final class SetupControllerImpl implements SetupController {
      * @param sceneManager il navigator dell'applicazione, usato per tornare al menu
      * @param settings     impostazioni correnti da applicare alla nuova partita
      */
+    @SuppressFBWarnings(value = "EI_EXPOSE_REP2",
+            justification = "Settings is intentionally shared across controllers")
     public SetupControllerImpl(final SceneManager sceneManager, final Settings settings) {
         this.sceneManager = sceneManager;
         this.settings = settings;

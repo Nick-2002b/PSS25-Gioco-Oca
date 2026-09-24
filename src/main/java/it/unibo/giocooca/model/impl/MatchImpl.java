@@ -1,5 +1,6 @@
 package it.unibo.giocooca.model.impl;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import it.unibo.giocooca.model.Match;
 
 import it.unibo.giocooca.model.Dice;
@@ -111,6 +112,8 @@ public final class MatchImpl implements Match {
         applyCurrentCellEffect(currentPlayer);
     }
 
+    @SuppressFBWarnings(value = "EI_EXPOSE_REP2",
+            justification = "Player reference must be the same mutable instance tracked in the match")
     @Override
     public void applyCurrentCellEffect(final Player player) {
         if (this.gameOver) {
@@ -161,6 +164,8 @@ public final class MatchImpl implements Match {
         return this.players.get(this.currentPlayerIndex);
     }
 
+    @SuppressFBWarnings(value = "EI_EXPOSE_REP",
+            justification = "Player is intentionally mutable and shared across the match lifecycle")
     @Override
     public Player getWinner() {
         return this.winner;

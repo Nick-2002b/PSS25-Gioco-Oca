@@ -2,6 +2,7 @@ package it.unibo.giocooca.model.impl;
 
 import java.util.Random;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import it.unibo.giocooca.model.Dice;
 
 /**
@@ -25,6 +26,8 @@ public final class DiceImpl implements Dice {
      *
      * @param random il generatore di numeri casuali da usare, con seed controllato
      */
+    @SuppressFBWarnings(value = "EI_EXPOSE_REP2",
+            justification = "Random is intentionally shared for testability with controlled seeds")
     public DiceImpl(final Random random) {
         this.random = random;
     }

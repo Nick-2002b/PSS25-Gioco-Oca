@@ -1,5 +1,6 @@
 package it.unibo.giocooca.audio;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaException;
@@ -32,6 +33,8 @@ public final class SoundManager {
      * @return l'istanza singleton di {@code SoundManager}
      *
      */
+    @SuppressFBWarnings(value = "MS_EXPOSE_REP",
+            justification = "Singleton pattern: returning the unique instance is the intended behavior")
     public static SoundManager getInstance() {
         return INSTANCE;
     }

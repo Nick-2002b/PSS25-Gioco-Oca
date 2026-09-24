@@ -1,5 +1,6 @@
 package it.unibo.giocooca.controller.impl;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import it.unibo.giocooca.audio.SoundManager;
 import it.unibo.giocooca.controller.SettingsController;
 import it.unibo.giocooca.model.Settings;
@@ -22,6 +23,8 @@ public final class SettingsControllerImpl implements SettingsController {
      * @param sceneManager il navigator dell'applicazione, usato per tornare al menu
      * @param settings     le impostazioni correnti da modificare
      */
+    @SuppressFBWarnings(value = "EI_EXPOSE_REP2",
+            justification = "Settings is intentionally shared: the controller must modify the same instance used by SceneManager")
     public SettingsControllerImpl(final SceneManager sceneManager, final Settings settings) {
         this.sceneManager = sceneManager;
         this.settings = settings;

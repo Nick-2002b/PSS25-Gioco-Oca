@@ -1,5 +1,6 @@
 package it.unibo.giocooca.view.impl;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import it.unibo.giocooca.controller.BoardController;
 import it.unibo.giocooca.model.CellType;
 import it.unibo.giocooca.view.BoardView;
@@ -147,6 +148,8 @@ public final class BoardViewImpl implements BoardView {
         return offset > 0 ? "+" + offset : String.valueOf(offset);
     }
 
+    @SuppressFBWarnings(value = "EI_EXPOSE_REP",
+            justification = "JavaFX Pane must be returned by reference to be added to the match scene")
     @Override
     public Pane getBoard() {
         return this.root;

@@ -24,7 +24,7 @@ public final class BoardControllerImpl implements BoardController {
      */
     public BoardControllerImpl(final Board board, final List<Player> players) {
         this.board = board;
-        this.players = players;
+        this.players = List.copyOf(players);
     }
 
     @Override

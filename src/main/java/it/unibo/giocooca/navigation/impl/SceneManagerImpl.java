@@ -1,5 +1,6 @@
 package it.unibo.giocooca.navigation.impl;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import it.unibo.giocooca.audio.SoundManager;
 import it.unibo.giocooca.controller.impl.MenuControllerImpl;
 import it.unibo.giocooca.controller.impl.RulesControllerImpl;
@@ -44,6 +45,8 @@ public final class SceneManagerImpl implements SceneManager {
      *
      * @param stage la finestra principale
      */
+    @SuppressFBWarnings(value = "EI_EXPOSE_REP2",
+            justification = "JavaFX Stage is a singleton window handle and cannot be defensively copied")
     public SceneManagerImpl(final Stage stage) {
         this.stage = stage;
         this.settings = new SettingsManager().load();
