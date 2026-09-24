@@ -1,13 +1,14 @@
 package it.unibo.giocooca.audio;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import javafx.scene.media.AudioClip;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaException;
-import javafx.scene.media.MediaPlayer;
 
-import java.util.EnumMap;
-import java.util.Map;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
+import javax.sound.sampled.LineEvent;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -18,9 +19,7 @@ public final class SoundManager {
     private static final Logger LOGGER = Logger.getLogger(SoundManager.class.getName());
     private static final SoundManager INSTANCE = new SoundManager();
 
-    private final Map<SoundEffect, AudioClip> sfxCache = new EnumMap<>(SoundEffect.class);
-
-    private MediaPlayer musicPlayer;
+    private Clip musicClip;
     private double musicVolume;
     private double sfxVolume;
 
@@ -47,16 +46,16 @@ public final class SoundManager {
     public void playMusic(final SoundEffect resourcePath) {
         stopMusic();
         try {
-            final var url = getClass().getResource(resourcePath.getResourcePath());
-            if (url == null) {
+            final var is = getClass().getResourceAsStream(resourcePath.getResourcePath());
+            if (is == null) {
                 return;
             }
-            final MediaPlayer player = new MediaPlayer(new Media(url.toExternalForm()));
-            player.setVolume(musicVolume);
-            player.setCycleCount(MediaPlayer.INDEFINITE);
-            player.play();
-            this.musicPlayer = player;
-        } catch (final MediaException e) {
+            final Clip clip = AudioSystem.getClip();
+            clip.open(AudioSystem.getAudioInputStream(is));
+            applyVolume(clip, musicVolume);
+            clip.loop(Clip.LOOP_CONTINUOUSLY);
+            this.musicClip = clip;
+        } catch (final UnsupportedAudioFileException | IOException | LineUnavailableException e) {
             LOGGER.log(Level.WARNING, "Unable to play music: the game continues without audio.", e);
         }
     }
@@ -65,10 +64,9 @@ public final class SoundManager {
      * Ferma la riproduzione della musica corrente, se presente.
      */
     public void stopMusic() {
-        if (musicPlayer != null) {
-            musicPlayer.stop();
-            musicPlayer.dispose();
-            musicPlayer = null;
+        if (musicClip != null) {
+            musicClip.close();
+            musicClip = null;
         }
     }
 
@@ -79,21 +77,20 @@ public final class SoundManager {
      */
     public void playSfx(final SoundEffect effect) {
         try {
-            final AudioClip clip = sfxCache.computeIfAbsent(effect, e -> {
-                final var url = getClass().getResource(effect.getResourcePath());
-                if (url == null) {
-                    return null;
-                }
-                return new AudioClip(url.toExternalForm());
-            });
-
-            if (clip == null) {
+            final var is = getClass().getResourceAsStream(effect.getResourcePath());
+            if (is == null) {
                 return;
             }
-
-            clip.setVolume(sfxVolume);
-            clip.play();
-        } catch (final MediaException e) {
+            final Clip clip = AudioSystem.getClip();
+            clip.open(AudioSystem.getAudioInputStream(is));
+            applyVolume(clip, sfxVolume);
+            clip.addLineListener(event -> {
+                if (event.getType() == LineEvent.Type.STOP) {
+                    clip.close();
+                }
+            });
+            clip.start();
+        } catch (final UnsupportedAudioFileException | IOException | LineUnavailableException e) {
             LOGGER.log(Level.WARNING, "Unable to play the sound effect: the game continues without audio.", e);
         }
     }
@@ -105,8 +102,8 @@ public final class SoundManager {
      */
     public void setMusicVolume(final double volume) {
         this.musicVolume = Math.clamp(volume, 0.0, 1.0);
-        if (musicPlayer != null) {
-            musicPlayer.setVolume(this.musicVolume);
+        if (musicClip != null) {
+            applyVolume(musicClip, this.musicVolume);
         }
     }
 
@@ -125,7 +122,20 @@ public final class SoundManager {
      * @return true se la musica è in riproduzione
      */
     public boolean isMusicPlaying() {
-        return musicPlayer != null
-                && musicPlayer.getStatus() == MediaPlayer.Status.PLAYING;
+        return musicClip != null && musicClip.isRunning();
+    }
+
+    /**
+     * Applica il volume (0.0–1.0) a un Clip.
+     *
+     * @param clip il clip a cui applicare il volume
+     * @param volume il volume lineare tra 0.0 e 1.0
+     */
+    private static void applyVolume(final Clip clip, final double volume) {
+        final FloatControl gain = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+        final float minGain = gain.getMinimum();
+        final float maxGain = gain.getMaximum();
+        final float dB = (float) (20.0 * Math.log10(Math.max(volume, 1e-4)));
+        gain.setValue(Math.clamp(dB, minGain, maxGain));
     }
 }
