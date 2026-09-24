@@ -65,3 +65,8 @@ application {
     // Define the main class for the application
     mainClass.set(main)
 }
+
+tasks.shadowJar {
+    archiveFileName.set("PSS25-Gioco-Oca.jar")
+    destinationDirectory.set(layout.projectDirectory)
+}

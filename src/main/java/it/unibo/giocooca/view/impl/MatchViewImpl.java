@@ -127,7 +127,8 @@ public final class MatchViewImpl implements MatchView {
         final Image diceFaceSix = new Image(
                 Objects.requireNonNull(getClass().getResourceAsStream("/images/dice/diceSix.png")));
 
-        final ImageView logo = new ImageView(new Image("/images/ocalogo.png"));
+        final ImageView logo = new ImageView(new Image(
+                Objects.requireNonNull(getClass().getResourceAsStream("/images/ocaLogo.png"))));
         logo.setFitWidth(LOGO_SIZE);
         logo.setFitHeight(LOGO_SIZE);
 
