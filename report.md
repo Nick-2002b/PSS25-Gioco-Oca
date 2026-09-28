@@ -321,7 +321,7 @@ Impiegata come framework grafico per tutte le view. In particolare, le classi di
 **Lavori futuri.** Si potrebbe estrapolare tutta la parte grafica usando fogli di stile CSS e layout FXML per una miglior separazione tra logica e presentazione. Si potrebbero inoltre aggiungere ulteriori dinamiche di gioco (nuove tipologie di caselle, modalità multigiocatore online) sfruttando l'estensibilità già predisposta dal modello.
 
 ## 4.2 Difficoltà incontrate e commenti per i docenti
-
+### 4.2.1 - Nicolae Balaban
 La difficoltà principale ha riguardato la realizzazione grafica del tabellone a "serpentone". Il percorso del gioco dell'oca prevede righe dritte separate da caselle d'angolo, con direzione alternata. Si è resa necessaria una netta separazione tra coordinate logiche (dove sta una casella nel percorso) e coordinate della griglia (come `GridPane` la posiziona sullo schermo), implementata nei metodi `toLogicalCoords` e `toGridCoords`. In particolare, `GridPane` conta le righe dall'alto verso il basso, mentre il percorso parte dal basso. 
 
 Far entrare il tabellone nella finestra di gioco (1280×800, non ridimensionabile) ha richiesto diversi tentativi. Inizialmente si è provato a scalare automaticamente il tabellone in base alle dimensioni della finestra, ma questo causava problemi con il posizionamento delle pedine. Si è quindi scelto un approccio più semplice: regolare manualmente le dimensioni delle celle e gli spazi tra di esse fino a ottenere un risultato visivamente corretto nella finestra fissa.
