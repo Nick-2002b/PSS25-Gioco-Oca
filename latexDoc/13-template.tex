@@ -29,7 +29,7 @@
 
 \section{Descrizione e requisiti}
 
-Il software si propone di realizzare una versione digitale in chiave moderna del classico gioco da tavolo "Gioco dell'Oca". L'obiettivo è quello di fornire un'esperienza interattiva pensata per un gruppo che va da 2 a 4 partecipanti, mantenendo lo spirito ludico e la natura di competizione basata sulla casualità tipica del gioco originale. All'avvio, l'applicazione deve permettere all'utente di navigare tramite un menu principale per avviare una nuova partita, modificare le impostazioni, consultare le regole o uscire dal gioco. Prima dell'inizio di una partita, i giocatori devono potersi registrare inserendo il proprio nickname e scegliendo una pedina identificativa. Il gioco si svolge a turni su un percorso predefinito composto da un numero finito di caselle. L'avanzamento dei giocatori è determinato dal lancio di 1/2 dado/i virtuale a 6 facce. Lungo il percorso sono dislocate caselle speciali che alterano il normale svolgimento della partita, offrendo vantaggi (bonus), svantaggi (malus) o bloccando temporaneamente il giocatore (prigione). La partita si conclude quando un giocatore raggiunge l'esatta posizione dell'ultima casella del percorso.
+Il software si propone di realizzare una versione digitale in chiave moderna del classico gioco da tavolo "\textbf{Gioco dell'Oca}". L'obiettivo è quello di fornire un'esperienza interattiva pensata per un gruppo che va da 2 a 4 partecipanti, mantenendo lo spirito ludico e la natura di competizione basata sulla casualità tipica del gioco originale. All'avvio, l'applicazione deve permettere all'utente di navigare tramite un menu principale per avviare una nuova partita, modificare le impostazioni, consultare le regole o uscire dal gioco. Prima dell'inizio di una partita, i giocatori devono potersi registrare inserendo il proprio nickname e scegliendo una pedina identificativa. Il gioco si svolge a turni su un percorso predefinito composto da un numero finito di caselle. L'avanzamento dei giocatori è determinato dal lancio di 1/2 dado/i virtuale a 6 facce. Lungo il percorso sono dislocate caselle speciali che alterano il normale svolgimento della partita, offrendo vantaggi (bonus), svantaggi (malus) o bloccando temporaneamente il giocatore (prigione). La partita si conclude quando un giocatore raggiunge l'esatta posizione dell'ultima casella del percorso.
 
 
 \subsubsection{Requisiti funzionali}
@@ -150,6 +150,50 @@ Grazie a questa divisione, sostituire in blocco la View (ad esempio per passare 
 
 \paragraph{Soluzione}È stato applicato il pattern Strategy all'interfaccia \texttt{Cell}, che dichiara il metodo \texttt{applyEffect(Player player)}. Ogni tipologia di casella è una strategia concreta che incapsula il proprio comportamento: \texttt{NormalCellImpl} non produce alcun effetto, \texttt{SpecialCellImpl} sposta il giocatore di un offset (bonus o malus), e \texttt{PrisonCellImpl} blocca il giocatore per un turno. Il motore di partita (\texttt{MatchImpl}) si limita a invocare \texttt{cell.applyEffect(player)} sulla casella corrente, senza dover conoscere il tipo concreto. Per aggiungere una nuova dinamica di gioco (ad esempio una casella che teletrasporta il giocatore) è sufficiente creare una nuova implementazione di \texttt{Cell}, senza toccare nessuna classe esistente
 
+\subsection{Antonino Cardillo}
+\subsubsection{Movimento della pedina, rimbalzo finale e gestione delle caselle speciali (`MatchImpl`)}
+
+
+\begin{figure}[H]
+\centering{}
+\includegraphics[width=\textwidth]{img/Figura2.6.pdf}
+\caption{Schema della gestione del movimento e degli effetti in MatchImpl.}
+\label{img:Movimento pedina}
+\end{figure}
+
+\paragraph{Problema:}Nel Gioco dell'Oca il movimento della pedina dopo il lancio del dado oltre ad avanzare sul percorso aggiungendo alla posizione attuale il risultato del dado, bisogna tener conto anche di alcuni aspetti di seguito elencati:
+\begin{itemize}
+	\item \textbf{Regola del rimbalzo:} per vincere la partita bisogna arrivare esattamente sulla casella (default 63 l'ultima). Se il punteggio del dado porta il giocatore oltre la casella 63, i passi in più devono essere fatti tornando indietro (ad esempio: se un giocatore è sulla casella 60 e fa 5 con il dado, arriva alla 63 e poi rimbalza indietro di 2 passi, fermandosi sulla 61).
+    \item \textbf{Caselle speciali a catena:} se una pedina atterra su una casella speciale, subisce un effetto che la sposta in avanti (bonus) o indietro (malus). Questo nuovo spostamento potrebbe farla atterrare su un'altra casella speciale, innescando un secondo salto, oppure portarla sulla casella prigione. Inoltre c'e il rischio che, posizionando caselle speciali casuali, si può creare un ciclo infinito (ad esempio una casella che manda avanti di 2 e subito dopo una che manda indietro di 2), bloccando il gioco, questo anche nel caso si atterri su più caselle speciali in sequenza e se per il calcolo matematico si ritorna su quella di partenza si crea un loop.
+    \item \textbf{Tracciamento per la grafica:} per rendere la parte grafica inerente alla parte logica, la parte grafica deve conoscere non solo la posizione finale, ma tutti i singoli salti intermedi effettuati dalla pedina (il tocco del 63, il rimbalzo, i salti delle caselle speciali), così da poterli mostrare uno dopo l'altro al giocatore con le giuste animazioni e i giusti suoni.
+\end{itemize}
+\paragraph{Soluzione:}La logica è tutta protetta all'interno del modello della classe \texttt{MatchImpl}, utilizzando il principio dell'incapsulamento, nei metodi \texttt{moveCurrentPlayer(int steps)} e \texttt{applyCurrentCellEffect(Player player)} in quest'ultima viene sfruttato il polimorfismo delle diverse tipologie di casella senza ricorrere a controlli con il costrutto if-else sul tipo di cella. Non ci sono rischi di blocchi o crash per cicli infiniti. La grafica riceve la sequenza precisa dei salti da animare. Nello specifico viene dettagliato di seguito:
+  \begin{itemize}
+    \item Quando si muove il giocatore, se la nuova posizione supera la fine del percorso (63), calcolo l'eccesso e faccio arretrare la pedina (63 - eccesso), aggiungendo sia la casella finale che quella di arrivo a una lista dei movimenti \texttt{lastMovePositions}.
+    \item Per gli effetti delle caselle speciali, ho usato un ciclo \texttt{while} che continua finchè la pedina si sposta. Per evitare che un giro vizioso di caselle speciali blocchi il programma in un loop infinito, salvo ogni casella visitata in un hashMap \texttt{Set<Integer> visitedPositions}, se la pedina ricapita su una casella già toccata nello stesso turno, il ciclo si interrompe subito.
+    \item Come già anticipato, tutte le posizioni toccate nel turno vengono salvate nella lista \texttt{lastMovePositions}. All'esterno la espongo con il metodo \texttt{getLastMovePositions()}, restituendo una lista non modificabile \texttt{Collections.unmodifiableList} in modo che nessun'altra classe possa alterarla per errore.
+  \end{itemize}
+
+\subsubsection{Gestione dei tempi, animazioni e messaggi nel Controller (`MatchControllerImpl`)}
+ \begin{figure}[H]
+ \centering{}
+ \includegraphics[width=\textwidth]{img/Figura2.7.pdf}
+ \caption{Schema della gestione del movimento e degli effetti in MatchImpl.}
+ \label{img:Gestione Effetti}
+ \end{figure} 
+ \paragraph{Problema:}Quando il giocatore clicca sul pulsante per lanciare il dado, succedono varie cose in sequenza:
+ \begin{enumerate}
+     \item Si deve vedere l'animazione dei dadi che rotolano e sentire il suono del lancio.
+     \item Bisogna aspettare che i dadi abbiano finito di girare prima di far partire la pedina.
+     \item La pedina deve avanzare sul percorso; se tocca una casella speciale o rimbalza, deve riprodurre il suono adatto (suono a molla per il rimbalzo, suono speciale per il bonus/malus).
+     \item Quando il movimento è del tutto concluso, bisogna scrivere nella finestra di log cosa è successo (es. *"Rimbalzo!"*, *"Ops, sei finito in prigione!"*), verificare se il giocatore ha vinto o passare il turno a quello successivo.
+ \end{enumerate}
+  In JavaFX tutte le modifiche grafiche avvengono su un unico thread (il thread dell'interfaccia grafica). Se avessi usato un comando bloccante come \texttt{Thread.sleep()}, l'intera applicazione si sarebbe congelata: la finestra sarebbe andata in blocco con il classico \texttt{("Non risponde")} e le animazioni non si sarebbero viste. Inoltre, per il pattern MVC la vista del tabellone \texttt{(BoardView)} non doveva conscere i testi dei messaggi, dei turni o delle regole di vittoria.
+  \paragraph{Soluzione:}Ho utilzzato le classi di animazione di JavaFx e usato le \texttt{CallBack} passandole come parametro tramite \texttt{Runnable} insieme alla lista dei salti alla view \texttt{BoardView} con il metodo \texttt{updatePlayerPositions}.
+  Nel momento del lancio, la vista \texttt{MatchViewImpl} fa partire un'animazione \textbf{Timeline} per cambiare velocemente le facce dei dadi.
+  Nel controller uso \texttt{PauseTransition} della durata di un secondo, che aspetta la fine del lancio dei dadi senza bloccare la finestra. Finita la pausa, il controller chiede al modello di muovere la pedina e chiama il metodo \texttt{boardView.updatePlayerPositions(...)}, passandogli due azioni da eseguire:
+    Azione intermedia \texttt{(onIntermediate)}, la vista del tabellone la richiama ogni volta che la pedina raggiunge un punto intermedio, permettendo al controller di riprodurre il suono corretto (molla per il rimbalzo o suono speciale per le celle bonus/malus);
+    Azione finale \texttt{(onFinal)}, la vista del tabellone la richiama solo quando la pedina è ferma sulla casella finale, permettendo al controller di stampare i messaggi di testo nel log, suonare la vittoria se la partita è finita, oppure passare il turno con \texttt{match.nextTurn()}.
 
 \chapter{Sviluppo}
 \section{Testing automatizzato}
@@ -163,7 +207,9 @@ Il testing automatizzato si è concentrato sulle componenti del modello di domin
  \item \textbf{SpecialCellImplTest:} applicazione corretta dell'offset (bonus e malus), inclusi i controlli sui limiti del tabellone.
  \item \textbf{PrisonCellImplTest:} verifica che l'effetto della cella prigione metta correttamente il giocatore in stato \texttt{inPrison}.
  \item \textbf{NormalCellImplTest:} verifica che la casella normale non alteri la posizione del giocatore.
+ \item \textbf{MatchImplTest:} Contiene più test, viene verificato \texttt{l'inizializzazione del Match},  il \texttt{player che inizia}, il suo \texttt{nickName}, lo stato di \texttt{GameOver(false)} e di \texttt{Vittoria(null)}, il \texttt{numero di giocatori}, la \texttt{posizione iniziale del giocatore}, il \texttt{turno}, l'applicazione della \texttt{cella speciale}. 
 \end{itemize}
+
 
 
 \section{Note di sviluppo}
@@ -192,6 +238,28 @@ Parte della JDK ma non trattata a lezione. Utilizzata in SoundManager per la rip
 Impiegata come framework grafico per tutte le view. In particolare, le classi di animazione (\texttt{TranslateTransition}, \texttt{SequentialTransition}, \texttt{PauseTransition}) sono state utilizzate per il movimento delle pedine sul tabellone.\\
 \href{https://github.com/Nick-2002b/PSS25-Gioco-Oca/blob/e81943445d44f9befaaf74b02e1793cb20d0ce74/src/main/java/it/unibo/giocooca/view/impl/BoardViewImpl.java#L399-L403}{Permalink}
 
+\subsection{Antonino Cardillo}
+\subsubsection{Uso di lambda expressions}
+Utilizzate in più occasione per la gestione degli eventi sia per le CallBack che per l'azione dei Button. \\
+
+\noindent\textbf{CallBack MatchControllerImpl:}\\
+ - setOnFinished
+ \href{https://github.com/Nick-2002b/PSS25-Gioco-Oca/blob/e81943445d44f9befaaf74b02e1793cb20d0ce74/src/main/java/it/unibo/giocooca/controller/impl/MatchControllerImpl.java#L98}{Permalink} \\
+ - onIntermediate
+ \href{https://github.com/Nick-2002b/PSS25-Gioco-Oca/blob/e81943445d44f9befaaf74b02e1793cb20d0ce74/src/main/java/it/unibo/giocooca/controller/impl/MatchControllerImpl.java#L116}{Permalink} \\
+ - onFinal
+ \href{https://github.com/Nick-2002b/PSS25-Gioco-Oca/blob/e81943445d44f9befaaf74b02e1793cb20d0ce74/src/main/java/it/unibo/giocooca/controller/impl/MatchControllerImpl.java#L128}{Permalink} \\
+\textbf{Button MatchViewImpl:}\\
+- btnRollDice
+\href{https://github.com/Nick-2002b/PSS25-Gioco-Oca/blob/e81943445d44f9befaaf74b02e1793cb20d0ce74/src/main/java/it/unibo/giocooca/view/impl/MatchViewImpl.java#L158}{Permalink}\\
+- btnQuit
+\href{https://github.com/Nick-2002b/PSS25-Gioco-Oca/blob/e81943445d44f9befaaf74b02e1793cb20d0ce74/src/main/java/it/unibo/giocooca/view/impl/MatchViewImpl.java#L163}{Permalink}\\
+
+\subsubsection{Uso di librerie di terze parti JavaFx}
+In MatchViewImpl per l' animazione dei dadi ho utilizzato \textett{Timeline} e \texttt{Keyframe} per alternare le facce del dado.
+\href{https://github.com/Nick-2002b/PSS25-Gioco-Oca/blob/e81943445d44f9befaaf74b02e1793cb20d0ce74/src/main/java/it/unibo/giocooca/view/impl/MatchViewImpl.java#L224-L235}{Permalink}\\
+In MatchControllerImpl ho utilizzato PauseTransition per avere una pausa tra l'animazione del dado e lo spostamento della pedina.
+\href{https://github.com/Nick-2002b/PSS25-Gioco-Oca/blob/e81943445d44f9befaaf74b02e1793cb20d0ce74/src/main/java/it/unibo/giocooca/controller/impl/MatchControllerImpl.java#L96}{Permalink}\\
 
 \chapter{Commenti finali}
 
@@ -213,10 +281,22 @@ Impiegata come framework grafico per tutte le view. In particolare, le classi di
 
 \paragraph{Lavori Futuri.}Si potrebbe estrapolare tutta la parte grafica usando fogli di stile CSS e layout FXML per una miglior separazione tra logica e presentazione. Si potrebbero inoltre aggiungere ulteriori dinamiche di gioco (nuove tipologie di caselle, modalità multigiocatore online) sfruttando l'estensibilità già predisposta dal modello.
 
+\subsection{Antonino Cardillo}
+\paragraph{Ruolo nel gruppo.} All'interno del progetto mi sono occupato principalmente della logica centrale della partita \textbf{(Match e MatchImpl)}, del coordinamento degli eventi di gioco tramite il controller \textbf{(MatchControllerImpl)}, dell'interfaccia principale della partita con l'animazione dei dadi \textbf{(MatchViewImpl)}, della schermata di registrazione iniziale dei giocatori \textbf{(SetupViewImpl e SetupControllerImpl)} e della stesura dei relativi test unitari con JUnit 5. 
+La collaborazione con il mio collega Nicolae è stata costante e proficua: ci siamo suddivisi i compiti fin dall'inizio in modo chiaro (a lui la generazione del tabellone, la grafica della pista e l'audio; a me il motore della partita e il coordinamento del flusso di gioco). Abbiamo gestito l'integrazione del codice tramite Git e GitHub, discutendo insieme le interfacce per far dialogare le nostre componenti senza creare sovrapposizioni utilizzando classi mock.
+\subsubsection{Punti di forza}
+Ritengo che i principali punti di forza del mio lavoro siano, la logica di avanzamento in MatchImpl è robusta, protetta da loop infiniti grazie al controllo sulle caselle speciali già visitate, la registrazione dei giocatori impedisce errori banali, garantendo che ogni partecipante abbia un nome valido e un colore di pedina univoco, con poco sforzo aggiungere la possibilità di avere un dado a più di sei facce e un numero superiore di due.
+\subsubsection{Punti di debolezza}
+il metodo \texttt{rollDice} in \texttt{MatchControllerImpl} svolge molte mansioni (coordina pause, suoni, messaggi e avanzamento turno). Sebbene funzioni bene, in futuro potrebbe essere suddiviso in sotto-metodi più piccoli per renderlo ancora più pulito e modulare.
+\paragraph{Lavori Futuri.}
+Penso che si potrebbe ampliare le difficoltà con tipi di caselle speciali diverse, salvare lo stato del gioco per poterlo riprendere in seguito, banalmente su un file json, utilizzare il pattern Observer per la view. 
+
 \section{Difficoltà incontrate e commenti per i docenti}
 \subsection{Nicolae Balaban}
 La difficoltà principale ha riguardato la realizzazione grafica del tabellone a "serpentone". Il percorso del gioco dell'oca prevede righe dritte separate da caselle d'angolo, con direzione alternata. Si è resa necessaria una netta separazione tra coordinate logiche (dove sta una casella nel percorso) e coordinate della griglia (come \texttt{GridPane} la posiziona sullo schermo), implementata nei metodi \texttt{toLogicalCoords} e \texttt{toGridCoords}. In particolare, \texttt{GridPane} conta le righe dall'alto verso il basso, mentre il percorso parte dal basso.\\
 \\
 Far entrare il tabellone nella finestra di gioco (1280×800, non ridimensionabile) ha richiesto diversi tentativi. Inizialmente si è provato a scalare automaticamente il tabellone in base alle dimensioni della finestra, ma questo causava problemi con il posizionamento delle pedine. Si è quindi scelto un approccio più semplice: regolare manualmente le dimensioni delle celle e gli spazi tra di esse fino a ottenere un risultato visivamente corretto nella finestra fissa.
 
+\subsection{Antonino Cardillo}
+Una delle difficoltà incontrate è stata pensare all'effetto sullo spostamento provocato dalle celle speciali che potevano susseguirsi. Inizialmente mi ero concentrato sullo spostare il player aggiungendo banalmente il risultato del dado/i, arrivato sulla cella speciale applicavo l'effetto (Bonus o Malus), funzionava me poi se l'effetto portava su un'altra cella speciale, il nuovo effetto non veniva applicato.
 \end{document}
